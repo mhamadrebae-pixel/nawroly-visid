@@ -23,7 +23,7 @@ const IMAGE_PLACEHOLDER =
 */
 const supportedLanguages = ["ku", "ar", "en"];
 const savedLanguage = localStorage.getItem("siteLanguage");
-const currentLanguage = supportedLanguages.includes(savedLanguage) ? savedLanguage : "ku";
+let currentLanguage = supportedLanguages.includes(savedLanguage) ? savedLanguage : "ku";
 
 const translations = {
     ku: {
@@ -519,12 +519,21 @@ function setupLanguageSwitch() {
         button.addEventListener("click", () => {
             const selectedLanguage = button.dataset.language || "ku";
 
-            if (!supportedLanguages.includes(selectedLanguage) || selectedLanguage === currentLanguage) {
+            if (!supportedLanguages.includes(selectedLanguage)) {
                 return;
             }
 
+            currentLanguage = selectedLanguage;
             localStorage.setItem("siteLanguage", selectedLanguage);
-            window.location.reload();
+
+            applyLanguageToDocument();
+            applyTranslationsToMarkedElements();
+
+            renderServiceCards();
+            renderServiceDetailsPage();
+
+            setupLazyLoading();
+            setupRevealAnimations();
         });
     });
 }
@@ -553,13 +562,14 @@ function normalizePhoneForLink(phoneNumber) {
 function createWhatsAppBookingUrl(serviceName, whatsappNumber, customMessage = "") {
     const safeWhatsappNumber = typeof whatsappNumber === "string" ? whatsappNumber : "";
     const cleanNumber = safeWhatsappNumber.replace(/\D/g, "");
+    const localizedServiceName = t(serviceName) || ui("genericService");
 
     if (!cleanNumber) {
         return "";
     }
 
     const message =
-        customMessage || ui("quickBookingDefaultMessage").replace("{service}", serviceName);
+        customMessage || ui("quickBookingDefaultMessage").replace("{service}", localizedServiceName);
     return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
 }
 
@@ -596,8 +606,8 @@ function renderServiceCards() {
     if (!Array.isArray(serviceList) || serviceList.length === 0) {
         servicesGrid.innerHTML = `
             <article class="contact-card">
-                <h3>خزمەتگوزارییەکان بە زووی زیاد دەکرێن</h3>
-                <p>ئێستا داتای نیشاندان ئامادە نییە. دەتوانرێت دواتر لە داتا یان API ـەوە پڕ بکرێتەوە.</p>
+                <h3>${ui("serviceEmptyTitle")}</h3>
+                <p>${ui("serviceEmptyText")}</p>
             </article>
         `;
         return;
@@ -612,23 +622,23 @@ function renderServiceCards() {
                             class="lazy-image"
                             src="${IMAGE_PLACEHOLDER}"
                             data-src="${service.image}"
-                            alt="${service.name}"
+                            alt="${t(service.name)}"
                             loading="lazy"
                             width="800"
                             height="500"
                         >
                     </div>
                     <div class="service-body">
-                        <span class="service-badge">${service.category}</span>
-                        <h3>${service.name}</h3>
-                        <p>${service.description}</p>
+                        <span class="service-badge">${t(service.category)}</span>
+                        <h3>${t(service.name)}</h3>
+                        <p>${t(service.description)}</p>
                         <ul class="service-meta">
                             <li>
-                                <strong>نرخ</strong>
-                                <span>${service.price}</span>
+                                <strong>${ui("servicePriceLabel")}</strong>
+                                <span>${t(service.price)}</span>
                             </li>
                             <li>
-                                <strong>ژمارەی خاوەن</strong>
+                                <strong>${ui("serviceOwnerPhoneLabel")}</strong>
                                 <a href="tel:${normalizePhoneForLink(service.phone || service.whatsapp || "")}">${service.phone}</a>
                             </li>
                         </ul>
@@ -638,14 +648,14 @@ function renderServiceCards() {
                             لە داهاتوودا دەتوانرێت share، favorite، یان live availability buttons ی ترش لێرە زیاد بکرێت.
                         -->
                         <a class="button button-secondary service-action" href="service-details.html?id=${encodeURIComponent(service.id)}">
-                            بینینی وردەکاری
+                            ${ui("serviceDetailsButton")}
                         </a>
                         <button
                             class="button button-primary service-action"
                             type="button"
                             data-whatsapp="${service.whatsapp}"
-                            data-service-name="${service.name}">
-                            رزێرڤ لە WhatsApp
+                            data-service-name="${t(service.name)}">
+                            ${ui("serviceWhatsappButton")}
                         </button>
                     </div>
                 </article>
@@ -663,7 +673,7 @@ function openWhatsAppBooking(serviceName, whatsappNumber) {
     const bookingUrl = createWhatsAppBookingUrl(serviceName, whatsappNumber);
 
     if (!bookingUrl) {
-        window.alert("ژمارەی WhatsApp ئامادە نییە.");
+        window.alert(ui("quickBookingUnavailable"));
         return;
     }
 
@@ -678,9 +688,10 @@ function openWhatsAppBooking(serviceName, whatsappNumber) {
 function setupServiceActions() {
     const servicesGrid = document.getElementById("servicesGrid");
 
-    if (!servicesGrid) {
+    if (!servicesGrid || servicesGrid.dataset.actionsBound) {
         return;
     }
+    servicesGrid.dataset.actionsBound = "true";
 
     servicesGrid.addEventListener("click", (event) => {
         const trigger = event.target.closest("[data-whatsapp]");
@@ -689,7 +700,7 @@ function setupServiceActions() {
             return;
         }
 
-        openWhatsAppBooking(trigger.dataset.serviceName || "خزمەتگوزاری", trigger.dataset.whatsapp || "");
+        openWhatsAppBooking(trigger.dataset.serviceName || ui("genericService"), trigger.dataset.whatsapp || "");
     });
 }
 
@@ -765,38 +776,44 @@ function loadImage(imageElement) {
     لە داهاتوودا دەتوانرێت rootMargin و threshold بەپێی قەبارەی وێنەکان و ڕەفتاری user باشتر بکرێت.
 */
 function setupLazyLoading() {
-    const lazyImages = document.querySelectorAll(".lazy-image");
+    const lazyImages = document.querySelectorAll(".lazy-image:not([data-observed])");
+
+    if (lazyImages.length === 0) {
+        return;
+    }
 
     if (!("IntersectionObserver" in window)) {
         lazyImages.forEach(loadImage);
         return;
     }
 
-    const imageObserver = new IntersectionObserver(
-        (entries, observer) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                    return;
-                }
+    if (!window._lazyImageObserver) {
+        window._lazyImageObserver = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
 
-                loadImage(entry.target);
-                observer.unobserve(entry.target);
-            });
-        },
-        {
-            rootMargin: "360px 0px",
-            threshold: 0.1
-        }
-    );
+                    loadImage(entry.target);
+                    observer.unobserve(entry.target);
+                });
+            },
+            {
+                rootMargin: "360px 0px",
+                threshold: 0.1
+            }
+        );
+    }
 
     lazyImages.forEach((image) => {
-        imageObserver.observe(image);
+        image.dataset.observed = "true";
+        window._lazyImageObserver.observe(image);
     });
 
     /*
         ئەم fallback ـە دڵنیایی دەدات کە ئەگەر هەندێک وێنە بەهۆی preview، screenshot، یان هێواشی load هێشتا نەهاتبێتە ناو viewport،
         هەرگیز بە placeholder نەبمێنێتەوە و دواتر خۆی دابەزێت.
-        لە داهاتوودا دەتوانرێت ئەم ماوەیە بەپێی قەبارەی وێنەکان یان بەکارهێنانی CDN زیاتر باشتر بکرێت.
     */
     window.setTimeout(() => {
         lazyImages.forEach((image) => {
@@ -810,40 +827,44 @@ function setupLazyLoading() {
 /*
     reveal animation بۆ هەموو ئەو block ـانەی class ی reveal ـیان هەیە.
     هۆکارەکە ئەوەیە بەشی نوێ هەرکات دەرکەوت، بە شێوەی سووک هەستێکی زیندوو پێ بدرێت.
-    لە داهاتوودا دەتوانرێت delay بەپێی order، direction ی جیاواز، یان reusable animation utility بۆی زیاد بکرێت.
 */
 function setupRevealAnimations() {
-    const revealElements = document.querySelectorAll(".reveal");
+    const revealElements = document.querySelectorAll(".reveal:not([data-reveal-observed])");
+
+    if (revealElements.length === 0) {
+        return;
+    }
 
     if (!("IntersectionObserver" in window)) {
         revealElements.forEach((element) => element.classList.add("is-visible"));
         return;
     }
 
-    const revealObserver = new IntersectionObserver(
-        (entries, observer) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) {
-                    return;
-                }
+    if (!window._revealObserver) {
+        window._revealObserver = new IntersectionObserver(
+            (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
 
-                entry.target.classList.add("is-visible");
-                observer.unobserve(entry.target);
-            });
-        },
-        {
-            threshold: 0.12
-        }
-    );
+                    entry.target.classList.add("is-visible");
+                    observer.unobserve(entry.target);
+                });
+            },
+            {
+                threshold: 0.12
+            }
+        );
+    }
 
     revealElements.forEach((element) => {
-        revealObserver.observe(element);
+        element.dataset.revealObserved = "true";
+        window._revealObserver.observe(element);
     });
 
     /*
-        ئەم fallback ـە بۆ ئەو بارانە زیاد کراوە کە observer هەندێک ئەڵێمێنت بە درەنگی دەرخات.
-        هۆکاری بوونی ئەوەیە کە هیچ بەشێک بە شێوەی شوێنی بەتاڵ نەبمێنێتەوە، بەتایبەت لە screenshot، preview، یان هەندێک مۆبایلدا.
-        لە داهاتوودا دەتوانرێت ئەم timeout ـە بەپێی ڕەفتاری بەکارهێنەر، performance، یان animation strategy باشتر بکرێت.
+        ئەم fallback ـە بۆ دڵنیابوون لە دەرکەوتنی ئەڵێمێنتەکان لە کاتی دواکەوتن.
     */
     window.setTimeout(() => {
         revealElements.forEach((element) => {
@@ -854,19 +875,22 @@ function setupRevealAnimations() {
 
 /*
     lightbox ـی gallery بەهۆی ئەم فانکشەنە کار دەکات.
-    کلیک لەسەر وێنەی gallery وێنەکە بە گەورەیی لە modal ـدا پیشان دەدات، و کلیکی دەرەوە یان Escape داخستنەوەی دەکات.
-    لە داهاتوودا دەتوانرێت zoom، slideshow، thumbnail navigation، یان swipe gesture بۆ مۆبایل بۆی زیاد بکرێت.
+    کلیک لەسەر هەر وێنەیەکی gallery بە delegation دەکرێتەوە و لە شاشەی جیاوازدا کار دەکات بێ دووبارەبوونەوەی listener.
 */
 function setupGalleryLightbox() {
     const lightbox = document.getElementById("lightbox");
     const lightboxImage = document.getElementById("lightboxImage");
     const lightboxTitle = document.getElementById("lightboxTitle");
     const lightboxClose = document.getElementById("lightboxClose");
-    const galleryCards = document.querySelectorAll(".gallery-card");
 
-    if (!lightbox || !lightboxImage || !lightboxTitle || !lightboxClose || galleryCards.length === 0) {
+    if (!lightbox || !lightboxImage || !lightboxTitle || !lightboxClose) {
         return;
     }
+
+    if (lightbox.dataset.lightboxBound) {
+        return;
+    }
+    lightbox.dataset.lightboxBound = "true";
 
     const closeLightbox = () => {
         lightbox.classList.remove("is-open");
@@ -877,22 +901,25 @@ function setupGalleryLightbox() {
         document.body.style.overflow = "";
     };
 
-    galleryCards.forEach((card) => {
-        card.addEventListener("click", () => {
-            const fullImage = card.dataset.fullImage;
-            const title = card.dataset.title || "وێنەی نەوڕۆڵی";
+    document.addEventListener("click", (event) => {
+        const card = event.target.closest(".gallery-card");
+        if (!card) {
+            return;
+        }
 
-            if (!fullImage) {
-                return;
-            }
+        const fullImage = card.dataset.fullImage;
+        const title = card.dataset.title || ui("lightboxFallbackTitle") || "وێنەی نەوڕۆڵی";
 
-            lightboxImage.src = fullImage;
-            lightboxImage.alt = title;
-            lightboxTitle.textContent = title;
-            lightbox.classList.add("is-open");
-            lightbox.setAttribute("aria-hidden", "false");
-            document.body.style.overflow = "hidden";
-        });
+        if (!fullImage) {
+            return;
+        }
+
+        lightboxImage.src = fullImage;
+        lightboxImage.alt = title;
+        lightboxTitle.textContent = title;
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
     });
 
     lightboxClose.addEventListener("click", closeLightbox);
@@ -917,7 +944,7 @@ function setupGalleryLightbox() {
 */
 function buildDetailListMarkup(items) {
     if (!Array.isArray(items) || items.length === 0) {
-        return "<p>زانیاریی زیاتر بە زووی زیاد دەکرێت.</p>";
+        return `<p>${ui("detailMoreInfoSoon")}</p>`;
     }
 
     return `
@@ -926,7 +953,7 @@ function buildDetailListMarkup(items) {
                 .map(
                     (item) => `
                         <li>
-                            <span>${item}</span>
+                            <span>${t(item)}</span>
                         </li>
                     `
                 )
@@ -943,6 +970,8 @@ function buildDetailListMarkup(items) {
 function buildDetailGalleryMarkup(service) {
     const galleryImages =
         Array.isArray(service.gallery) && service.gallery.length > 0 ? service.gallery : [service.image];
+    const serviceTitle = t(service.name);
+    const imageLabel = ui("detailGalleryImageLabel");
 
     return galleryImages
         .map(
@@ -951,16 +980,16 @@ function buildDetailGalleryMarkup(service) {
                     class="gallery-card reveal"
                     type="button"
                     data-full-image="${image}"
-                    data-title="${service.name} - وێنەی ${index + 1}">
+                    data-title="${serviceTitle} - ${imageLabel} ${index + 1}">
                     <img
                         class="lazy-image"
                         src="${IMAGE_PLACEHOLDER}"
                         data-src="${image}"
-                        alt="${service.name} - وێنەی ${index + 1}"
+                        alt="${serviceTitle} - ${imageLabel} ${index + 1}"
                         loading="lazy"
                         width="960"
                         height="600">
-                    <span>وێنەی ${index + 1}</span>
+                    <span>${imageLabel} ${index + 1}</span>
                 </button>
             `
         )
@@ -968,9 +997,41 @@ function buildDetailGalleryMarkup(service) {
 }
 
 /*
-    ئەم helper ـە بەشی ڤیدیۆ یان نەخشە دروست دەکات.
+    ئەم helper ـە preview ی سووک بۆ ڤیدیۆ دروست دەکات و کلیکەکە Facebook یان لینکی دەرەکی دەکاتەوە.
+    هۆکاری ئەم شێوازە ئەوەیە iframe ی قورس بەکارنەهێندرێت، site ـەکە خێرا بمێنێتەوە، و لە مۆبایلدا هێواشبوون ڕوونەدات.
+    هەروەها چونکە autoplay نییە، بەکارهێنەر خۆی بڕیار دەدات کەی ڤیدیۆکە بکاتەوە.
+*/
+function buildVideoPreviewMarkup(videoUrl, thumbnailUrl, title, emptyMessage) {
+    if (!videoUrl) {
+        return `<p>${emptyMessage}</p>`;
+    }
+
+    const previewImage = thumbnailUrl || IMAGE_PLACEHOLDER;
+    const buttonLabel =
+        currentLanguage === "ar"
+            ? "▶ مشاهدة الفيديو"
+            : currentLanguage === "en"
+              ? "▶ Watch Video"
+              : "▶ بینینی ڤیدیۆ";
+
+    return `
+        <div class="video-preview">
+            <img src="${previewImage}" alt="${title}">
+            <a
+                href="${videoUrl}"
+                target="_blank"
+                rel="noopener"
+                class="video-play-button">
+                ${buttonLabel}
+            </a>
+        </div>
+    `;
+}
+
+/*
+    ئەم helper ـە تەنها بەشی نەخشە یان embed ـی سووکی تر دروست دەکات.
     بوونی گرنگە چونکە هەندێک خزمەتگوزاری هێشتا media ی تەواویان نییە، بۆیە دەبێت شوێن-دانەرێکی جوان نیشان بدرێت لەبری شکاندنی layout.
-    لە داهاتوودا دەتوانرێت video embed ی ڕاستەقینە، custom player، یان map provider ی جیاواز لێرە زیاد بکرێت.
+    لە داهاتوودا دەتوانرێت map provider ی جیاواز یان embed ـی تر لێرە زیاد بکرێت.
 */
 function buildOptionalEmbedMarkup(url, title, emptyMessage) {
     if (!url) {
@@ -998,15 +1059,15 @@ function buildOptionalEmbedMarkup(url, title, emptyMessage) {
 */
 function buildServiceBookingMessage(service, bookingData) {
     return [
-        "سڵاو، داواکاری رزێرڤکردن هەیە.",
+        ui("bookingIntro"),
         "",
-        `خزمەتگوزاری: ${service.name}`,
-        `ناو: ${bookingData.fullName}`,
-        `ژمارە: ${bookingData.phone}`,
-        `بەروار: ${bookingData.visitDate}`,
-        `کات: ${bookingData.visitTime || ""}`,
-        `ژمارەی کەسەکان: ${bookingData.guestsCount || ""}`,
-        `تێبینی: ${bookingData.note || ""}`
+        `${ui("bookingLabelService")}: ${t(service.name)}`,
+        `${ui("bookingLabelName")}: ${bookingData.fullName}`,
+        `${ui("bookingLabelPhone")}: ${bookingData.phone}`,
+        `${ui("bookingLabelDate")}: ${bookingData.visitDate}`,
+        `${ui("bookingLabelTime")}: ${bookingData.visitTime || ""}`,
+        `${ui("bookingLabelGuests")}: ${bookingData.guestsCount || ""}`,
+        `${ui("bookingLabelNote")}: ${bookingData.note || ""}`
     ].join("\n");
 }
 
@@ -1038,9 +1099,9 @@ function renderServiceNotFound(detailsRoot) {
         <section class="section">
             <div class="container">
                 <article class="detail-card reveal">
-                    <a class="back-link" href="index.html#services">گەڕانەوە بۆ خزمەتگوزارییەکان</a>
-                    <h1>ئەم خزمەتگوزارییە نەدۆزرایەوە</h1>
-                    <p>تکایە بگەڕێوە بۆ پەڕەی سەرەکی و خزمەتگوزارییەکان دووبارە هەڵبژێرە.</p>
+                    <a class="back-link" href="index.html#services">${ui("detailBackServices")}</a>
+                    <h1>${ui("detailNotFoundTitle")}</h1>
+                    <p>${ui("detailNotFoundText")}</p>
                 </article>
             </div>
         </section>
@@ -1064,15 +1125,24 @@ function renderServiceDetailsPage() {
     const service = getServiceById(serviceId);
 
     if (!service) {
-        document.title = "خزمەتگوزاری نەدۆزرایەوە – Visit Nawroli";
+        document.title = ui("pageTitleNotFound");
         renderServiceNotFound(detailsRoot);
         return;
     }
 
+    const serviceTitle = t(service.name);
+    const serviceCategory = t(service.category);
+    const serviceDescription = t(service.description);
+    const serviceLongDescription = t(service.longDescription);
+    const servicePrice = t(service.price);
+    const serviceWorkingHours = t(service.workingHours);
+    const serviceLocation = t(service.locationText);
+    const serviceOwnerName = t(service.ownerName);
+    const serviceOwnerRole = t(service.ownerRole);
     const phoneLink = normalizePhoneForLink(service.phone || service.whatsapp || "");
-    const whatsappUrl = createWhatsAppBookingUrl(service.name, service.whatsapp || "");
+    const whatsappUrl = createWhatsAppBookingUrl(serviceTitle, service.whatsapp || "");
 
-    document.title = `${service.name} – Visit Nawroli`;
+    document.title = `${serviceTitle} – Visit Nawroli`;
     detailsRoot.innerHTML = `
         <!--
             ئەم hero ـە ناسنامەی خزمەتگوزارییەکە لە یەکەم بینینەوە پیشان دەدات.
@@ -1082,10 +1152,10 @@ function renderServiceDetailsPage() {
         <section class="detail-hero">
             <div class="container">
                 <div class="section-heading reveal">
-                    <a class="back-link" href="index.html#services">گەڕانەوە بۆ سەرەتا</a>
-                    <span class="section-label">${service.category}</span>
-                    <h1>${service.name}</h1>
-                    <p>${service.description}</p>
+                    <a class="back-link" href="index.html#services">${ui("detailBackHome")}</a>
+                    <span class="section-label">${serviceCategory}</span>
+                    <h1>${serviceTitle}</h1>
+                    <p>${serviceDescription}</p>
                 </div>
             </div>
         </section>
@@ -1098,28 +1168,28 @@ function renderServiceDetailsPage() {
                     لە داهاتوودا دەتوانرێت slideshow، 360 media، یان gallery filter بۆی زیاد بکرێت.
                 -->
                 <article class="detail-card reveal">
-                    <img src="${service.image}" alt="${service.name}" width="1280" height="720">
+                    <img src="${service.image}" alt="${serviceTitle}" width="1280" height="720">
 
                     <div class="detail-section">
-                        <h2>دەربارەی خزمەتگوزارییەکە</h2>
-                        <p>${service.longDescription}</p>
+                        <h2>${ui("detailAboutService")}</h2>
+                        <p>${serviceLongDescription}</p>
                     </div>
 
                     <div class="detail-section">
-                        <h2>گەلەریی بچووک</h2>
+                        <h2>${ui("detailSmallGallery")}</h2>
                         <div class="detail-gallery">
                             ${buildDetailGalleryMarkup(service)}
                         </div>
                     </div>
 
                     <div class="detail-section">
-                        <h2>ڤیدیۆ</h2>
-                        ${buildOptionalEmbedMarkup(service.videoUrl, `ڤیدیۆی ${service.name}`, "ڤیدیۆ بە زووی زیاد دەکرێت")}
+                        <h2>${ui("detailVideo")}</h2>
+                        ${buildVideoPreviewMarkup(service.videoUrl, service.videoThumbnail || service.image, `${serviceTitle} - ${ui("detailVideo")}`, ui("detailVideoPlaceholder"))}
                     </div>
 
                     <div class="detail-section">
-                        <h2>نەخشە</h2>
-                        ${buildOptionalEmbedMarkup(service.mapUrl, `شوێنی ${service.name} لەسەر نەخشە`, "شوێنی ورد بە زووی زیاد دەکرێت")}
+                        <h2>${ui("detailMap")}</h2>
+                        ${buildOptionalEmbedMarkup(service.mapUrl, `${serviceTitle} - ${ui("detailMap")}`, ui("detailMapPlaceholder"))}
                     </div>
                 </article>
 
@@ -1130,29 +1200,33 @@ function renderServiceDetailsPage() {
                 -->
                 <aside class="detail-card reveal">
                     <div class="detail-section">
-                        <h2>زانیاریی سەرەکی</h2>
+                        <h2>${ui("detailMainInfo")}</h2>
                         <ul class="detail-meta">
                             <li>
-                                <strong>نرخ</strong>
-                                <span>${service.price}</span>
+                                <strong>${ui("servicePriceLabel")}</strong>
+                                <span>${servicePrice}</span>
                             </li>
                             <li>
-                                <strong>کاتی کارکردن</strong>
-                                <span>${service.workingHours}</span>
+                                <strong>${ui("detailHoursLabel")}</strong>
+                                <span>${serviceWorkingHours}</span>
                             </li>
                             <li>
-                                <strong>شوێن</strong>
-                                <span>${service.locationText}</span>
+                                <strong>${ui("detailLocationLabel")}</strong>
+                                ${
+                                    service.locationLink
+                                        ? `<a href="${service.locationLink}" target="_blank" rel="noopener" class="detail-location-link">${serviceLocation} ↗</a>`
+                                        : `<span>${serviceLocation}</span>`
+                                }
                             </li>
                             <li>
-                                <strong>ژمارەی پەیوەندی</strong>
+                                <strong>${ui("detailPhoneLabel")}</strong>
                                 <a href="tel:${phoneLink}" dir="ltr">${service.phone}</a>
                             </li>
                         </ul>
                         ${
                             whatsappUrl
-                                ? `<a class="button button-primary full-width" href="${whatsappUrl}" target="_blank" rel="noopener">رزێرڤ لە WhatsApp</a>`
-                                : "<p>ژمارەی WhatsApp ئامادە نییە.</p>"
+                                ? `<a class="button button-primary full-width" href="${whatsappUrl}" target="_blank" rel="noopener">${ui("serviceWhatsappButton")}</a>`
+                                : `<p>${ui("detailWhatsappMissing")}</p>`
                         }
                     </div>
 
@@ -1163,7 +1237,7 @@ function renderServiceDetailsPage() {
                         لە داهاتوودا دەتوانرێت هەمان بنەما بۆ Google Sheet یان admin dashboard فراوان بکرێتەوە، بەڵام ئێستا تەنها WhatsApp بەکاردێت.
                     -->
                     <div class="detail-section">
-                        <h2>فۆرمی رزێرڤ</h2>
+                        <h2>${ui("detailBookingForm")}</h2>
                         <form class="booking-form" id="serviceBookingForm">
                             <!--
                                 ئەم خانانە زانیاریی سەرەکیی داواکارییەکە کۆدەکەنەوە.
@@ -1172,63 +1246,63 @@ function renderServiceDetailsPage() {
                                 لە داهاتوودا دەتوانرێت هەڵبژاردەی ژوور، جۆری خزمەتگوزاریی لاوەکی، یان کاتی گونجاوەکان بۆ هەڵبژاردن زیاد بکرێت.
                             -->
                             <div class="form-group">
-                                <label for="fullName">ناوی تەواو</label>
+                                <label for="fullName">${ui("detailFormFullName")}</label>
                                 <input id="fullName" name="fullName" type="text" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="phone">ژمارەی مۆبایل</label>
+                                <label for="phone">${ui("detailFormPhone")}</label>
                                 <input id="phone" name="phone" type="tel" inputmode="tel" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="visitDate">بەرواری سەردان</label>
+                                <label for="visitDate">${ui("detailFormVisitDate")}</label>
                                 <input id="visitDate" name="visitDate" type="date" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="visitTime">کاتی سەردان</label>
+                                <label for="visitTime">${ui("detailFormVisitTime")}</label>
                                 <input id="visitTime" name="visitTime" type="time">
                             </div>
 
                             <div class="form-group">
-                                <label for="guestsCount">ژمارەی کەسەکان</label>
+                                <label for="guestsCount">${ui("detailFormGuestsCount")}</label>
                                 <input id="guestsCount" name="guestsCount" type="number" min="1" step="1">
                             </div>
 
                             <div class="form-group">
-                                <label for="note">تێبینی</label>
-                                <textarea id="note" name="note" rows="4" placeholder="ئەگەر تێبینییەکی تایبەتت هەیە لێرە بینووسە."></textarea>
+                                <label for="note">${ui("detailFormNote")}</label>
+                                <textarea id="note" name="note" rows="4" placeholder="${ui("detailFormNotePlaceholder")}"></textarea>
                             </div>
 
                             <button class="button button-primary full-width" type="submit">
-                                ناردنی داواکاری بۆ WhatsApp
+                                ${ui("detailFormSubmit")}
                             </button>
                             <p class="form-status" id="bookingFormStatus" aria-live="polite"></p>
                         </form>
                     </div>
 
                     <div class="detail-section">
-                        <h2>زانیاریی خاوەن</h2>
+                        <h2>${ui("detailOwnerInfo")}</h2>
                         <ul class="detail-meta">
                             <li>
-                                <strong>ناوی خاوەن</strong>
-                                <span>${service.ownerName}</span>
+                                <strong>${ui("detailOwnerNameLabel")}</strong>
+                                <span>${serviceOwnerName}</span>
                             </li>
                             <li>
-                                <strong>ئەرک</strong>
-                                <span>${service.ownerRole}</span>
+                                <strong>${ui("detailOwnerRoleLabel")}</strong>
+                                <span>${serviceOwnerRole}</span>
                             </li>
                         </ul>
                     </div>
 
                     <div class="detail-section">
-                        <h2>تایبەتمەندییەکان</h2>
+                        <h2>${ui("detailFeatures")}</h2>
                         ${buildDetailListMarkup(service.features)}
                     </div>
 
                     <div class="detail-section">
-                        <h2>یاسا و ڕێنمایی</h2>
+                        <h2>${ui("detailRules")}</h2>
                         ${buildDetailListMarkup(service.rules)}
                     </div>
                 </aside>
@@ -1244,27 +1318,34 @@ function renderServiceDetailsPage() {
     لە داهاتوودا دەتوانرێت پشکنینی وردتر، Google Sheet یان admin dashboard زیاد بکرێت، بەڵام ئێستا ناردن تەنها بۆ WhatsApp ـە.
 */
 function setupServiceBookingForm() {
-    const bookingForm = document.getElementById("serviceBookingForm");
-    const statusElement = document.getElementById("bookingFormStatus");
+    const detailsRoot = document.getElementById("serviceDetailsRoot");
 
-    if (!bookingForm) {
+    if (!detailsRoot || detailsRoot.dataset.bookingBound) {
         return;
     }
+    detailsRoot.dataset.bookingBound = "true";
 
-    bookingForm.addEventListener("submit", (event) => {
+    detailsRoot.addEventListener("submit", (event) => {
+        const bookingForm = event.target.closest("#serviceBookingForm");
+
+        if (!bookingForm) {
+            return;
+        }
+
         event.preventDefault();
+        const statusElement = document.getElementById("bookingFormStatus");
 
         const params = new URLSearchParams(window.location.search);
         const serviceId = params.get("id") || "";
         const service = getServiceById(serviceId);
 
         if (!service) {
-            setBookingFormStatus(statusElement, "ئەم خزمەتگوزارییە نەدۆزرایەوە.", "is-error");
+            setBookingFormStatus(statusElement, ui("detailStatusNotFound"), "is-error");
             return;
         }
 
         if (!bookingForm.reportValidity()) {
-            setBookingFormStatus(statusElement, "تکایە هەموو خانە پێویستەکان پڕ بکە.", "is-error");
+            setBookingFormStatus(statusElement, ui("detailStatusRequired"), "is-error");
             return;
         }
 
@@ -1284,20 +1365,20 @@ function setupServiceBookingForm() {
             لە داهاتوودا دەتوانرێت پشکنینی زیاتری جۆری ژمارە یان سنووری بەروار زیاد بکرێت.
         */
         if (!bookingData.fullName || !bookingData.phone || !bookingData.visitDate) {
-            setBookingFormStatus(statusElement, "تکایە هەموو خانە پێویستەکان پڕ بکە.", "is-error");
+            setBookingFormStatus(statusElement, ui("detailStatusRequired"), "is-error");
             return;
         }
 
         const bookingMessage = buildServiceBookingMessage(service, bookingData);
-        const whatsappUrl = createWhatsAppBookingUrl(service.name, service.whatsapp || "", bookingMessage);
+        const whatsappUrl = createWhatsAppBookingUrl(t(service.name), service.whatsapp || "", bookingMessage);
 
         if (!whatsappUrl) {
-            setBookingFormStatus(statusElement, "ژمارەی WhatsApp ی ئەم خزمەتگوزارییە ئامادە نییە.", "is-error");
+            setBookingFormStatus(statusElement, ui("detailWhatsappMissing"), "is-error");
             return;
         }
 
         window.open(whatsappUrl, "_blank", "noopener");
-        setBookingFormStatus(statusElement, "WhatsApp بۆ خاوەنی خزمەتگوزاری کرایەوە.", "is-success");
+        setBookingFormStatus(statusElement, ui("detailStatusSuccess"), "is-success");
     });
 }
 
@@ -1322,8 +1403,13 @@ function updateCurrentYear() {
     لە داهاتوودا دەتوانرێت init function ـەکان بۆ module ـی جیاوازتر دابەش بکرێن.
 */
 document.addEventListener("DOMContentLoaded", () => {
+    applyLanguageToDocument();
+    applyTranslationsToMarkedElements();
+
     renderServiceCards();
     renderServiceDetailsPage();
+
+    setupLanguageSwitch();
     setupServiceActions();
     setupServiceBookingForm();
     setupSmoothScrolling();

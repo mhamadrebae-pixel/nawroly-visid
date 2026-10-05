@@ -105,8 +105,8 @@ button {
 .header-inner {
     display: flex;
     flex-direction: column;
-    gap: 0.9rem;
-    padding: 0.9rem 0;
+    gap: 0.85rem;
+    padding: 0.82rem 0;
 }
 
 .brand {
@@ -152,15 +152,25 @@ button {
 
 .main-nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+    overflow-x: auto;
+    padding-bottom: 0.15rem;
+    scrollbar-width: none;
 }
 
 .main-nav a {
-    padding: 0.55rem 0.85rem;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-size: 0.86rem;
+    padding: 0.5rem 0.75rem;
     border-radius: 999px;
     color: var(--color-text-soft);
     transition: background-color var(--transition), color var(--transition), transform var(--transition);
+}
+
+.main-nav::-webkit-scrollbar {
+    display: none;
 }
 
 .main-nav a:hover,
@@ -168,6 +178,78 @@ button {
     background: rgba(15, 123, 116, 0.10);
     color: var(--color-primary-dark);
     transform: translateY(-1px);
+}
+
+/*
+    لە مۆبایلدا navigation دەبێتە horizontal scroll بۆ ئەوەی header قەرەباڵغ نەبێت و هەموو بەشەکان بە ئاسانی ببینرێن.
+    switch ـی زمان هەروا بچووک و پاک دەمێنێتەوە بۆ ئەوەی لەگەڵ brand و navigation هاوسەنگ بێت.
+    ئەم CSS ـە تەنها دیزاین دەگۆڕێت و هیچ کاریگەرییەکی لەسەر logic ـی زمان یان JavaScript نییە.
+*/
+.header-tools {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    align-items: stretch;
+}
+
+.language-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    width: fit-content;
+    max-width: 100%;
+    padding: 0.25rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(15, 123, 116, 0.14);
+    box-shadow: 0 10px 24px rgba(10, 56, 55, 0.08);
+    backdrop-filter: blur(14px);
+    overflow-x: auto;
+    scrollbar-width: none;
+    white-space: nowrap;
+    align-self: flex-start;
+}
+
+.language-switch::-webkit-scrollbar {
+    display: none;
+}
+
+html[dir="ltr"] .language-switch {
+    align-self: flex-start;
+}
+
+html[dir="rtl"] .language-switch {
+    align-self: flex-end;
+}
+
+.language-button {
+    border: 0;
+    border-radius: 999px;
+    padding: 0.45rem 0.75rem;
+    background: transparent;
+    color: var(--color-text-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background-color var(--transition),
+        color var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+}
+
+.language-button:hover,
+.language-button:focus-visible {
+    color: var(--color-primary-dark);
+    background: rgba(15, 123, 116, 0.08);
+    transform: translateY(-1px);
+}
+
+.language-button.is-active {
+    color: #ffffff;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    box-shadow: 0 8px 18px rgba(15, 123, 116, 0.22);
 }
 
 /*
@@ -371,51 +453,99 @@ button {
     gap: 1rem;
 }
 
+/*
+    ئەم hover effect ـە سەرنجی بەکارهێنەر بۆ card ـەکە زیاتر دەکێشێت و هەستێکی زێندووتر بە خزمەتگوزارییە گەشتیارییەکان دەدات.
+    هەروەها box-shadow و movement ـی سووک وا دەکات card ـەکان مۆدێرنتر و پڕۆفیشناڵتر دەرکەون.
+*/
 .service-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: white;
+    border-radius: 22px;
     overflow: hidden;
-    background: var(--color-surface-strong);
-    border-radius: var(--radius-md);
-    border: 1px solid var(--color-border);
-    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(15, 123, 116, 0.08);
+    box-shadow: 0 14px 32px rgba(10, 56, 55, 0.12);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 22px 48px rgba(10, 56, 55, 0.18);
 }
 
 .service-media {
-    aspect-ratio: 16 / 10;
+    position: relative;
     overflow: hidden;
+    height: 200px;
     background: #dfeee9;
 }
 
-.service-media img {
+/*
+    بەرزی وێنەکە بە شێوەیەکی جێگیر دیاری کراوە بۆ ئەوەی هەموو card ـەکان layout ـێکی پاک و هاوشێوەیان هەبێت.
+    ئەم شێوازە بە تایبەتی بۆ خزمەتگوزارییە گەشتیارییەکان گرنگە چونکە وێنە سەرەتا سەرنج ڕادەکێشێت.
+*/
+.service-media img,
+.service-image {
     width: 100%;
-    height: 100%;
+    height: 200px;
     object-fit: cover;
     transform: scale(1.01);
+    transition: transform 0.35s ease;
 }
 
-.service-body {
+.service-card:hover .service-media img,
+.service-card:hover .service-image {
+    transform: scale(1.06);
+}
+
+.service-body,
+.service-content {
     display: grid;
-    gap: 1rem;
-    padding: 1.4rem;
+    gap: 0.9rem;
+    padding: 1rem;
+    flex: 1;
 }
 
-.service-badge {
+/*
+    ئەم badge ـە یارمەتی دەدات جۆری خزمەتگوزارییەکە زوو بناسرێت و card ـەکە لە یەکەم بینینەوە ڕوونتر بێت.
+    شوێنی سەرەوەی وێنەکە هەڵبژێردراوە بۆ ئەوەی category بە خێرایی لە دیدی بەکارهێنەر بکەوێت.
+*/
+.service-badge,
+.service-category {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 1;
     width: fit-content;
-    padding: 0.35rem 0.7rem;
+    padding: 0.35rem 0.75rem;
     border-radius: 999px;
-    background: rgba(92, 182, 196, 0.14);
-    color: var(--color-primary-dark);
-    font-size: 0.82rem;
+    background: linear-gradient(
+        135deg,
+        var(--color-primary),
+        var(--color-secondary)
+    );
+    color: white;
+    font-size: 0.75rem;
     font-weight: 700;
+    box-shadow: 0 10px 22px rgba(15, 123, 116, 0.22);
 }
 
-.service-body h3 {
+.service-body h3,
+.service-title {
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+    font-weight: 800;
+    line-height: 1.4;
 }
 
-.service-body p {
+.service-body p,
+.service-description {
     margin: 0;
     color: var(--color-text-soft);
+    font-size: 0.9rem;
+    line-height: 1.75;
 }
 
 .service-meta {
@@ -431,17 +561,25 @@ button {
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-    padding-bottom: 0.7rem;
-    border-bottom: 1px dashed rgba(15, 123, 116, 0.16);
+    flex-wrap: wrap;
+    padding: 0.75rem 0.85rem;
+    border: 1px solid rgba(15, 123, 116, 0.10);
+    border-radius: 16px;
+    background: rgba(15, 123, 116, 0.04);
 }
 
 .service-meta li:last-child {
-    padding-bottom: 0;
-    border-bottom: 0;
+    padding-bottom: 0.75rem;
 }
 
 .service-meta strong {
     color: var(--color-text);
+}
+
+.service-meta span,
+.service-meta a {
+    color: var(--color-primary-dark);
+    font-weight: 600;
 }
 
 .service-action {
@@ -452,6 +590,12 @@ button {
     background: rgba(15, 123, 116, 0.08);
     color: var(--color-primary-dark);
     border: 1px solid rgba(15, 123, 116, 0.14);
+}
+
+.service-body .button-primary,
+.service-whatsapp {
+    margin-top: 0.7rem;
+    width: 100%;
 }
 
 .noscript-note {
@@ -565,9 +709,22 @@ button {
     color: var(--color-text-soft);
 }
 
-.detail-meta a {
+.detail-meta a[href^="tel:"] {
     direction: ltr;
     unicode-bidi: isolate;
+}
+
+.detail-location-link {
+    color: var(--color-primary-dark) !important;
+    text-decoration: underline;
+    text-decoration-color: rgba(15, 123, 116, 0.4);
+    text-underline-offset: 0.25rem;
+    font-weight: 600;
+    transition: color var(--transition);
+}
+
+.detail-location-link:hover {
+    color: var(--color-primary) !important;
 }
 
 .detail-gallery {
@@ -768,6 +925,40 @@ button {
     width: 100%;
     min-height: 22rem;
     border: 0;
+}
+
+/*
+    ئەم style ـانە بۆ preview ی ڤیدیۆی Facebook دانراون.
+    ڤیدیۆکە لە خۆی Facebook دەکرێتەوە و iframe ی قورس لە ناو site بەکارناهێندرێت.
+    ئەم شێوازە site ـەکە خێرا دەمێنێتەوە و لە مۆبایلدا هێواشبوون و قورس‌بوونی زیاد ڕوونادات.
+*/
+.video-preview {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.video-preview img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+
+.video-play-button {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: linear-gradient(
+        135deg,
+        var(--color-primary),
+        var(--color-secondary)
+    );
+    color: white;
+    padding: 0.55rem 0.85rem;
+    border-radius: 999px;
+    font-weight: bold;
+    box-shadow: 0 12px 24px rgba(10, 56, 55, 0.22);
 }
 
 /*

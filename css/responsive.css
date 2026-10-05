@@ -61,8 +61,32 @@
         align-items: center;
     }
 
+    /*
+        ئەم breakpoint ـە navigation ی مۆبایل لە scrollable bar ـەکە دەگەڕێنێتەوە بۆ شێوازی ئاسایی بۆ ئەوەی header لە tablet و زیاتر پاکتر بنوێت.
+        switch ـی زمان هەروا بچووک و ڕێکخراو دەمێنێتەوە و شوێنی خۆی لەگەڵ ئاراستەی زمان هاودەخات.
+        ئەم گۆڕانکارییانە تەنها دیزاین دەگۆڕن و هیچ کاریگەرییەک لەسەر logic ـی زمان نییە.
+    */
     .main-nav {
+        flex-wrap: wrap;
+        overflow-x: visible;
+        padding-bottom: 0;
         justify-content: flex-end;
+    }
+
+    .header-tools {
+        align-items: flex-end;
+    }
+
+    html[dir="ltr"] .header-tools {
+        align-items: flex-end;
+    }
+
+    html[dir="rtl"] .header-tools {
+        align-items: flex-start;
+    }
+
+    .language-switch {
+        align-self: auto;
     }
 
     .about-layout,
@@ -98,6 +122,16 @@
 @media (min-width: 1024px) {
     .section {
         padding: 5.5rem 0;
+    }
+
+    /*
+        لە desktop ـدا header-tools دەچێتە ڕیزی ئاسۆیی بۆ ئەوەی switch ـی زمان بچووک و پڕۆفیشناڵ لە تەنیشت navigation دەرکەوێت.
+        ئەم بەشەش هەر تەنها بۆ دیزاینی header ـە و کاری لەسەر هەڵسوکەوتی logic ی زمان نییە.
+    */
+    .header-tools {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.9rem;
     }
 
     .hero-section {
