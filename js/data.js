@@ -658,3 +658,60 @@ const services = [
     لە داهاتوودا دەتوانرێت module system ی ڕاستەقینە، bundler، یان API layer بەکاربهێندرێت.
 */
 window.services = services;
+
+/*
+    ===================================================================
+    پلانی داهاتوو (خاڵی 5): شوێنە گەشتیارییە نزیکەکانی نەوڕۆڵی و دەڤەری هەڵەبجە
+    ئەم داتایە بە تەواوی ئامادە کراوە بۆ ئەوەی لە قۆناغی داهاتوودا بە ئاسانی
+    بەشێکی گەشتیاریی سەربەخۆی لە وێبسایتەکە بۆ چالاک بکرێت.
+    ===================================================================
+*/
+const nearbyAttractions = [
+    {
+        id: "zalm",
+        name: localize("تاڤگەی زەڵم و هەورامان", "شلال زلم وهورامان", "Zalm Waterfall & Hawraman"),
+        description: localize(
+            "سەرچاوەیەکی ئاوی سارد، سروشتێکی شاخاویی دەوڵەمەند و هەوایەکی فێنک لە دەڤەری هەورامان.",
+            "ينبوع مياه عذبة باردة وطبيعة جبلية خلابة وأجواء عليلة في منطقة هورامان.",
+            "A cold natural spring, lush mountain scenery, and crisp fresh air in the Hawraman region."
+        ),
+        distance: localize("نزیکەی 25 خولەک لە نەوڕۆڵی", "حوالي 25 دقيقة من نورولي", "Approx. 25 mins from Nawroli"),
+        image: "images/nature.jpg"
+    },
+    {
+        id: "ahmad-awa",
+        name: localize("هاوینەهەواری ئەحمەدئاوا", "مصيف أحمد آوا", "Ahmad Awa Resort"),
+        description: localize(
+            "تاڤگەیەکی بەناوبانگ و چەمێکی خۆش لە نێوان چیا بەرزەکاندا بە شوێنی دانیشتنی تایبەت.",
+            "شلال شهير ومجرى مائي رائع بين الجبال الشاهقة مع جلسات سياحية مميزة.",
+            "A renowned waterfall and lively mountain stream set among steep dramatic valleys."
+        ),
+        distance: localize("نزیکەی 30 خولەک لە نەوڕۆڵی", "حوالي 30 دقيقة من نورولي", "Approx. 30 mins from Nawroli"),
+        image: "images/landscape.jpg"
+    },
+    {
+        id: "halabja-monument",
+        name: localize("مۆنۆمێنتی شەهیدانی هەڵەبجە", "نصب شهداء حلبجة", "Halabja Martyrs Monument"),
+        description: localize(
+            "سەردانێکی کولتووری و مێژوویی بۆ ناسینی ناسنامە و مێژووی شارە ئازیز و میواندۆستەکە.",
+            "زيارة ثقافية وتاريخية للتعرف على هوية وتاريخ المدينة الصامدة والمضيافة.",
+            "A cultural and historic landmark honoring the heritage and people of Halabja."
+        ),
+        distance: localize("نزیکەی 15 خولەک لە نەوڕۆڵی", "حوالي 15 دقيقة من نورولي", "Approx. 15 mins from Nawroli"),
+        image: "images/hero.jpg"
+    },
+    {
+        id: "sirwan-darbandikhan",
+        name: localize("ڕووباری سیروان و بەنداوی دەربەندیخان", "نهر سيروان وسد دربنديخان", "Sirwan River & Darbandikhan Lake"),
+        description: localize(
+            "دیمەنی فراوانی ئاو و شاخ و ڕوانگەی کەناراو لەسەر ڕێگای گەیشتن بە ناوچەکە.",
+            "إطلالات مائية وجبلية واسعة على مسار الطريق المؤدي إلى المنطقة.",
+            "Expansive lake and river vistas framed by rugged mountains on the route to Nawroli."
+        ),
+        distance: localize("نزیکەی 20 خولەک لە نەوڕۆڵی", "حوالي 20 دقيقة من نورولي", "Approx. 20 mins from Nawroli"),
+        image: "images/nature.jpg"
+    }
+];
+
+window.nearbyAttractions = nearbyAttractions;
+

@@ -953,6 +953,110 @@ button {
     color: var(--color-text);
 }
 
+/*
+    بەشی سەلامەتی و ڕێنماییەکانی کەناراو و مەلەکردن.
+    ئەم بەشە متمانەی خێزان و گەشتیار بەهێز دەکات و کلتووری گەشتیاریی سەلامەت نیشان دەدات.
+*/
+.safety-section {
+    position: relative;
+    background: linear-gradient(180deg, rgba(244, 251, 248, 0.4) 0%, rgba(230, 246, 243, 0.6) 100%);
+    border-top: 1px solid rgba(15, 123, 116, 0.08);
+    border-bottom: 1px solid rgba(15, 123, 116, 0.08);
+}
+
+.safety-label {
+    background: rgba(46, 196, 182, 0.15);
+    color: var(--color-primary-dark);
+}
+
+.safety-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.safety-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding: 1.6rem 1.4rem;
+    background: rgba(255, 255, 255, 0.90);
+    border: 1px solid rgba(15, 123, 116, 0.12);
+    border-top: 3px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 24px rgba(10, 56, 55, 0.05);
+    backdrop-filter: blur(10px);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.safety-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 36px rgba(15, 123, 116, 0.12);
+    border-top-color: var(--color-secondary);
+}
+
+.safety-badge {
+    display: inline-grid;
+    place-items: center;
+    inline-size: 3.2rem;
+    block-size: 3.2rem;
+    border-radius: 50%;
+    background: rgba(15, 123, 116, 0.08);
+    font-size: 1.55rem;
+    border: 1px solid rgba(15, 123, 116, 0.15);
+}
+
+.safety-card h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--color-primary-dark);
+}
+
+.safety-card p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--color-text-soft);
+}
+
+/* Service Details Safety Badge */
+.service-safety-badge {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-top: 1.2rem;
+    padding: 0.95rem 1.15rem;
+    background: rgba(46, 196, 182, 0.10);
+    border: 1px solid rgba(15, 123, 116, 0.18);
+    border-radius: var(--radius-md);
+}
+
+.service-safety-badge .safety-badge-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    line-height: 1;
+}
+
+.service-safety-badge .safety-badge-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.service-safety-badge .safety-badge-content strong {
+    font-size: 0.92rem;
+    color: var(--color-primary-dark);
+}
+
+.service-safety-badge .safety-badge-content p {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--color-text-soft);
+    margin: 0;
+}
+
 .map-actions {
     display: flex;
     justify-content: flex-start;

@@ -40,6 +40,7 @@ const translations = {
         navServices: "خزمەتگوزارییەکان",
         navWhyVisit: "بۆچی نەوڕۆڵی",
         navGallery: "گەلەری",
+        navSafety: "سەلامەتی",
         navMap: "نەخشە",
         navContact: "پەیوەندی",
         heroKicker: "هەڵەبجە • هەرێمی کوردستان • عێراق",
@@ -80,6 +81,19 @@ const translations = {
         galleryNatureTitle: "شاخ و ئاو و سروشتی ئارام",
         galleryLandscapeTitle: "سەوزایی و ڕێگاکانی ناوچەکە",
         galleryActivityTitle: "کۆبوونەوەی خێزان و گەشتیاران",
+        safetyLabel: "سەلامەتی و ڕێنمایی",
+        safetyTitle: "ڕێنماییەکانی سەلامەتی بۆ گەشتێکی ئارام و پارێزراو",
+        safetyText: "سەلامەتی تۆ و خێزانەکەت لە پێشینەی کارەکانە. تکایە لە کاتی چێژوەرگرتن لە سروشت و ڕووبار، پابەندی ئەم ڕێنماییانە بن.",
+        safetyCardLifeJacketTitle: "هێلەکی مەلەکردن (Life Jacket)",
+        safetyCardLifeJacketText: "بەکارهێنانی هێلەکی ڕزگاربوون لە کاتی سواربوونی بەلەم و جێتسکی یان مەلەکردندا پێویستە، بە تایبەتی بۆ منداڵان و ئەوانەی شارەزایی تەواویان لە مەلەدا نییە.",
+        safetyCardChildrenTitle: "چاودێری منداڵان لە کەناراو",
+        safetyCardChildrenText: "تکایە هەمیشە چاودێری منداڵەکانتان بکەن لە نزیک قەراغی ئاو و شوێنە قووڵەکان، و شوێنی تایبەت و هێمن بە پشووی خێزانی هەڵبژێرن.",
+        safetyCardBoatingTitle: "لێخوڕینی سەلامەتی بەلەم و جێتسکی",
+        safetyCardBoatingText: "لێخوڕینی جێتسکی و بەلەم بە خێرایی لەبار و دوور لە کەپرەکان و شوێنی دانیشتن و مەلەی خێزانەکان ئەنجام دەدرێت بۆ پاراستنی هێمنی هەموان.",
+        safetyCardCleanlinessTitle: "پاراستنی ژینگە و پاکوخاوێنی ئاو",
+        safetyCardCleanlinessText: "ئاوی ڕووبار و سروشتی نەوڕۆڵی سەرمایەیەکی گشتییە، تکایە پاشماوە و پلاستیک فڕێ مەدەنە ناو ئاو و سەتڵی تایبەتی زبڵ بەکاربهێنن.",
+        serviceSafetyBadgeTitle: "ڕێنمایی سەلامەتی گەشتیار:",
+        serviceSafetyBadgeText: "تکایە لە کاتی چالاکییە ئاوییەکاندا هێلەکی مەلە بەکاربهێنن و چاودێری منداڵان بکەن.",
         mapLabel: "نەخشە",
         mapTitle: "شوێنی نەوڕۆڵی لەسەر نەخشە",
         mapText: "ئەم iframe ـە وەک شوێن-دانەرێکی سەرەتایی بەکارهاتووە و دەتوانرێت دواتر بە لینک یان embed ـی وردتر بگۆڕدرێت.",
@@ -176,6 +190,7 @@ const translations = {
         navServices: "الخدمات",
         navWhyVisit: "لماذا نورولي",
         navGallery: "المعرض",
+        navSafety: "السلامة",
         navMap: "الخريطة",
         navContact: "اتصال",
         heroKicker: "حلبجة • إقليم كردستان • العراق",
@@ -216,6 +231,19 @@ const translations = {
         galleryNatureTitle: "الجبال والماء والطبيعة الهادئة",
         galleryLandscapeTitle: "الخضرة وطرق المنطقة",
         galleryActivityTitle: "تجمع العائلات والزوار",
+        safetyLabel: "السلامة والإرشادات",
+        safetyTitle: "إرشادات السلامة لرحلة هادئة وآمنة",
+        safetyText: "سلامتك وسلامة عائلتك هي الأولوية الأولى. يرجى الالتزام بهذه الإرشادات أثناء الاستمتاع بالنهر والطبيعة.",
+        safetyCardLifeJacketTitle: "سترات النجاة (Life Jacket)",
+        safetyCardLifeJacketText: "ارتداء سترة النجاة ضروري عند ركوب القوارب والجت سكي أو السباحة، خاصة للأطفال ومن لا يجيدون السباحة جيداً.",
+        safetyCardChildrenTitle: "مراقبة الأطفال عند ضفاف النهر",
+        safetyCardChildrenText: "يرجى مراقبة الأطفال دائماً بالقرب من حافة النهر والمناطق العميقة، واختيار الأماكن الهادئة المخصصة للعائلات.",
+        safetyCardBoatingTitle: "القيادة الآمنة للقوارب والجت سكي",
+        safetyCardBoatingText: "يجب قيادة القوارب والجت سكي بسرعة معتدلة وبعيداً عن الكبائن وأماكن استراحة وسباحة العائلات للحفاظ على سلامة الجميع.",
+        safetyCardCleanlinessTitle: "حماية البيئة ونظافة النهر",
+        safetyCardCleanlinessText: "مياه النهر وطبيعة نورولي ثروة عامة، يرجى عدم إلقاء المخلفات في النهر واستخدام حاويات النفايات المخصصة.",
+        serviceSafetyBadgeTitle: "إرشادات السلامة:",
+        serviceSafetyBadgeText: "يرجى استخدام سترة النجاة أثناء الأنشطة المائية ومراقبة الأطفال بحرص.",
         mapLabel: "الخريطة",
         mapTitle: "موقع نورولي على الخريطة",
         mapText: "هذا الإطار يستخدم كعنصر مبدئي ويمكن استبداله لاحقاً برابط أو تضمين أدق.",
@@ -312,6 +340,7 @@ const translations = {
         navServices: "Services",
         navWhyVisit: "Why Nawroli",
         navGallery: "Gallery",
+        navSafety: "Safety",
         navMap: "Map",
         navContact: "Contact",
         heroKicker: "Halabja • Kurdistan Region • Iraq",
@@ -352,6 +381,19 @@ const translations = {
         galleryNatureTitle: "Mountains, water, and peaceful nature",
         galleryLandscapeTitle: "Greenery and local roads",
         galleryActivityTitle: "Families and visitors gathering",
+        safetyLabel: "Safety & Guidelines",
+        safetyTitle: "Safety Guidelines for a Peaceful & Secure Visit",
+        safetyText: "The safety of you and your loved ones is our top priority. Please adhere to these guidelines while enjoying the river and nature.",
+        safetyCardLifeJacketTitle: "Life Jackets (Life Jacket)",
+        safetyCardLifeJacketText: "Wearing life jackets is essential when boating, jet skiing, or swimming, especially for children and non-swimmers.",
+        safetyCardChildrenTitle: "Supervising Children Near Riverbanks",
+        safetyCardChildrenText: "Please keep children closely supervised near the water's edge and deeper waters, and choose calm family-designated resting spots.",
+        safetyCardBoatingTitle: "Safe Watercraft Operation",
+        safetyCardBoatingText: "Boats and jet skis must be operated at safe speeds and kept well away from cabanas, swimming guests, and family areas.",
+        safetyCardCleanlinessTitle: "Eco-Care & River Cleanliness",
+        safetyCardCleanlinessText: "Nawroli's waters and scenery are a natural heritage; please avoid littering in the river and dispose of waste in designated bins.",
+        serviceSafetyBadgeTitle: "Visitor Safety Notice:",
+        serviceSafetyBadgeText: "Please wear life jackets during water activities and keep children supervised.",
         mapLabel: "Map",
         mapTitle: "Nawroli on the map",
         mapText: "This iframe is used as a simple placeholder and can be replaced later with a more accurate link or embed.",
@@ -1294,6 +1336,13 @@ function renderServiceDetailsPage() {
                                 ? `<a class="button button-primary full-width" href="${whatsappUrl}" target="_blank" rel="noopener">${ui("serviceWhatsappButton")}</a>`
                                 : `<p>${ui("detailWhatsappMissing")}</p>`
                         }
+                        <div class="service-safety-badge">
+                            <span class="safety-badge-icon" aria-hidden="true">🦺</span>
+                            <div class="safety-badge-content">
+                                <strong>${ui("serviceSafetyBadgeTitle")}</strong>
+                                <p>${ui("serviceSafetyBadgeText")}</p>
+                            </div>
+                        </div>
                     </div>
 
                     <!--
