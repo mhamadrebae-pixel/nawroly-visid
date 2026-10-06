@@ -103,17 +103,23 @@ button {
 }
 
 .header-inner {
-    display: flex;
-    flex-direction: column;
-    gap: 0.85rem;
-    padding: 0.82rem 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+        "brand lang"
+        "nav   nav";
+    align-items: center;
+    gap: 0.65rem 0.5rem;
+    padding: 0.65rem 0 0.5rem;
 }
 
 .brand {
+    grid-area: brand;
     display: inline-flex;
     align-items: center;
     gap: 0.8rem;
     width: fit-content;
+    justify-self: start;
 }
 
 .brand-mark {
@@ -151,12 +157,14 @@ button {
 }
 
 .main-nav {
+    grid-area: nav;
     display: flex;
     flex-wrap: nowrap;
     gap: 0.45rem;
     overflow-x: auto;
     padding-bottom: 0.15rem;
     scrollbar-width: none;
+    width: 100%;
 }
 
 .main-nav a {
@@ -186,13 +194,11 @@ button {
     ئەم CSS ـە تەنها دیزاین دەگۆڕێت و هیچ کاریگەرییەکی لەسەر logic ـی زمان یان JavaScript نییە.
 */
 .header-tools {
-    display: flex;
-    flex-direction: column;
-    gap: 0.7rem;
-    align-items: stretch;
+    display: contents;
 }
 
 .language-switch {
+    grid-area: lang;
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
@@ -207,19 +213,12 @@ button {
     overflow-x: auto;
     scrollbar-width: none;
     white-space: nowrap;
-    align-self: flex-start;
+    justify-self: end;
+    align-self: center;
 }
 
 .language-switch::-webkit-scrollbar {
     display: none;
-}
-
-html[dir="ltr"] .language-switch {
-    align-self: flex-start;
-}
-
-html[dir="rtl"] .language-switch {
-    align-self: flex-end;
 }
 
 .language-button {
