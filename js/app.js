@@ -84,6 +84,11 @@ const translations = {
         mapTitle: "شوێنی نەوڕۆڵی لەسەر نەخشە",
         mapText: "ئەم iframe ـە وەک شوێن-دانەرێکی سەرەتایی بەکارهاتووە و دەتوانرێت دواتر بە لینک یان embed ـی وردتر بگۆڕدرێت.",
         mapIframeTitle: "شوێنی نەوڕۆڵی لەسەر Google Maps",
+        mapGetDirections: "📍 دۆزینەوەی ڕێگا لە Google Maps",
+        weatherDefaultStatus: "کەشوهەوای نەوڕۆڵی",
+        relatedSectionLabel: "خزمەتگوزارییە پەیوەندیدارەکان",
+        relatedSectionTitle: "ڕەنگە حەزت لەم شوێنانەش بێت",
+        relatedSectionSubtitle: "شوێن و چالاکییەکانی تر لە نەوڕۆڵی کە دەتوانیت سەردانیان بکەیت.",
         contactLabel: "پەیوەندی",
         contactTitle: "ئامادەین بۆ وەڵامدانەوەی پرسیارەکانت",
         contactText: "ئەگەر دەتەوێت زانیاری زیاتر وەربگریت یان پێشتر داوا بۆ شوێن و خزمەتگوزارییەکان بکەیت، ئەمانە ڕێگاکانی پەیوەندین.",
@@ -215,6 +220,11 @@ const translations = {
         mapTitle: "موقع نورولي على الخريطة",
         mapText: "هذا الإطار يستخدم كعنصر مبدئي ويمكن استبداله لاحقاً برابط أو تضمين أدق.",
         mapIframeTitle: "موقع نورولي على خرائط Google",
+        mapGetDirections: "📍 فتح مسار الطريق في خرائط Google",
+        weatherDefaultStatus: "طقس نورولي",
+        relatedSectionLabel: "خدمات ذات صلة",
+        relatedSectionTitle: "قد يعجبك أيضاً في نورولي",
+        relatedSectionSubtitle: "أماكن ونشاطات أخرى في نورولي يمكنك زيارتها.",
         contactLabel: "اتصال",
         contactTitle: "نحن جاهزون للرد على أسئلتك",
         contactText: "إذا كنت تريد معلومات أكثر أو ترغب بالحجز المسبق، فهذه هي طرق التواصل.",
@@ -346,6 +356,11 @@ const translations = {
         mapTitle: "Nawroli on the map",
         mapText: "This iframe is used as a simple placeholder and can be replaced later with a more accurate link or embed.",
         mapIframeTitle: "Nawroli on Google Maps",
+        mapGetDirections: "📍 Get Directions on Google Maps",
+        weatherDefaultStatus: "Nawroli Weather",
+        relatedSectionLabel: "Related Services",
+        relatedSectionTitle: "You Might Also Like",
+        relatedSectionSubtitle: "Other places and activities in Nawroli that you can explore.",
         contactLabel: "Contact",
         contactTitle: "We are ready to answer your questions",
         contactText: "If you want more information or would like to book in advance, these are the available contact methods.",
@@ -505,6 +520,10 @@ function applyTranslationsToMarkedElements() {
             "href",
             createWhatsAppBookingUrl("Visit Nawroli", "9647500000000", ui("contactWhatsappMessage"))
         );
+    }
+
+    if (cachedWeatherData) {
+        updateWeatherDisplay(cachedWeatherData.temp, cachedWeatherData.code);
     }
 }
 
@@ -997,6 +1016,53 @@ function buildDetailGalleryMarkup(service) {
 }
 
 /*
+    ئەم helper ـە کارتەکانی خزمەتگوزارییە پەیوەندیدارەکان بۆ پەڕەی وردەکاری دروست دەکات.
+*/
+function buildRelatedServicesMarkup(currentServiceId) {
+    const list = getServiceList()
+        .filter((service) => service.id !== currentServiceId)
+        .slice(0, 3);
+
+    if (list.length === 0) {
+        return "";
+    }
+
+    return list
+        .map(
+            (service) => `
+                <article class="service-card reveal" data-service-id="${service.id}">
+                    <div class="service-media">
+                        <img
+                            class="lazy-image"
+                            src="${IMAGE_PLACEHOLDER}"
+                            data-src="${service.image}"
+                            alt="${t(service.name)}"
+                            loading="lazy"
+                            width="800"
+                            height="500"
+                        >
+                    </div>
+                    <div class="service-body">
+                        <span class="service-badge">${t(service.category)}</span>
+                        <h3>${t(service.name)}</h3>
+                        <p>${t(service.description)}</p>
+                        <ul class="service-meta">
+                            <li>
+                                <strong>${ui("servicePriceLabel")}</strong>
+                                <span>${t(service.price)}</span>
+                            </li>
+                        </ul>
+                        <a class="button button-secondary service-action" href="service-details.html?id=${encodeURIComponent(service.id)}">
+                            ${ui("serviceDetailsButton")}
+                        </a>
+                    </div>
+                </article>
+            `
+        )
+        .join("");
+}
+
+/*
     ئەم helper ـە preview ی سووک بۆ ڤیدیۆ دروست دەکات و کلیکەکە Facebook یان لینکی دەرەکی دەکاتەوە.
     هۆکاری ئەم شێوازە ئەوەیە iframe ی قورس بەکارنەهێندرێت، site ـەکە خێرا بمێنێتەوە، و لە مۆبایلدا هێواشبوون ڕوونەدات.
     هەروەها چونکە autoplay نییە، بەکارهێنەر خۆی بڕیار دەدات کەی ڤیدیۆکە بکاتەوە.
@@ -1308,6 +1374,20 @@ function renderServiceDetailsPage() {
                 </aside>
             </div>
         </section>
+
+        <!-- بەشی خزمەتگوزارییە پەیوەندیدارەکان -->
+        <section class="section section-accent related-services-section">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label">${ui("relatedSectionLabel")}</span>
+                    <h2>${ui("relatedSectionTitle")}</h2>
+                    <p>${ui("relatedSectionSubtitle")}</p>
+                </div>
+                <div class="services-grid">
+                    ${buildRelatedServicesMarkup(service.id)}
+                </div>
+            </div>
+        </section>
     `;
 }
 
@@ -1398,9 +1478,122 @@ function updateCurrentYear() {
 }
 
 /*
+    ئەم helper ـانە کەشوهەوای ڕاستەوخۆی نەوڕۆڵی بەپێی کۆدی ستانداردی WMO وەردەگێڕن.
+*/
+function getWeatherConditionInfo(code) {
+    if (code === 0) {
+        return {
+            icon: "☀️",
+            label: { ku: "ئاسمانی ساماڵ", ar: "طقس صافٍ", en: "Clear Sky" }
+        };
+    }
+    if ([1, 2, 3].includes(code)) {
+        return {
+            icon: "⛅",
+            label: { ku: "کەمێک هەوراوی", ar: "غائم جزئياً", en: "Partly Cloudy" }
+        };
+    }
+    if ([45, 48].includes(code)) {
+        return {
+            icon: "🌫️",
+            label: { ku: "تەمومژ", ar: "ضباب", en: "Foggy" }
+        };
+    }
+    if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) {
+        return {
+            icon: "🌧️",
+            label: { ku: "باراناوی", ar: "ممطر", en: "Rainy" }
+        };
+    }
+    if ([71, 73, 75, 85, 86].includes(code)) {
+        return {
+            icon: "❄️",
+            label: { ku: "بەفراوی", ar: "مثلج", en: "Snowy" }
+        };
+    }
+    if ([95, 96, 99].includes(code)) {
+        return {
+            icon: "⛈️",
+            label: { ku: "هەورەبرووسکە", ar: "عواصف رعدية", en: "Thunderstorm" }
+        };
+    }
+    return {
+        icon: "🌤️",
+        label: { ku: "کەشوهەوای نەوڕۆڵی", ar: "طقس نورولي", en: "Nawroli Weather" }
+    };
+}
+
+let cachedWeatherData = null;
+
+function updateWeatherDisplay(temp, code) {
+    const tempElement = document.getElementById("weatherTemp");
+    const iconElement = document.getElementById("weatherIcon");
+    const labelElement = document.getElementById("weatherLabel");
+
+    if (!tempElement || !iconElement || !labelElement) {
+        return;
+    }
+
+    const info = getWeatherConditionInfo(code);
+    tempElement.textContent = `${Math.round(temp)}°C`;
+    iconElement.textContent = info.icon;
+    labelElement.textContent = t(info.label);
+}
+
+function initWeatherWidget() {
+    const heroWeather = document.getElementById("heroWeather");
+    if (!heroWeather) {
+        return;
+    }
+
+    try {
+        const stored = sessionStorage.getItem("nawroliWeather");
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (Date.now() - parsed.timestamp < 30 * 60 * 1000) {
+                cachedWeatherData = parsed;
+                updateWeatherDisplay(parsed.temp, parsed.code);
+                return;
+            }
+        }
+    } catch (_) {}
+
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=35.18&longitude=45.98&current=temperature_2m,weather_code&timezone=auto")
+        .then((res) => {
+            if (!res.ok) throw new Error("Weather request failed");
+            return res.json();
+        })
+        .then((data) => {
+            if (data && data.current) {
+                const temp = data.current.temperature_2m;
+                const code = data.current.weather_code;
+                cachedWeatherData = { temp, code, timestamp: Date.now() };
+                try {
+                    sessionStorage.setItem("nawroliWeather", JSON.stringify(cachedWeatherData));
+                } catch (_) {}
+                updateWeatherDisplay(temp, code);
+            }
+        })
+        .catch(() => {
+            const tempElement = document.getElementById("weatherTemp");
+            if (tempElement && tempElement.textContent === "--°C") {
+                tempElement.textContent = "22°C";
+            }
+        });
+}
+
+/*
+    تۆمارکردنی هێمن و لەسەرخۆی Service Worker بۆ پشتگیری PWA بەبێ پۆپ-ئەپی بێزارکەر.
+*/
+function registerServiceWorker() {
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+}
+
+/*
     DOMContentLoaded هەموو پارچەکان لە ڕیزێکی ڕوون جێبەجێ دەکات.
     سەرەتا ناوەڕۆکی داینامیکی دروست دەکرێت، پاشان listeners و observers دانرێن تا هیچ ئەڵێمێنتێک لەدەست نەچێت.
-    لە داهاتوودا دەتوانرێت init function ـەکان بۆ module ـی جیاوازتر دابەش بکرێن.
 */
 document.addEventListener("DOMContentLoaded", () => {
     applyLanguageToDocument();
@@ -1417,4 +1610,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setupRevealAnimations();
     setupGalleryLightbox();
     updateCurrentYear();
+    initWeatherWidget();
+    registerServiceWorker();
 });

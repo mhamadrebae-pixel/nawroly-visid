@@ -28,6 +28,13 @@
         content="گەشتی نەوڕۆڵی - وێبسایتێکی مۆدێرن بۆ ناساندنی شوێنی گەشتیاری نەوڕۆڵی لە هەڵەبجە و خزمەتگوزارییەکانی.">
     <meta name="twitter:image" content="images/hero.jpg">
 
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Visit Nawroli">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="css/style.css">
@@ -91,6 +98,15 @@
                     نەوڕۆڵی بە دیمەنە سروشتییەکان، ڕوانگەی ڕووبار، خانووەکانی ناو ئاو، بەلەم، جێتسکی و کەشوهەوای خۆشەوە
                     ناسراوە.
                 </p>
+
+                <!-- کەشوهەوای ڕاستەوخۆی نەوڕۆڵی -->
+                <div class="hero-weather reveal" id="heroWeather" aria-live="polite">
+                    <span class="weather-icon" id="weatherIcon">⛅</span>
+                    <div class="weather-info">
+                        <span class="weather-temp" id="weatherTemp">--°C</span>
+                        <span class="weather-label" id="weatherLabel" data-i18n="weatherDefaultStatus">کەشوهەوای نەوڕۆڵی</span>
+                    </div>
+                </div>
 
                 <div class="hero-actions">
                     <a class="button button-primary" href="#services" data-scroll-target data-i18n="heroButtonServices">بینینی خزمەتگوزارییەکان</a>
@@ -279,6 +295,14 @@
                     <h2 id="map-title" data-i18n="mapTitle">شوێنی نەوڕۆڵی لەسەر نەخشە</h2>
                     <p data-i18n="mapText">ئەم iframe ـە وەک شوێن-دانەرێکی سەرەتایی بەکارهاتووە و دەتوانرێت دواتر بە لینک یان embed ـی وردتر
                         بگۆڕدرێت.</p>
+                </div>
+
+                <div class="map-actions reveal">
+                    <a class="button button-primary map-directions-button"
+                        href="https://www.google.com/maps/dir/?api=1&destination=35.1221718,45.898197"
+                        target="_blank" rel="noopener" data-i18n="mapGetDirections">
+                        📍 دۆزینەوەی ڕێگا لە Google Maps
+                    </a>
                 </div>
 
                 <div class="map-shell reveal">

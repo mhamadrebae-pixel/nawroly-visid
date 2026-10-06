@@ -335,6 +335,52 @@ html[dir="rtl"] .language-switch {
 }
 
 /*
+    hero weather widget
+*/
+.hero-weather {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    width: fit-content;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: transform var(--transition), background-color var(--transition);
+}
+
+.hero-weather:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.weather-icon {
+    font-size: 1.35rem;
+    line-height: 1;
+}
+
+.weather-info {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.weather-temp {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.02em;
+}
+
+.weather-label {
+    font-size: 0.84rem;
+    color: rgba(245, 255, 252, 0.9);
+}
+
+/*
     button ـەکان بە شێوازی یەکگرتوو دانراون بۆ ئەوەی call to action ـەکان دیار و ئاسان بن.
     primary و secondary جیا کراون بۆ ئەوەی سەرنج بۆ دوگمەی گرنگتر ببرێت.
     لە داهاتوودا دەتوانرێت states ـی زیاتر و component library ی button بۆ بەشەکانی تر زیاد بکرێت.
@@ -906,6 +952,22 @@ html[dir="rtl"] .language-switch {
     padding: 0 1rem 1rem;
     font-weight: 700;
     color: var(--color-text);
+}
+
+.map-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.map-directions-button {
+    font-size: 0.95rem;
+    padding: 0.85rem 1.4rem;
+    box-shadow: 0 12px 24px rgba(15, 123, 116, 0.22);
+}
+
+.related-services-section {
+    border-top: 1px dashed rgba(15, 123, 116, 0.16);
 }
 
 /*

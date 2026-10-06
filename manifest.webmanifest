@@ -1,0 +1,25 @@
+{
+  "name": "گەشتی نەوڕۆڵی – Visit Nawroli",
+  "short_name": "Visit Nawroli",
+  "description": "وێبسایتێکی مۆدێرن بۆ ناساندنی شوێنی گەشتیاری نەوڕۆڵی لە هەڵەبجە و خزمەتگوزارییەکانی",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f4fbf8",
+  "theme_color": "#0f7b74",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
