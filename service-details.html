@@ -4,32 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="وردەکاریی خزمەتگوزارییەکانی نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.">
+    <meta name="description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و هەورامان بۆ گەشتیاران و خێزانەکان.">
     <meta name="author" content="Mhamad Rebar">
     <meta name="theme-color" content="#0f7b74">
-    <title>وردەکاری خزمەتگوزاری – Visit Nawroli</title>
+    <title>وردەکاری شوێن – Visit Halabja</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%230f7b74'/%3E%3Ctext x='50' y='65' font-size='50' font-family='sans-serif' text-anchor='middle' fill='white' font-weight='bold'%3E%D9%86%3C/text%3E%3C/svg%3E">
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%230f7b74'/%3E%3Ctext x='50' y='65' font-size='50' font-family='sans-serif' text-anchor='middle' fill='white' font-weight='bold'%3E%D9%87%D9%80%3C/text%3E%3C/svg%3E">
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="وردەکاری خزمەتگوزاری – Visit Nawroli">
-    <meta property="og:description" content="وردەکاریی خزمەتگوزارییەکانی نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.">
+    <meta property="og:title" content="وردەکاری شوێن – Visit Halabja">
+    <meta property="og:description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و هەورامان بۆ گەشتیاران و خێزانەکان.">
     <meta property="og:image" content="images/hero.jpg">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="وردەکاری خزمەتگوزاری – Visit Nawroli">
-    <meta name="twitter:description" content="وردەکاریی خزمەتگوزارییەکانی نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.">
+    <meta name="twitter:title" content="وردەکاری شوێن – Visit Halabja">
+    <meta property="twitter:description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و هەورامان بۆ گەشتیاران و خێزانەکان.">
     <meta name="twitter:image" content="images/hero.jpg">
 
     <!-- PWA -->
     <link rel="manifest" href="manifest.webmanifest">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="Visit Nawroli">
+    <meta name="apple-mobile-web-app-title" content="Visit Halabja">
     <link rel="apple-touch-icon" href="images/icon-192.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,18 +39,14 @@
 </head>
 
 <body>
-    <!--
-        ئەم header ـە ناسنامەی وێبسایت و ڕێگای گەڕانەوە بۆ سەرەتا دەدات.
-        بوونی گرنگە بۆ ئەوەی میوان لە پەڕەی وردەکاریداش هەست بە یەکگرتوویی وێبەکە بکات و بە ئاسانی بگەڕێتەوە بۆ ماڵپەڕی سەرەکی.
-        لە داهاتوودا دەتوانرێت breadcrumb، ناوبەری زیاتر، یان دوگمەی هاوبەشکردن بۆی زیاد بکرێت.
-    -->
+    <!-- Site Header -->
     <header class="site-header" id="top">
         <div class="container header-inner">
             <a class="brand" href="index.html">
-                <span class="brand-mark">ن</span>
+                <span class="brand-mark">هـ</span>
                 <span class="brand-text">
-                    <strong data-i18n="brandTitle">گەشتی نەوڕۆڵی</strong>
-                    <small data-i18n="brandSubtitle">Visit Nawroli</small>
+                    <strong data-i18n="brandTitle">گەشتی هەڵەبجە</strong>
+                    <small data-i18n="brandSubtitle">Visit Halabja</small>
                 </span>
             </a>
 
@@ -59,11 +55,6 @@
                     <a class="back-link" href="index.html#services" data-i18n="detailBackHome">گەڕانەوە بۆ سەرەتا</a>
                 </nav>
 
-                <!--
-                    ئەم دوگمانە سیستەمی سادەی زمان بە localStorage بەڕێوەدەبەن.
-                    هەر خزمەتگوزارییەک بە هەمان زمانی هەڵبژێردراو نیشان دەدرێت و WhatsApp ـیش بە هەمان زمان نزیک دەبێتەوە، بەبێ قورسکردنی پەڕەکە.
-                    لە داهاتوودا دەتوانرێت ئەم شێوازە بە i18n ی بەهێزتر یان dashboard ی بەڕێوەبردن بگۆڕدرێت.
-                -->
                 <div class="language-switch" aria-label="هەڵبژاردنی زمان" data-i18n-aria-label="languageSwitchAria">
                     <button class="language-button" type="button" data-language="ku">کوردی</button>
                     <button class="language-button" type="button" data-language="ar">عربي</button>
@@ -73,18 +64,12 @@
         </div>
     </header>
 
-    <!--
-        ئەم main ـە شوێنی نیشاندانی هەموو وردەکارییەکانی خزمەتگوزارییەکەیە.
-        هۆکاری بوونی ئەوەیە app.js بتوانێت بە پشتبەستن بە id ـی URL، ناوەڕۆکی گونجاو و فۆرمی رزێرڤی WhatsApp-only لێرە دابنێت بەبێ دروستکردنی پەڕەی جیاواز بۆ هەر خزمەتگوزارییەک.
-        خاوەن لە ڕێگەی ئەم پەڕەیەوە وردەکاریی میوان بە شێوەی ڕاستەوخۆ لە WhatsApp وەردەگرێت و داتا بۆ شوێنێکی تر نانێردرێت.
-        لە داهاتوودا دەتوانرێت skeleton loading، related services، review section، یان پەیوەستبوون بە Google Sheet و admin dashboard بۆی زیاد بکرێت.
-    -->
     <main id="serviceDetailsRoot">
         <section class="section">
             <div class="container">
                 <article class="detail-card reveal">
-                    <h1 data-i18n="detailsLoadingTitle">وردەکاری خزمەتگوزاری بار دەکرێت</h1>
-                    <p data-i18n="detailsLoadingText">تکایە چاوەڕێ بکە تا زانیاریی خزمەتگوزارییەکە لە data.js بخوێندرێتەوە.</p>
+                    <h1 data-i18n="detailsLoadingTitle">وردەکاری شوێن بار دەکرێت</h1>
+                    <p data-i18n="detailsLoadingText">تکایە چاوەڕێ بکە تا زانیاریی شوێنەکە لە data.js بخوێندرێتەوە.</p>
                 </article>
 
                 <noscript>
@@ -94,13 +79,83 @@
         </section>
     </main>
 
-    <!--
-        ئەم lightbox ـە بۆ وێنەکانی گەلەریی ناو پەڕەی وردەکاری بەکاردێت.
-        بوونی ئەوەیە کە بەکارهێنەر بتوانێت وێنەکانی زیاتر بە گەورەیی ببینێت بەبێ جێهێشتنی هەمان پەڕە.
-        لە داهاتوودا دەتوانرێت slideshow، next/prev controls، یان swipe gesture بۆ مۆبایل بۆی زیاد بکرێت.
-    -->
-    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true"
-        aria-labelledby="lightboxTitle">
+    <!-- Quick Booking Modal -->
+    <div class="booking-modal-overlay" id="bookingModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
+        <div class="booking-modal-card">
+            <button class="booking-modal-close" id="bookingModalClose" type="button" aria-label="داخستن">×</button>
+            
+            <div class="booking-modal-header">
+                <span class="booking-modal-badge" id="bookingModalBadge">داواکاری حجز</span>
+                <h3 id="bookingModalTitle" data-i18n="bookingModalTitle">داواکاری حیجزکردنی شوێن</h3>
+                <p class="booking-modal-service-name" id="bookingModalServiceName"></p>
+                <div class="booking-modal-meta">
+                    <span class="booking-modal-town" id="bookingModalTown"></span>
+                    <span class="booking-modal-price" id="bookingModalPrice"></span>
+                </div>
+            </div>
+
+            <form class="booking-modal-form" id="bookingModalForm">
+                <div class="booking-form-grid">
+                    <div class="booking-form-group">
+                        <label for="bookingDateInput" data-i18n="bookingFormDateLabel">📅 بەرواری سەردان / هاتن</label>
+                        <input type="date" id="bookingDateInput" required>
+                    </div>
+                    <div class="booking-form-group">
+                        <label for="bookingDurationInput" data-i18n="bookingFormDurationLabel">⏳ ماوەی مانەوە</label>
+                        <select id="bookingDurationInput">
+                            <option value="1 شەو">١ شەو</option>
+                            <option value="2 شەو">٢ شەو</option>
+                            <option value="3 شەو">٣ شەو</option>
+                            <option value="ڕۆژانە (بێ مانەوە)">ڕۆژانە (بێ مانەوەی شەو)</option>
+                            <option value="زیاتر لە 3 شەو">زیاتر لە ٣ شەو</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="booking-form-grid">
+                    <div class="booking-form-group">
+                        <label for="bookingGuestsInput" data-i18n="bookingFormGuestsLabel">👥 ژمارەی کەسەکان</label>
+                        <select id="bookingGuestsInput">
+                            <option value="خێزان (٢ بۆ ٥ کەس)">خێزان (٢ بۆ ٥ کەس)</option>
+                            <option value="خێزان (٦ بۆ ١٠ کەس)">خێزان (٦ بۆ ١٠ کەس)</option>
+                            <option value="خێزانی گەورە (زیاتر لە ١٠ کەس)">خێزانی گەورە (زیاتر لە ١٠ کەس)</option>
+                            <option value="گروپی گەنجان (٣ بۆ ٨ کەس)">گروپی گەنجان (٣ بۆ ٨ کەس)</option>
+                            <option value="١ بۆ ٢ کەس">١ بۆ ٢ کەس</option>
+                        </select>
+                    </div>
+                    <div class="booking-form-group">
+                        <label for="bookingNameInput" data-i18n="bookingFormNameLabel">👤 ناوی سیانی</label>
+                        <input type="text" id="bookingNameInput" placeholder="ناوی بەڕێزت لێرە بنووسە..." required>
+                    </div>
+                </div>
+
+                <div class="booking-form-group">
+                    <label for="bookingPhoneInput" data-i18n="bookingFormPhoneLabel">📞 ژمارەی مۆبایل یان WhatsApp</label>
+                    <input type="tel" id="bookingPhoneInput" placeholder="0750xxxxxxx" dir="ltr" required>
+                </div>
+
+                <div class="booking-form-group">
+                    <label for="bookingNotesInput" data-i18n="bookingFormNotesLabel">📝 تێبینی یان داواکاری تایبەت (ئارەزوومەندانە)</label>
+                    <textarea id="bookingNotesInput" rows="2" placeholder="هەر تێبینییەک یان کاتژمێری گەیشتنت لێرە بنووسە..."></textarea>
+                </div>
+
+                <div class="booking-payment-notice">
+                    <span class="notice-icon">💳</span>
+                    <div>
+                        <strong data-i18n="bookingNoticeTitle">تەئکیدکردنەوەی حجز:</strong>
+                        <p data-i18n="bookingNoticeDesc">بۆ پاراستن و دڵنیابوونی شوێنەکەت، بڕە پێشەکییەکی کەم لە ڕێگەی FastPay یان FIB وەردەگیرێت، و بەشەکەی تری پارەکە لە کاتی گەیشتنت بە شوێنەکە دەدەیت.</p>
+                    </div>
+                </div>
+
+                <button class="button button-primary full-width booking-submit-btn" type="submit" id="bookingModalSubmitBtn">
+                    <span data-i18n="bookingSubmitBtnText">ناردنی داواکاری لە WhatsApp بۆ بەڕێوەبەر 📲</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
         <button class="lightbox-close" id="lightboxClose" type="button" aria-label="داخستنی وێنە" data-i18n-aria-label="lightboxCloseLabel">×</button>
         <div class="lightbox-content">
             <img id="lightboxImage" src="" alt="">
@@ -108,26 +163,11 @@
         </div>
     </div>
 
-    <!--
-        ئەم footer ـە کۆتایی پەڕەی وردەکارییە و زانیاریی بنەڕەتی وێبسایت نیشان دەدات.
-        بوونی گرنگە چونکە هەستێکی تەواوبوون و متمانە بۆ میوان دروست دەکات و هێشتاش ڕێگای گەڕانەوە بۆ سەرەوە بەردەست دەمێنێتەوە.
-        لە داهاتوودا دەتوانرێت لینک بۆ policy، social media، یان گۆڕانکاریی دوایین لێرە زیاد بکرێت.
-    -->
+    <!-- Footer -->
     <footer class="site-footer">
         <div class="container footer-inner">
             <div class="footer-meta">
-                <p>Visit Nawroli © <span id="currentYear"></span></p>
-
-                <!--
-                    ئەم بەشە پیشاندەری ئەو کەسەیە کە وێبسایتەکەی دروست کردووە.
-                    بوونی ئەم credit ـە متمانە دروست دەکات و وا دەکات میوانەکان بزانن پرۆژەکە بە شێوەی پڕۆفیشناڵ ئامادە کراوە.
-                    لە داهاتوودا دەتوانرێت لینک بۆ portfolio، email ی دروستکەر، یان لیستی هاوبەشانی پرۆژەکەی بۆ زیاد بکرێت.
-                -->
-                <!--
-                    ئەم بەشە پیشاندەری ئەوەیە کێ ئەم وێبسایتەی دروست کردووە.
-                    لینکی پڕۆفایل ڕێگەیەک دەدات سەردانکەران کارەکانی گەشەپێدەرەکە ببینن.
-                    ئەمە یارمەتی دەدات پڕۆژەکە باوەڕپێکراوتر و پیشەییتر دیار بێت.
-                -->
+                <p>Visit Halabja © <span id="currentYear"></span> • گەشتی هەڵەبجە و هەورامان</p>
                 <div class="footer-credit" aria-label="زانیاریی دروستکەری وێبسایت">
                     <strong class="credit-title">
                         <span>دروستکراوە لەلایەن</span>
@@ -138,13 +178,8 @@
                 </div>
             </div>
 
-            <!--
-                ئەم badge ـە وەک ناسنامەیەکی بچووک بۆ دروستکەری وێبسایت بەکاردێت.
-                هۆکاری بوونی ئەوەیە کە بە شێوەی ناسک و مۆدێرن ناوی دروستکەر نیشان بدات و هەستی متمانە و خاوەنداری زیاد بکات.
-                لە داهاتوودا دەتوانرێت ئەم badge ـە clickable بکرێت بۆ portfolio ی دروستکەر یان social link.
-            -->
             <div class="footer-actions">
-                <span class="creator-badge" lang="en" dir="ltr">Website by Mhamad Rebar</span>
+                <span class="creator-badge" lang="en" dir="ltr">Visit Halabja Platform</span>
                 <a class="footer-back-link" href="#top" data-scroll-target data-i18n="footerBackTop">گەڕانەوە بۆ سەرەوە</a>
             </div>
         </div>

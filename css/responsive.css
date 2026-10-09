@@ -218,3 +218,39 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
+
+/* Visit Halabja Marketplace Responsive Enhancements */
+@media (max-width: 480px) {
+    .smart-search-bar {
+        padding: 0.9rem;
+        gap: 0.7rem;
+    }
+
+    .destination-card {
+        height: 270px;
+        padding: 1.1rem;
+    }
+
+    .service-actions-row {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-pills {
+        gap: 0.35rem;
+    }
+
+    .filter-pill {
+        padding: 0.35rem 0.75rem;
+        font-size: 0.78rem;
+    }
+
+    .booking-modal-card {
+        padding: 1.3rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .destinations-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}

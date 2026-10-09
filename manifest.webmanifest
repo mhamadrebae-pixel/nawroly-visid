@@ -1,7 +1,7 @@
 {
-  "name": "گەشتی نەوڕۆڵی – Visit Nawroli",
-  "short_name": "Visit Nawroli",
-  "description": "وێبسایتێکی مۆدێرن بۆ ناساندنی شوێنی گەشتیاری نەوڕۆڵی لە هەڵەبجە و خزمەتگوزارییەکانی",
+  "name": "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
+  "short_name": "Visit Halabja",
+  "description": "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە هەڵەبجە و هەورامان",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

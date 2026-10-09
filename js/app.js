@@ -1,480 +1,428 @@
 /*
-    ئەم فایلە logic ـی سەرەکی وێبسایتەکە بەڕێوەدەبات.
-    ئەرکە سەرەکییەکانی:
-    1. خزمەتگوزارییەکان لە داتا بخوێنێتەوە و کارت دروست بکات.
-    2. کلیکی WhatsApp بە شێوەی داینامیکی بەڕێوەببات.
-    3. smooth scrolling بۆ navigation و CTA ـەکان کارا بکات.
-    4. lazy loading و animation ـی سووک بۆ وێنە و بەشەکان پشتیوانی بکات.
-    لە داهاتوودا دەتوانرێت هەمان فایل یان module ـەکانی جیاواز، booking system، API requests، و admin actions پێوە بگرێت.
+    Visit Halabja - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و هەورامان
+    App.js - بەڕێوەبردنی منطقی سەرەکی پلاتفۆرم، فلتەرکردنی دەڤەرەکان، حجزکردن و گەڕانی زیرەک
 */
 
-/*
-    placeholder ی خاوێن بۆ وێنە lazy-loaded ـەکان.
-    هۆکاری بوونی ئەوەیە پێش دابەزینی وێنەی قورس، قەبارەی box بپارێزرێت و layout نەشکێت.
-    لە داهاتوودا دەتوانرێت blur placeholder ی ڕاستەقینە یان dominant color placeholder بۆی بەکاربهێندرێت.
-*/
 const IMAGE_PLACEHOLDER =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 9'%3E%3Crect width='16' height='9' fill='%23dbece8'/%3E%3C/svg%3E";
 
-/*
-    ئەم بەشە سیستەمی سادەی زمانەکەیە کە بە localStorage کار دەکات.
-    هۆکاری بوونی ئەوەیە وێبسایتەکە هێشتا سووک بمێنێتەوە، هەر خزمەتگوزارییەک ژمارەی WhatsApp ی تایبەتی خۆی هەبێت، و هەمان کۆد لە homepage و service-details page بەکاربهێندرێت.
-    لە داهاتوودا دەتوانرێت ئەم شێوازە بگۆڕدرێت بۆ i18n ی بەهێزتر، Google Sheet، یان admin dashboard، بەڵام ئێستا تەنها بنەمایەکی سادە و خێرا پێشکەش دەکات.
-*/
 const supportedLanguages = ["ku", "ar", "en"];
 const savedLanguage = localStorage.getItem("siteLanguage");
 let currentLanguage = supportedLanguages.includes(savedLanguage) ? savedLanguage : "ku";
 
+/* دۆخی فلتەرە چالاکەکان */
+let currentSelectedTown = "all";
+let currentSelectedCategory = "all";
+let activeBookingService = null;
+
 const translations = {
     ku: {
-        metaDescriptionHome: "گەشتی نەوڕۆڵی - وێبسایتێکی مۆدێرن بۆ ناساندنی شوێنی گەشتیاری نەوڕۆڵی لە هەڵەبجە و خزمەتگوزارییەکانی.",
-        metaDescriptionDetails: "وردەکاریی خزمەتگوزارییەکانی نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.",
-        pageTitleHome: "گەشتی نەوڕۆڵی – Visit Nawroli",
-        pageTitleDetails: "وردەکاری خزمەتگوزاری – Visit Nawroli",
-        pageTitleNotFound: "خزمەتگوزاری نەدۆزرایەوە – Visit Nawroli",
-        brandTitle: "گەشتی نەوڕۆڵی",
-        brandSubtitle: "Visit Nawroli",
+        metaDescriptionHome: "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە هەڵەبجە و هەورامان.",
+        metaDescriptionDetails: "وردەکاریی خزمەتگوزاری و شوێنەکانی مانەوە لە هەڵەبجە بۆ گەشتیاران و خێزانەکان.",
+        pageTitleHome: "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
+        pageTitleDetails: "وردەکاری شوێن – Visit Halabja",
+        pageTitleNotFound: "شوێن نەدۆزرایەوە – Visit Halabja",
+        brandTitle: "گەشتی هەڵەبجە",
+        brandSubtitle: "Visit Halabja",
         languageSwitchAria: "هەڵبژاردنی زمان",
         navMainAria: "ڕێنمایی سەرەکی",
         navAbout: "دەربارە",
-        navServices: "خزمەتگوزارییەکان",
-        navWhyVisit: "بۆچی نەوڕۆڵی",
+        navDestinations: "دەڤەرەکان",
+        navServices: "خانوو و مانەوە",
+        navWhyVisit: "بۆچی ئێمە",
         navGallery: "گەلەری",
+        navHost: "تۆمارکردنی شوێن",
         navSafety: "سەلامەتی",
         navMap: "نەخشە",
         navContact: "پەیوەندی",
-        heroKicker: "هەڵەبجە • هەرێمی کوردستان • عێراق",
-        heroTitle: "گەشتی نەوڕۆڵی – Visit Nawroli",
-        heroSubtitle: "شوێنێکی سروشتی و ئارام بۆ خێزان و گەشتیاران",
-        heroDescription: "نەوڕۆڵی بە دیمەنە سروشتییەکان، ڕوانگەی ڕووبار، خانووەکانی ناو ئاو، بەلەم، جێتسکی و کەشوهەوای خۆشەوە ناسراوە.",
-        heroButtonServices: "بینینی خزمەتگوزارییەکان",
-        heroButtonGallery: "بینینی گەلەری",
-        heroHighlightsAria: "خاڵە گرنگەکانی نەوڕۆڵی",
-        heroHighlightFamily: "خێزان-دۆست",
-        heroHighlightWater: "چالاکییەکانی ناو ئاو",
-        heroHighlightPicnic: "شوێنی پیکنیک و حەسانەوە",
-        aboutLabel: "دەربارەی نەوڕۆڵی",
-        aboutTitle: "شوێنێک بۆ هەناسەدان، پیکنیک و ئارامبوونەوە",
-        aboutText: "ناوچەی هەڵەبجە و دەوروبەری سروشتییەکانی هەموو ساڵێک هەزاران گەشتیار ڕادەکێشن، چونکە دیمەنە سەوزەکان و شوێنەکانی پشوودان هەستێکی تایبەتیان هەیە.",
-        aboutCardNatureTitle: "سروشت و ئارامی",
-        aboutCardNatureText: "نەوڕۆڵی ناوچەیەکی گەشتیاری سروشتییە و بە ڕووبار، سەکوو و شوێنەکانی دانیشتن، خانووی سەر ئاو و هەوای ئارامەکەی ناسراوە. ئەو جێگایە بۆ خێزان، هاوڕێیان، و هەر کەسێک کە بەدوای ئارامی و دیمەنی جوان دەگەڕێت گونجاوە.",
-        aboutCardRiverTitle: "ڕووبار و ژیان لە دەوری ئاو",
-        aboutCardRiverText: "ڕوانگەی ڕووبار و هێمنیی ناوچەکە هەستێکی پشوودان دروست دەکات. لە هەمان کاتدا، بەلەم، جێتسکی و شوێنەکانی خواردن دەکرێن ببن بە بەشێکی تەواوکاری سەردانێکی خۆش.",
-        servicesLabel: "خزمەتگوزارییەکان",
-        servicesTitle: "هەموو شتێک بۆ گەشتێکی خۆش لە نەوڕۆڵی",
-        servicesText: "کارتەکانی خوارەوە بە JavaScript و لەسەر بنەمای داتای data.js دروست دەبن، بۆیە دواتر زیادکردن، گۆڕین یان ژمارەی زۆرتری خزمەتگوزاری زۆر ئاسان دەبێت.",
+        heroKicker: "هەڵەبجە و دەڤەری هەورامان • هەرێمی کوردستان • عێراق",
+        heroTitle: "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
+        heroSubtitle: "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا",
+        heroDescription: "باشترین شوێنەکانی مانەوە و پشوودانی خێزانی لە نەوڕۆڵی، تەوێڵە، بیارە، ئەحمەدئاوا و خورماڵ بە گرەنتی و نرخی گونجاو.",
+        heroHighlightsAria: "خاڵە گرنگەکان",
+        heroHighlightVerified: "خانووی تەئکیدکراو و پاک",
+        heroHighlightGuarantee: "گەرەنتی پێشەکی و شوێن",
+        heroHighlightSupport: "پشتیوانی ٢٤/٧ لە WhatsApp",
+        searchTownLabel: "📍 دەڤەری گەشتیاری",
+        searchCategoryLabel: "🏷️ جۆری شوێن و مانەوە",
+        searchSubmitBtn: "دۆزینەوە و حجز 🔍",
+        destinationsLabel: "دەڤەرە گەشتیارییەکان",
+        destinationsTitle: "شارۆچکە و ناوچە گەشتیارییەکانی دەڤەری هەڵەبجە",
+        destinationsText: "کرتە لەسەر هەر ناوچەیەک بکە بۆ بینینی خانووەکانی گەشتیاری، کەپرەکان و چالاکییەکانی بە فلتەرکراوی:",
+        destinationsExploreBtn: "بینینی شوێنەکان ←",
+        statsHouses: "خانوو و ڤێلا",
+        statsActivities: "چالاکی",
+        aboutLabel: "دەربارەی دەڤەری هەڵەبجە",
+        aboutTitle: "شوێنێک بۆ هەناسەدان، پیکنیک و ئارامبوونەوەی دەروون",
+        aboutText: "دەڤەری هەڵەبجە و هەورامان بە شاخە سەرکەشەکان، کانی و تاڤگە سازگارەکان، باخە سەوزەکانی گوێز و هەنار، و ڕووبارە بەخوڕەکانی ناسراوە کە ساڵانە هەزاران گەشتیار لە سەرتاسەری کوردستان و عێراق ڕادەکێشێت.",
+        aboutCardNatureTitle: "سروشت و کەشوهەوای فێنک",
+        aboutCardNatureText: "لە نەوڕۆڵی، بیارە، تەوێڵە، ئەحمەدئاوا و خورماڵ، ئاووهەوایەکی لەبار و فێنک لە چاو شارەکان هەیە. خانووەکانی گەشتیاری لە نێو باخ و لەسەر ئاو پشوودانێکی بیرنەکراوە پێشکەش دەکەن.",
+        aboutCardTrustTitle: "حجزکردنی بێ کێشە لەگەڵ ئێمە",
+        aboutCardTrustText: "پێویست ناکات بێ ئاگاداری ڕێگای دوور ببڕیت و شوێنت دەستنەکەوێت! لە ڕێگەی Visit Halabja خانووەکەت پێشوەختە تەئکید بکەرەوە و بە دڵنیاییەوە لەگەڵ خێزانەکەت سەردانی ناوچەکە بکە.",
+        servicesLabel: "خانوو و شوێنەکانی مانەوە",
+        servicesTitle: "خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا",
+        servicesText: "شوێنی دڵخوازی خۆت هەڵبژێرە و لە چەند چرکەیەکدا داواکاری حجزکردن بۆ سەرپەرشتیار بنێرە:",
         servicesNoScript: "بۆ بینینی خزمەتگوزارییە داینامیکییەکان، پێویستە JavaScript چالاک بێت.",
-        whyLabel: "بۆچی نەوڕۆڵی",
-        whyTitle: "هۆکارەکان بۆ گەشتکردن بۆ ئەم ناوچەیە",
-        whyNatureTitle: "سروشتی جوان",
-        whyNatureText: "شاخ، سەوزایی و ڕوانگەی ئاو لە شوێنێکی یەکجا و هەستبەخش.",
-        whyFamilyTitle: "گونجاو بۆ خێزان",
-        whyFamilyText: "شوێنی دانیشتن، پیکنیک و کەشێکی ئارام بۆ هەموو تەمەنەکان.",
-        whyRiverTitle: "چالاکییەکانی ڕووبار",
-        whyRiverText: "بەلەم، جێتسکی و کاتی خۆش لەسەر ئاو بۆ ئەوانەی حەزی لە جووڵەیە.",
-        whyCalmTitle: "ژینگەی ئارام",
-        whyCalmText: "شوێنێک بۆ مانەوە، وێنەگرتن و دوورکەوتنەوەی کاتی لە شلوغی شار.",
-        galleryLabel: "گەلەری",
-        galleryTitle: "چەند دیمەنێک لە جوانی نەوڕۆڵی",
-        galleryText: "کرتە لەسەر هەر وێنەیەک بکە بۆ بینین بە قەبارەی گەورەتر.",
-        galleryHeroTitle: "دیمەنی سەرەکیی نەوڕۆڵی",
-        galleryNatureTitle: "شاخ و ئاو و سروشتی ئارام",
-        galleryLandscapeTitle: "سەوزایی و ڕێگاکانی ناوچەکە",
-        galleryActivityTitle: "کۆبوونەوەی خێزان و گەشتیاران",
+        filterTownsLabel: "📍 دەڤەر:",
+        filterCategoryLabel: "🏷️ پۆلێن:",
+        filterAll: "هەموو",
+        quickBookBtn: "حجزکردنی خێرا ⚡",
+        serviceDetailsButton: "وردەکاری زیاتر",
+        ratingReviewsText: "هەڵسەنگاندن",
+        whyLabel: "بۆچی Visit Halabja؟",
+        whyTitle: "بۆچی لە ڕێگەی پلاتفۆرمی ئێمەوە حجز بکەیت؟",
+        whyVerifiedTitle: "شوێنی دڵنیاکراو و پاک",
+        whyVerifiedText: "هەموو خانووەکان وێنەی ڕاستەقینەیان دانراوە و لە ڕووی پاکوخاوێنی و خزمەتگوزارییەوە پشکنراون.",
+        whyFastBookingTitle: "حجزکردنی خێرا و ئاسان",
+        whyFastBookingText: "بێ ئاڵۆزی، تەنها بە فۆرمێکی کورت و ناردنی بۆ WhatsApp، شوێنەکەت بۆ ڕۆژی دیاریکراو ڕادەگیرێت.",
+        whyDepositSecurityTitle: "پاراستنی پێشەکی و پارە",
+        whyDepositSecurityText: "پێشەکی بە FastPay یان FIB وەردەگیرێت و حجزەکەت ١٠٠٪ مسۆگەر دەبێت تا دەگەیتە شوێنەکە.",
+        whySupportTitle: "پشتیوانی بەردەوام",
+        whySupportText: "لە سەرەتای دەرچوونتەوە تا گەیشتن و گەڕانەوە، تیمەکەمان لەگەڵت دەبن بۆ هەر هاوکاری و ڕێنماییەک.",
+        galleryLabel: "گەلەری وێنەکان",
+        galleryTitle: "دیمەنە دڵڕفێنەکانی دەڤەری هەڵەبجە و هەورامان",
+        galleryText: "کرتە لەسەر هەر وێنەیەک بکە بۆ بینینی بە قەبارەی گەورەتر.",
+        galleryHeroTitle: "دیمەنی ڕووبار و خانووەکانی نەوڕۆڵی",
+        galleryLandscapeTitle: "باخ و چیاکانی بیارە و هەورامان",
+        galleryNatureTitle: "تاڤگە و سروشتی دەوڵەمەندی هەڵەبجە",
+        galleryActivityTitle: "چالاکی و کەیفوسەفا لە ناوچەکە",
+        hostLabel: "هاوبەشی لەگەڵمان",
+        hostTitle: "خاوەنی خانوو، ڤێلا یان کەپریت لە هەڵەبجە و دەوروبەری؟",
+        hostText: "شوێنەکەت لە پلاتفۆرمی Visit Halabja بە شێوەیەکی پرۆفیشناڵ تۆمار بکە و ڕۆژانە پەیوەندی و حجز لە سەدان گەشتیارەوە لە سەرتاسەری کوردستان و عێراق بەدەستبهێنە.",
+        hostButton: "تۆمارکردنی شوێنەکەت لە WhatsApp 🏡",
         safetyLabel: "سەلامەتی و ڕێنمایی",
         safetyTitle: "ڕێنماییەکانی سەلامەتی بۆ گەشتێکی ئارام و پارێزراو",
-        safetyText: "سەلامەتی تۆ و خێزانەکەت لە پێشینەی کارەکانە. تکایە لە کاتی چێژوەرگرتن لە سروشت و ڕووبار، پابەندی ئەم ڕێنماییانە بن.",
+        safetyText: "سەلامەتی تۆ و خێزانەکەت لە پێشینەی کارەکانە. تکایە لە کاتی سەردانتان، پابەندی ئەم ڕێنماییانە بن.",
         safetyCardLifeJacketTitle: "هێلەکی مەلەکردن (Life Jacket)",
-        safetyCardLifeJacketText: "بەکارهێنانی هێلەکی ڕزگاربوون لە کاتی سواربوونی بەلەم و جێتسکی یان مەلەکردندا پێویستە، بە تایبەتی بۆ منداڵان و ئەوانەی شارەزایی تەواویان لە مەلەدا نییە.",
+        safetyCardLifeJacketText: "بەکارهێنانی هێلەکی ڕزگاربوون لە کاتی سواربوونی بەلەم و جێتسکی یان نزیکبوونەوە لە ئاوی قووڵ پێویستە بۆ منداڵان و گەورەکان.",
         safetyCardChildrenTitle: "چاودێری منداڵان لە کەناراو",
-        safetyCardChildrenText: "تکایە هەمیشە چاودێری منداڵەکانتان بکەن لە نزیک قەراغی ئاو و شوێنە قووڵەکان، و شوێنی تایبەت و هێمن بە پشووی خێزانی هەڵبژێرن.",
-        safetyCardBoatingTitle: "لێخوڕینی سەلامەتی بەلەم و جێتسکی",
-        safetyCardBoatingText: "لێخوڕینی جێتسکی و بەلەم بە خێرایی لەبار و دوور لە کەپرەکان و شوێنی دانیشتن و مەلەی خێزانەکان ئەنجام دەدرێت بۆ پاراستنی هێمنی هەموان.",
-        safetyCardCleanlinessTitle: "پاراستنی ژینگە و پاکوخاوێنی ئاو",
-        safetyCardCleanlinessText: "ئاوی ڕووبار و سروشتی نەوڕۆڵی سەرمایەیەکی گشتییە، تکایە پاشماوە و پلاستیک فڕێ مەدەنە ناو ئاو و سەتڵی تایبەتی زبڵ بەکاربهێنن.",
-        serviceSafetyBadgeTitle: "ڕێنمایی سەلامەتی گەشتیار:",
-        serviceSafetyBadgeText: "تکایە لە کاتی چالاکییە ئاوییەکاندا هێلەکی مەلە بەکاربهێنن و چاودێری منداڵان بکەن.",
+        safetyCardChildrenText: "تکایە هەمیشە چاودێری وردی منداڵەکانتان بکەن لە نزیک قەراغی ئاو و ڕێڕەوە شاخاوییەکان.",
+        safetyCardBoatingTitle: "لێخوڕینی سەلامەت",
+        safetyCardBoatingText: "لێخوڕینی جێتسکی و ماتۆڕ بە خێرایی لەبار و پابەندبوون بە ڕێنماییەکانی ڕاهێنەر بۆ پاراستنی سەلامەتی هەموان پێویستە.",
+        safetyCardCleanlinessTitle: "پاراستنی ژینگە و پاکوخاوێنی",
+        safetyCardCleanlinessText: "ئاوی ڕووبار و سروشتی هەڵەبجە سەرمایەیەکی گشتییە، تکایە پاشماوە و پلاستیک فڕێ مەدەنە ناو ئاو و سەتڵی زبڵ بەکاربهێنن.",
         mapLabel: "نەخشە",
-        mapTitle: "شوێنی نەوڕۆڵی لەسەر نەخشە",
-        mapText: "ئەم iframe ـە وەک شوێن-دانەرێکی سەرەتایی بەکارهاتووە و دەتوانرێت دواتر بە لینک یان embed ـی وردتر بگۆڕدرێت.",
-        mapIframeTitle: "شوێنی نەوڕۆڵی لەسەر Google Maps",
-        mapGetDirections: "📍 دۆزینەوەی ڕێگا لە Google Maps",
-        weatherDefaultStatus: "کەشوهەوای نەوڕۆڵی",
-        relatedSectionLabel: "خزمەتگوزارییە پەیوەندیدارەکان",
-        relatedSectionTitle: "ڕەنگە حەزت لەم شوێنانەش بێت",
-        relatedSectionSubtitle: "شوێن و چالاکییەکانی تر لە نەوڕۆڵی کە دەتوانیت سەردانیان بکەیت.",
+        mapTitle: "شوێنی دەڤەری هەڵەبجە لەسەر نەخشە",
+        mapText: "بۆ ڕێنمایی و دۆزینەوەی ئاسانی ڕێگاکان بۆ ناوچە گەشتیارییەکان.",
+        weatherDefaultStatus: "کەشوهەوای دەڤەری هەڵەبجە",
         contactLabel: "پەیوەندی",
-        contactTitle: "ئامادەین بۆ وەڵامدانەوەی پرسیارەکانت",
-        contactText: "ئەگەر دەتەوێت زانیاری زیاتر وەربگریت یان پێشتر داوا بۆ شوێن و خزمەتگوزارییەکان بکەیت، ئەمانە ڕێگاکانی پەیوەندین.",
+        contactTitle: "ئامادەین بۆ وەڵامدانەوە و حجزکردنی شوێنەکەت",
+        contactText: "ئەگەر دەتەوێت زانیاری زیاتر وەربگریت یان داوای حجز بکەیت، لە ڕێگەی تەلەفۆن و واتسئەپەوە پەیوەندیمان پێوە بکە.",
         contactPhoneTitle: "تەلەفۆن",
-        contactPhoneText: "ژمارەیەکی جێگرەوەیە و دەتوانرێت لە داهاتوودا بە ژمارەی ڕاستەقینە بگۆڕدرێت.",
-        contactWhatsappTitle: "WhatsApp",
-        contactWhatsappButton: "پەیوەندی لە WhatsApp",
-        contactWhatsappText: "ئەم دوگمەیە ڕێگایەکی خێرا و ئاسانە بۆ داواکردنی زانیاری و رزێرڤی سەرەتایی.",
-        contactSocialTitle: "سۆشیال میدیا",
-        socialFacebook: "Facebook",
-        socialInstagram: "Instagram",
-        socialTikTok: "TikTok",
-        contactSocialText: "ئەم لینکەکان placeholder ـن و دواتر دەتوانرێت بە هەژمارە ڕاستەقینەکانی brand ـەکە پڕ بکرێنەوە.",
-        lightboxCloseLabel: "داخستنی وێنە",
+        contactPhoneText: "وەڵامدانەوەی خێرای پەیوەندییەکان لە کاتی کارکردندا.",
+        contactWhatsappTitle: "WhatsApp ی ڕزێرڤ",
+        contactWhatsappButton: "حجز و پەیوەندی لە WhatsApp",
+        contactWhatsappText: "ڕێگایەکی خێرا بۆ وەڵامدانەوەی پرسیارەکانت و تەئکیدکردنەوەی حجز.",
+        contactSocialTitle: "تۆڕە کۆمەڵایەتییەکان",
+        contactSocialText: "بۆ بینینی نوێترین ڤیدیۆ و دیمەنی شوێنەکان بەردەوام چاودێریمان بکەن.",
         footerBackTop: "گەڕانەوە بۆ سەرەوە",
-        detailsNavAria: "گەڕانەوە بۆ سەرەتا",
-        detailBackHome: "گەڕانەوە بۆ سەرەتا",
-        detailBackServices: "گەڕانەوە بۆ خزمەتگوزارییەکان",
+        bookingModalTitle: "داواکاری حیجزکردنی شوێن",
+        bookingFormDateLabel: "📅 بەرواری سەردان / هاتن",
+        bookingFormDurationLabel: "⏳ ماوەی مانەوە",
+        bookingFormGuestsLabel: "👥 ژمارەی کەسەکان",
+        bookingFormNameLabel: "👤 ناوی سیانی",
+        bookingFormPhoneLabel: "📞 ژمارەی مۆبایل یان WhatsApp",
+        bookingFormNotesLabel: "📝 تێبینی یان داواکاری تایبەت (ئارەزوومەندانە)",
+        bookingNoticeTitle: "تەئکیدکردنەوەی حجز:",
+        bookingNoticeDesc: "بۆ پاراستن و دڵنیابوونی شوێنەکەت، بڕە پێشەکییەکی کەم لە ڕێگەی FastPay یان FIB وەردەگیرێت، و بەشەکەی تری پارەکە لە کاتی گەیشتنت بە شوێنەکە دەدەیت.",
+        bookingSubmitBtnText: "ناردنی داواکاری لە WhatsApp بۆ بەڕێوەبەر 📲",
+        serviceEmptyTitle: "هیچ شوێنێک نەدۆزرایەوە",
+        serviceEmptyText: "بەپێی ئەو فلتەرەی هەڵتبژاردووە لەم دەڤەرەدا شوێن بەردەست نییە. تکایە پۆلێن یان دەڤەرێکی تر تاقی بکەرەوە.",
         detailsLoadingTitle: "وردەکاری خزمەتگوزاری بار دەکرێت",
         detailsLoadingText: "تکایە چاوەڕێ بکە تا زانیاریی خزمەتگوزارییەکە لە data.js بخوێندرێتەوە.",
-        detailsNoScript: "بۆ بینینی وردەکارییە داینامیکییەکان، پێویستە JavaScript چالاک بێت.",
-        serviceEmptyTitle: "خزمەتگوزارییەکان بە زووی زیاد دەکرێن",
-        serviceEmptyText: "ئێستا داتای نیشاندان ئامادە نییە. دەتوانرێت دواتر لە داتا یان API ـەوە پڕ بکرێتەوە.",
-        servicePriceLabel: "نرخ",
-        serviceOwnerPhoneLabel: "ژمارەی خاوەن",
-        serviceDetailsButton: "بینینی وردەکاری",
-        serviceWhatsappButton: "رزێرڤ لە WhatsApp",
-        quickBookingDefaultMessage: "سڵاو، دەمەوێت زانیاری زیاتر دەربارەی {service} و رزێرڤکردنی وەربگرم.",
-        quickBookingUnavailable: "ژمارەی WhatsApp ئامادە نییە.",
-        genericService: "خزمەتگوزاری",
-        lightboxFallbackTitle: "وێنەی نەوڕۆڵی",
-        detailMoreInfoSoon: "زانیاریی زیاتر بە زووی زیاد دەکرێت.",
-        detailGalleryImageLabel: "وێنەی",
+        detailBackHome: "گەڕانەوە بۆ سەرەتا",
         detailNotFoundTitle: "ئەم خزمەتگوزارییە نەدۆزرایەوە",
         detailNotFoundText: "تکایە بگەڕێوە بۆ پەڕەی سەرەکی و خزمەتگوزارییەکان دووبارە هەڵبژێرە.",
-        detailAboutService: "دەربارەی خزمەتگوزارییەکە",
-        detailSmallGallery: "گەلەریی بچووک",
-        detailVideo: "ڤیدیۆ",
-        detailMap: "نەخشە",
+        detailAboutService: "دەربارەی شوێنەکە",
+        detailSmallGallery: "گەلەریی وێنەکان",
+        detailFeatures: "تایبەتمەندی و ئاسانکارییەکان",
+        detailRules: "یاسا و ڕێنمایی",
         detailMainInfo: "زانیاریی سەرەکی",
-        detailHoursLabel: "کاتی کارکردن",
         detailLocationLabel: "شوێن",
         detailPhoneLabel: "ژمارەی پەیوەندی",
-        detailOwnerInfo: "زانیاریی خاوەن",
-        detailOwnerNameLabel: "ناوی خاوەن",
+        servicePriceLabel: "نرخ",
+        detailOwnerInfo: "زانیاریی سەرپەرشتیار",
+        detailOwnerNameLabel: "سەرپەرشتیار",
         detailOwnerRoleLabel: "ئەرک",
-        detailFeatures: "تایبەتمەندییەکان",
-        detailRules: "یاسا و ڕێنمایی",
-        detailBookingForm: "فۆرمی رزێرڤ",
+        detailBookingForm: "داواکاری حیجزکردن لە WhatsApp",
         detailFormFullName: "ناوی تەواو",
         detailFormPhone: "ژمارەی مۆبایل",
         detailFormVisitDate: "بەرواری سەردان",
-        detailFormVisitTime: "کاتی سەردان",
         detailFormGuestsCount: "ژمارەی کەسەکان",
         detailFormNote: "تێبینی",
-        detailFormNotePlaceholder: "ئەگەر تێبینییەکی تایبەتت هەیە لێرە بینووسە.",
-        detailFormSubmit: "ناردنی داواکاری بۆ WhatsApp",
-        detailVideoPlaceholder: "ڤیدیۆ بە زووی زیاد دەکرێت",
-        detailMapPlaceholder: "شوێنی ورد بە زووی زیاد دەکرێت",
-        detailWhatsappMissing: "ژمارەی WhatsApp ی ئەم خزمەتگوزارییە ئامادە نییە.",
-        detailStatusRequired: "تکایە هەموو خانە پێویستەکان پڕ بکە.",
-        detailStatusSuccess: "WhatsApp بۆ خاوەنی خزمەتگوزاری کرایەوە.",
-        detailStatusNotFound: "ئەم خزمەتگوزارییە نەدۆزرایەوە.",
-        bookingIntro: "سڵاو، داواکاری رزێرڤکردن هەیە.",
-        bookingLabelService: "خزمەتگوزاری",
-        bookingLabelName: "ناو",
-        bookingLabelPhone: "ژمارە",
-        bookingLabelDate: "بەروار",
-        bookingLabelTime: "کات",
-        bookingLabelGuests: "ژمارەی کەسەکان",
-        bookingLabelNote: "تێبینی",
-        contactWhatsappMessage: "سڵاو، دەمەوێت زانیاری زیاتر دەربارەی نەوڕۆڵی و خزمەتگوزارییەکانی وەربگرم."
+        detailFormSubmit: "ناردنی داواکاری بۆ WhatsApp"
     },
     ar: {
-        metaDescriptionHome: "زوروا نورولي - موقع حديث للتعريف بالمنطقة السياحية في نورولي داخل حلبجة وخدماتها.",
-        metaDescriptionDetails: "تفاصيل خدمات نورولي للزوار والعائلات.",
-        pageTitleHome: "زوروا نورولي – Visit Nawroli",
-        pageTitleDetails: "تفاصيل الخدمة – Visit Nawroli",
-        pageTitleNotFound: "الخدمة غير موجودة – Visit Nawroli",
-        brandTitle: "سياحة نورولي",
-        brandSubtitle: "Visit Nawroli",
+        metaDescriptionHome: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والنشاطات في حلبجة وهورامان.",
+        metaDescriptionDetails: "تفاصيل أماكن الإقامة والخدمات في حلبجة للعائلات والزوار.",
+        pageTitleHome: "سياحة حلبجة وهورامان – Visit Halabja",
+        pageTitleDetails: "تفاصيل المكان – Visit Halabja",
+        pageTitleNotFound: "المكان غير موجود – Visit Halabja",
+        brandTitle: "سياحة حلبجة",
+        brandSubtitle: "Visit Halabja",
         languageSwitchAria: "اختيار اللغة",
         navMainAria: "التنقل الرئيسي",
-        navAbout: "حول نورولي",
-        navServices: "الخدمات",
-        navWhyVisit: "لماذا نورولي",
+        navAbout: "حول حلبجة",
+        navDestinations: "المناطق",
+        navServices: "الإقامة والبيوت",
+        navWhyVisit: "لماذا نحن",
         navGallery: "المعرض",
+        navHost: "إضافة عقارك",
         navSafety: "السلامة",
         navMap: "الخريطة",
         navContact: "اتصال",
-        heroKicker: "حلبجة • إقليم كردستان • العراق",
-        heroTitle: "زوروا نورولي – Visit Nawroli",
-        heroSubtitle: "مكان طبيعي وهادئ للعائلات والزوار",
-        heroDescription: "تشتهر نورولي بمناظرها الطبيعية، وإطلالة النهر، وبيوت الماء، والقوارب، والجت سكي، والأجواء الجميلة.",
-        heroButtonServices: "عرض الخدمات",
-        heroButtonGallery: "عرض المعرض",
-        heroHighlightsAria: "أبرز مزايا نورولي",
-        heroHighlightFamily: "مناسبة للعائلات",
-        heroHighlightWater: "نشاطات مائية",
-        heroHighlightPicnic: "مكان للنزهة والاستراحة",
-        aboutLabel: "حول نورولي",
-        aboutTitle: "مكان للتنفس والنزهة والهدوء",
-        aboutText: "تجذب منطقة حلبجة وطبيعتها آلاف الزوار كل عام، لأن المناظر الخضراء وأماكن الراحة فيها تمنح شعوراً خاصاً.",
-        aboutCardNatureTitle: "الطبيعة والهدوء",
-        aboutCardNatureText: "نورولي منطقة سياحية طبيعية مع النهر والجلسات وبيوت الماء والهواء الهادئ. وهي مناسبة للعائلات والأصدقاء وكل من يبحث عن الهدوء والمناظر الجميلة.",
-        aboutCardRiverTitle: "النهر والحياة حول الماء",
-        aboutCardRiverText: "إطلالة النهر وهدوء المنطقة يمنحان الزائر إحساساً بالراحة. وفي الوقت نفسه، القوارب والجت سكي وأماكن الطعام تكمل زيارة ممتعة.",
-        servicesLabel: "الخدمات",
-        servicesTitle: "كل ما تحتاجه لزيارة جميلة في نورولي",
-        servicesText: "يتم إنشاء البطاقات التالية عبر JavaScript بالاعتماد على بيانات data.js، لذلك ستكون إضافة الخدمات أو تعديلها لاحقاً سهلة جداً.",
+        heroKicker: "حلبجة ومنطقة هورامان • إقليم كردستان • العراق",
+        heroTitle: "سياحة حلبجة وهورامان – Visit Halabja",
+        heroSubtitle: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والمغامرات",
+        heroDescription: "أفضل أماكن الإقامة والاستجمام العائلي في نورولي، طويلة، بيارة، أحمد آوا وخورمال بأفضل الأسعار وضمان الحجز.",
+        heroHighlightsAria: "أبرز المزايا",
+        heroHighlightVerified: "أماكن معتمدة ونظيفة",
+        heroHighlightGuarantee: "ضمان العربون والحجز",
+        heroHighlightSupport: "دعم مستمر عبر WhatsApp",
+        searchTownLabel: "📍 المنطقة السياحية",
+        searchCategoryLabel: "🏷️ نوع الإقامة والنشاط",
+        searchSubmitBtn: "بحث وحجز 🔍",
+        destinationsLabel: "المناطق السياحية",
+        destinationsTitle: "بلدات ووجهات منطقة حلبجة السياحية",
+        destinationsText: "اضغط على أي منطقة لعرض البيوت والأكواخ والنشاطات الخاصة بها:",
+        destinationsExploreBtn: "استكشاف الأماكن ←",
+        statsHouses: "بيوت وفلل",
+        statsActivities: "نشاطات",
+        aboutLabel: "حول منطقة حلبجة",
+        aboutTitle: "وجهة مثالية للاسترخاء والتنفس في قلب الطبيعة",
+        aboutText: "تتميز حلبجة وهورامان بجبالها الشاهقة، ينابيعها العذبة، بساتين الجوز والرمان، وتدفق أنهارها التي تستقطب آلاف الزوار سنوياً من كافة أنحاء العراق.",
+        aboutCardNatureTitle: "طبيعة خلابة وأجواء عليلة",
+        aboutCardNatureText: "في نورولي، بيارة، طويلة، أحمد آوا وخورمال، طقس معتدل ومنعش. توفر البيوت السياحية بين البساتين وفوق الماء تجربة استثنائية.",
+        aboutCardTrustTitle: "حجز مريح وموثوق معنا",
+        aboutCardTrustText: "لا تقلق بشأن قطع مسافات طويلة دون توفر مكان! عبر Visit Halabja أكد حجزك مسبقاً وسافر براحة تامة مع عائلتك.",
+        servicesLabel: "البيوت وأماكن الإقامة",
+        servicesTitle: "بيوت سياحية، فلل، أكواخ ونشاطات",
+        servicesText: "اختر مكانك المفضل وأرسل طلب الحجز للمشرف خلال ثوانٍ:",
         servicesNoScript: "لعرض الخدمات الديناميكية، يجب تفعيل JavaScript.",
-        whyLabel: "لماذا نورولي",
-        whyTitle: "أسباب زيارة هذه المنطقة",
-        whyNatureTitle: "طبيعة جميلة",
-        whyNatureText: "جبال وخضرة وإطلالة ماء في مكان واحد.",
-        whyFamilyTitle: "مناسب للعائلات",
-        whyFamilyText: "أماكن جلوس ونزهة وأجواء هادئة لكل الأعمار.",
-        whyRiverTitle: "نشاطات النهر",
-        whyRiverText: "قوارب وجت سكي ووقت ممتع على الماء لمحبي الحركة.",
-        whyCalmTitle: "أجواء هادئة",
-        whyCalmText: "مكان للإقامة والتصوير والابتعاد عن ازدحام المدينة.",
-        galleryLabel: "المعرض",
-        galleryTitle: "بعض مشاهد جمال نورولي",
-        galleryText: "اضغط على أي صورة لرؤيتها بحجم أكبر.",
-        galleryHeroTitle: "المشهد الرئيسي لنورولي",
-        galleryNatureTitle: "الجبال والماء والطبيعة الهادئة",
-        galleryLandscapeTitle: "الخضرة وطرق المنطقة",
-        galleryActivityTitle: "تجمع العائلات والزوار",
+        filterTownsLabel: "📍 المنطقة:",
+        filterCategoryLabel: "🏷️ التصنيف:",
+        filterAll: "الكل",
+        quickBookBtn: "حجز سريع ⚡",
+        serviceDetailsButton: "عرض التفاصيل",
+        ratingReviewsText: "تقييم",
+        whyLabel: "لماذا Visit Halabja؟",
+        whyTitle: "لماذا تحجز عبر منصتنا؟",
+        whyVerifiedTitle: "أماكن معتمدة ونظيفة",
+        whyVerifiedText: "جميع الأماكن معروضة بصور حقيقية ومفحوصة من حيث النظافة والخدمات.",
+        whyFastBookingTitle: "حجز فوري ومباشر",
+        whyFastBookingText: "بنموذج بسيط وإرسال للواتساب، يتم تثبيت حجزك للتاريخ المطلوب.",
+        whyDepositSecurityTitle: "أمان العربون والدفع",
+        whyDepositSecurityText: "يتم دفع عربون رمزي عبر FastPay أو FIB لضمان مكانك ١٠٠٪ حتى وصولك.",
+        whySupportTitle: "دعم مستمر",
+        whySupportText: "فريقنا معك من لحظة انطلاقك حتى وصولك وعودتك لأي مساعدة وإرشاد.",
+        galleryLabel: "معرض الصور",
+        galleryTitle: "مشاهد ساحرة من حلبجة وهورامان",
+        galleryText: "اضغط على أي صورة لتكبيرها.",
+        galleryHeroTitle: "إطلالة نهر وبيوت نورولي",
+        galleryLandscapeTitle: "بساتين وجبال بيارة وهورامان",
+        galleryNatureTitle: "شلالات وطبيعة حلبجة الخلابة",
+        galleryActivityTitle: "نشاطات ومغامرات المنطقة",
+        hostLabel: "انضم إلينا",
+        hostTitle: "هل تملك بيتاً سياحياً أو كوخاً في حلبجة؟",
+        hostText: "سجل مكانك في منصة Visit Halabja بشكل احترافي واستقبل يومياً حجوزات من مئات الزوار في العراق وكردستان.",
+        hostButton: "سجل عقارك عبر WhatsApp 🏡",
         safetyLabel: "السلامة والإرشادات",
         safetyTitle: "إرشادات السلامة لرحلة هادئة وآمنة",
-        safetyText: "سلامتك وسلامة عائلتك هي الأولوية الأولى. يرجى الالتزام بهذه الإرشادات أثناء الاستمتاع بالنهر والطبيعة.",
+        safetyText: "سلامتك وسلامة عائلتك هي أولويتنا. يرجى الالتزام بهذه الإرشادات أثناء زيارتكم.",
         safetyCardLifeJacketTitle: "سترات النجاة (Life Jacket)",
-        safetyCardLifeJacketText: "ارتداء سترة النجاة ضروري عند ركوب القوارب والجت سكي أو السباحة، خاصة للأطفال ومن لا يجيدون السباحة جيداً.",
+        safetyCardLifeJacketText: "ارتداء سترة النجاة ضروري عند ركوب القوارب والجت سكي خاصة للأطفال.",
         safetyCardChildrenTitle: "مراقبة الأطفال عند ضفاف النهر",
-        safetyCardChildrenText: "يرجى مراقبة الأطفال دائماً بالقرب من حافة النهر والمناطق العميقة، واختيار الأماكن الهادئة المخصصة للعائلات.",
-        safetyCardBoatingTitle: "القيادة الآمنة للقوارب والجت سكي",
-        safetyCardBoatingText: "يجب قيادة القوارب والجت سكي بسرعة معتدلة وبعيداً عن الكبائن وأماكن استراحة وسباحة العائلات للحفاظ على سلامة الجميع.",
-        safetyCardCleanlinessTitle: "حماية البيئة ونظافة النهر",
-        safetyCardCleanlinessText: "مياه النهر وطبيعة نورولي ثروة عامة، يرجى عدم إلقاء المخلفات في النهر واستخدام حاويات النفايات المخصصة.",
-        serviceSafetyBadgeTitle: "إرشادات السلامة:",
-        serviceSafetyBadgeText: "يرجى استخدام سترة النجاة أثناء الأنشطة المائية ومراقبة الأطفال بحرص.",
+        safetyCardChildrenText: "يرجى مراقبة الأطفال دائماً بالقرب من حافة النهر والمسارات الجبلية.",
+        safetyCardBoatingTitle: "القيادة الآمنة",
+        safetyCardBoatingText: "قيادة الجت سكي والدبابات بسرعة مناسبة والالتزام بتعليمات المشرفين.",
+        safetyCardCleanlinessTitle: "حماية البيئة والنظافة",
+        safetyCardCleanlinessText: "مياه النهر وطبيعة حلبجة ثروة للجميع، يرجى الحفاظ على النظافة.",
         mapLabel: "الخريطة",
-        mapTitle: "موقع نورولي على الخريطة",
-        mapText: "هذا الإطار يستخدم كعنصر مبدئي ويمكن استبداله لاحقاً برابط أو تضمين أدق.",
-        mapIframeTitle: "موقع نورولي على خرائط Google",
-        mapGetDirections: "📍 فتح مسار الطريق في خرائط Google",
-        weatherDefaultStatus: "طقس نورولي",
-        relatedSectionLabel: "خدمات ذات صلة",
-        relatedSectionTitle: "قد يعجبك أيضاً في نورولي",
-        relatedSectionSubtitle: "أماكن ونشاطات أخرى في نورولي يمكنك زيارتها.",
+        mapTitle: "موقع حلبجة على الخريطة",
+        mapText: "لإرشادك وتسهيل الوصول للأماكن السياحية.",
+        weatherDefaultStatus: "طقس منطقة حلبجة",
         contactLabel: "اتصال",
-        contactTitle: "نحن جاهزون للرد على أسئلتك",
-        contactText: "إذا كنت تريد معلومات أكثر أو ترغب بالحجز المسبق، فهذه هي طرق التواصل.",
+        contactTitle: "جاهزون للإجابة وحجز مكانك",
+        contactText: "تواصل معنا عبر الهاتف أو الواتساب لأي استفسار أو حجز.",
         contactPhoneTitle: "الهاتف",
-        contactPhoneText: "هذا الرقم مؤقت ويمكن استبداله لاحقاً برقم حقيقي.",
-        contactWhatsappTitle: "WhatsApp",
-        contactWhatsappButton: "التواصل عبر WhatsApp",
-        contactWhatsappText: "هذا الزر طريقة سريعة وسهلة لطلب المعلومات والحجز المبدئي.",
+        contactPhoneText: "رد سريع خلال ساعات العمل.",
+        contactWhatsappTitle: "واتساب الحجز",
+        contactWhatsappButton: "حجز واستفسار عبر WhatsApp",
+        contactWhatsappText: "طريقة سريعة لتأكيد حجزك.",
         contactSocialTitle: "وسائل التواصل",
-        socialFacebook: "Facebook",
-        socialInstagram: "Instagram",
-        socialTikTok: "TikTok",
-        contactSocialText: "هذه الروابط مؤقتة ويمكن تعبئتها لاحقاً بالحسابات الحقيقية للعلامة.",
-        lightboxCloseLabel: "إغلاق الصورة",
-        footerBackTop: "العودة إلى الأعلى",
-        detailsNavAria: "العودة إلى الصفحة الرئيسية",
-        detailBackHome: "العودة إلى الصفحة الرئيسية",
-        detailBackServices: "العودة إلى الخدمات",
-        detailsLoadingTitle: "يتم تحميل تفاصيل الخدمة",
-        detailsLoadingText: "يرجى الانتظار حتى يتم قراءة معلومات الخدمة من data.js.",
-        detailsNoScript: "لعرض تفاصيل الخدمة الديناميكية، يجب تفعيل JavaScript.",
-        serviceEmptyTitle: "ستتم إضافة الخدمات قريباً",
-        serviceEmptyText: "بيانات العرض غير جاهزة الآن. يمكن تعبئتها لاحقاً من البيانات أو API.",
-        servicePriceLabel: "السعر",
-        serviceOwnerPhoneLabel: "رقم المالك",
-        serviceDetailsButton: "عرض التفاصيل",
-        serviceWhatsappButton: "الحجز عبر WhatsApp",
-        quickBookingDefaultMessage: "مرحباً، أريد معلومات أكثر عن {service} وإمكانية الحجز.",
-        quickBookingUnavailable: "رقم WhatsApp غير متوفر.",
-        genericService: "الخدمة",
-        lightboxFallbackTitle: "صورة من نورولي",
-        detailMoreInfoSoon: "ستتم إضافة معلومات أكثر قريباً.",
-        detailGalleryImageLabel: "صورة",
-        detailNotFoundTitle: "هذه الخدمة غير موجودة",
-        detailNotFoundText: "يرجى العودة إلى الصفحة الرئيسية واختيار الخدمة مرة أخرى.",
-        detailAboutService: "حول هذه الخدمة",
-        detailSmallGallery: "معرض صغير",
-        detailVideo: "الفيديو",
-        detailMap: "الخريطة",
-        detailMainInfo: "المعلومات الرئيسية",
-        detailHoursLabel: "ساعات العمل",
+        contactSocialText: "تابعونا لمشاهدة أحدث الفيديوهات.",
+        footerBackTop: "العودة للأعلى",
+        bookingModalTitle: "طلب حجز مكان إقامة",
+        bookingFormDateLabel: "📅 تاريخ الوصول / الزيارة",
+        bookingFormDurationLabel: "⏳ مدة الإقامة",
+        bookingFormGuestsLabel: "👥 عدد الأشخاص",
+        bookingFormNameLabel: "👤 الاسم الثلاثي",
+        bookingFormPhoneLabel: "📞 رقم الهاتف أو WhatsApp",
+        bookingFormNotesLabel: "📝 ملاحظات أو طلب خاص (اختياري)",
+        bookingNoticeTitle: "تأكيد الحجز:",
+        bookingNoticeDesc: "لضمان مكانك، يتم دفع عربون رمزي عبر FastPay أو FIB، وباقي المبلغ عند الوصول.",
+        bookingSubmitBtnText: "إرسال طلب الحجز إلى WhatsApp 📲",
+        serviceEmptyTitle: "لم يتم العثور على أماكن",
+        serviceEmptyText: "لا توجد نتائج مطابقة في هذه المنطقة حالياً. يرجى تجربة تصنيف آخر.",
+        detailsLoadingTitle: "جاري تحميل التفاصيل",
+        detailsLoadingText: "يرجى الانتظار...",
+        detailBackHome: "العودة للرئيسية",
+        detailNotFoundTitle: "الخدمة غير موجودة",
+        detailNotFoundText: "يرجى العودة للصفحة الرئيسية.",
+        detailAboutService: "حول هذا المكان",
+        detailSmallGallery: "معرض الصور",
+        detailFeatures: "المميزات والخدمات",
+        detailRules: "القواعد والإرشادات",
+        detailMainInfo: "المعلومات الأساسية",
         detailLocationLabel: "الموقع",
         detailPhoneLabel: "رقم التواصل",
-        detailOwnerInfo: "معلومات المالك",
-        detailOwnerNameLabel: "اسم المالك",
+        servicePriceLabel: "السعر",
+        detailOwnerInfo: "معلومات المشرف",
+        detailOwnerNameLabel: "المشرف",
         detailOwnerRoleLabel: "الدور",
-        detailFeatures: "المميزات",
-        detailRules: "القواعد والإرشادات",
-        detailBookingForm: "نموذج الحجز",
+        detailBookingForm: "طلب الحجز عبر WhatsApp",
         detailFormFullName: "الاسم الكامل",
         detailFormPhone: "رقم الهاتف",
         detailFormVisitDate: "تاريخ الزيارة",
-        detailFormVisitTime: "وقت الزيارة",
         detailFormGuestsCount: "عدد الأشخاص",
-        detailFormNote: "ملاحظة",
-        detailFormNotePlaceholder: "إذا كانت لديك ملاحظة خاصة فاكتبها هنا.",
-        detailFormSubmit: "إرسال الطلب إلى WhatsApp",
-        detailVideoPlaceholder: "سيتم إضافة الفيديو قريباً",
-        detailMapPlaceholder: "سيتم إضافة الموقع الدقيق قريباً",
-        detailWhatsappMissing: "رقم WhatsApp لهذه الخدمة غير متوفر.",
-        detailStatusRequired: "يرجى ملء جميع الحقول المطلوبة.",
-        detailStatusSuccess: "تم فتح WhatsApp لصاحب الخدمة.",
-        detailStatusNotFound: "هذه الخدمة غير موجودة.",
-        bookingIntro: "مرحباً، لدي طلب حجز.",
-        bookingLabelService: "الخدمة",
-        bookingLabelName: "الاسم",
-        bookingLabelPhone: "الرقم",
-        bookingLabelDate: "التاريخ",
-        bookingLabelTime: "الوقت",
-        bookingLabelGuests: "عدد الأشخاص",
-        bookingLabelNote: "ملاحظة",
-        contactWhatsappMessage: "مرحباً، أريد معلومات أكثر عن نورولي وخدماتها."
+        detailFormNote: "ملاحظات",
+        detailFormSubmit: "إرسال الطلب إلى WhatsApp"
     },
     en: {
-        metaDescriptionHome: "Visit Nawroli - a modern website introducing the Nawroli tourism area in Halabja and its services.",
-        metaDescriptionDetails: "Detailed Nawroli service information for visitors and families.",
-        pageTitleHome: "Visit Nawroli",
-        pageTitleDetails: "Service Details – Visit Nawroli",
-        pageTitleNotFound: "Service Not Found – Visit Nawroli",
-        brandTitle: "Visit Nawroli",
-        brandSubtitle: "Nawroli Tourism",
+        metaDescriptionHome: "Official tourism and booking platform for tourist houses, villas, huts and activities in Halabja and Hawraman.",
+        metaDescriptionDetails: "Details of accommodations and attractions in Halabja for travelers and families.",
+        pageTitleHome: "Visit Halabja & Hawraman",
+        pageTitleDetails: "Listing Details – Visit Halabja",
+        pageTitleNotFound: "Listing Not Found – Visit Halabja",
+        brandTitle: "Visit Halabja",
+        brandSubtitle: "Halabja & Hawraman",
         languageSwitchAria: "Choose language",
         navMainAria: "Main navigation",
         navAbout: "About",
-        navServices: "Services",
-        navWhyVisit: "Why Nawroli",
+        navDestinations: "Destinations",
+        navServices: "Stays & Houses",
+        navWhyVisit: "Why Us",
         navGallery: "Gallery",
+        navHost: "List Your Place",
         navSafety: "Safety",
         navMap: "Map",
         navContact: "Contact",
-        heroKicker: "Halabja • Kurdistan Region • Iraq",
-        heroTitle: "Visit Nawroli",
-        heroSubtitle: "A peaceful natural destination for families and travelers",
-        heroDescription: "Nawroli is known for its natural scenery, river views, water houses, boats, jet ski, and relaxing atmosphere.",
-        heroButtonServices: "View Services",
-        heroButtonGallery: "View Gallery",
-        heroHighlightsAria: "Nawroli highlights",
-        heroHighlightFamily: "Family friendly",
-        heroHighlightWater: "Water activities",
-        heroHighlightPicnic: "Picnic and relaxation spot",
-        aboutLabel: "About Nawroli",
-        aboutTitle: "A place to breathe, picnic, and unwind",
-        aboutText: "The Halabja area and its surrounding nature attract thousands of visitors every year because of the green scenery and relaxing spaces.",
-        aboutCardNatureTitle: "Nature and calm",
-        aboutCardNatureText: "Nawroli is a natural tourism area known for its river, seating areas, water houses, and peaceful air. It suits families, friends, and anyone looking for calm and beautiful views.",
-        aboutCardRiverTitle: "River life and water views",
-        aboutCardRiverText: "The river view and the quiet atmosphere create a strong sense of rest. At the same time, boats, jet ski, and food spots complete a pleasant visit.",
-        servicesLabel: "Services",
-        servicesTitle: "Everything you need for a beautiful Nawroli visit",
-        servicesText: "The cards below are generated with JavaScript from data.js, making future edits and service additions very easy.",
-        servicesNoScript: "JavaScript needs to be enabled to view the dynamic services.",
-        whyLabel: "Why Nawroli",
-        whyTitle: "Why this area is worth visiting",
-        whyNatureTitle: "Beautiful nature",
-        whyNatureText: "Mountains, greenery, and water views all in one place.",
-        whyFamilyTitle: "Family friendly",
-        whyFamilyText: "Seating, picnics, and a calm atmosphere for all ages.",
-        whyRiverTitle: "River activities",
-        whyRiverText: "Boats, jet ski, and fun moments on the water for active visitors.",
-        whyCalmTitle: "Peaceful environment",
-        whyCalmText: "A place to stay, take photos, and step away from city noise.",
-        galleryLabel: "Gallery",
-        galleryTitle: "A few views of Nawroli's beauty",
-        galleryText: "Click any image to view it in a larger size.",
-        galleryHeroTitle: "Nawroli main view",
-        galleryNatureTitle: "Mountains, water, and peaceful nature",
-        galleryLandscapeTitle: "Greenery and local roads",
-        galleryActivityTitle: "Families and visitors gathering",
-        safetyLabel: "Safety & Guidelines",
-        safetyTitle: "Safety Guidelines for a Peaceful & Secure Visit",
-        safetyText: "The safety of you and your loved ones is our top priority. Please adhere to these guidelines while enjoying the river and nature.",
-        safetyCardLifeJacketTitle: "Life Jackets (Life Jacket)",
-        safetyCardLifeJacketText: "Wearing life jackets is essential when boating, jet skiing, or swimming, especially for children and non-swimmers.",
-        safetyCardChildrenTitle: "Supervising Children Near Riverbanks",
-        safetyCardChildrenText: "Please keep children closely supervised near the water's edge and deeper waters, and choose calm family-designated resting spots.",
-        safetyCardBoatingTitle: "Safe Watercraft Operation",
-        safetyCardBoatingText: "Boats and jet skis must be operated at safe speeds and kept well away from cabanas, swimming guests, and family areas.",
-        safetyCardCleanlinessTitle: "Eco-Care & River Cleanliness",
-        safetyCardCleanlinessText: "Nawroli's waters and scenery are a natural heritage; please avoid littering in the river and dispose of waste in designated bins.",
-        serviceSafetyBadgeTitle: "Visitor Safety Notice:",
-        serviceSafetyBadgeText: "Please wear life jackets during water activities and keep children supervised.",
-        mapLabel: "Map",
-        mapTitle: "Nawroli on the map",
-        mapText: "This iframe is used as a simple placeholder and can be replaced later with a more accurate link or embed.",
-        mapIframeTitle: "Nawroli on Google Maps",
-        mapGetDirections: "📍 Get Directions on Google Maps",
-        weatherDefaultStatus: "Nawroli Weather",
-        relatedSectionLabel: "Related Services",
-        relatedSectionTitle: "You Might Also Like",
-        relatedSectionSubtitle: "Other places and activities in Nawroli that you can explore.",
-        contactLabel: "Contact",
-        contactTitle: "We are ready to answer your questions",
-        contactText: "If you want more information or would like to book in advance, these are the available contact methods.",
-        contactPhoneTitle: "Phone",
-        contactPhoneText: "This is a placeholder number and can be replaced later with a real one.",
-        contactWhatsappTitle: "WhatsApp",
-        contactWhatsappButton: "Contact on WhatsApp",
-        contactWhatsappText: "This button is a quick and easy way to ask for information and make an initial booking request.",
-        contactSocialTitle: "Social Media",
-        socialFacebook: "Facebook",
-        socialInstagram: "Instagram",
-        socialTikTok: "TikTok",
-        contactSocialText: "These links are placeholders and can later be filled with the brand's real accounts.",
-        lightboxCloseLabel: "Close image",
-        footerBackTop: "Back to top",
-        detailsNavAria: "Back to home",
-        detailBackHome: "Back to home",
-        detailBackServices: "Back to services",
-        detailsLoadingTitle: "Loading service details",
-        detailsLoadingText: "Please wait while the service information is loaded from data.js.",
-        detailsNoScript: "JavaScript needs to be enabled to view dynamic service details.",
-        serviceEmptyTitle: "Services will be added soon",
-        serviceEmptyText: "Display data is not ready yet. It can be filled later from data or an API.",
-        servicePriceLabel: "Price",
-        serviceOwnerPhoneLabel: "Owner phone",
+        heroKicker: "Halabja & Hawraman Region • Kurdistan • Iraq",
+        heroTitle: "Visit Halabja & Hawraman",
+        heroSubtitle: "Official booking directory for tourist houses, villas, huts and mountain adventures",
+        heroDescription: "Best family stays and outdoor fun in Nawroli, Tawela, Byara, Ahmad Awa and Khurmal with verified bookings and fair prices.",
+        heroHighlightsAria: "Key highlights",
+        heroHighlightVerified: "Verified & Clean Stays",
+        heroHighlightGuarantee: "Deposit & Booking Security",
+        heroHighlightSupport: "24/7 WhatsApp Support",
+        searchTownLabel: "📍 Destination",
+        searchCategoryLabel: "🏷️ Category",
+        searchSubmitBtn: "Find & Book 🔍",
+        destinationsLabel: "Tourist Destinations",
+        destinationsTitle: "Towns & Areas of Halabja Region",
+        destinationsText: "Click on any town to explore its tourist houses and activities:",
+        destinationsExploreBtn: "Explore Area ←",
+        statsHouses: "Houses & Villas",
+        statsActivities: "Activities",
+        aboutLabel: "About Halabja Region",
+        aboutTitle: "A peaceful destination to breathe and unwind in nature",
+        aboutText: "Halabja and Hawraman are renowned for dramatic mountain landscapes, cold rushing springs, walnut orchards and rivers attracting thousands of visitors every season.",
+        aboutCardNatureTitle: "Pristine Nature & Fresh Air",
+        aboutCardNatureText: "Enjoy refreshing mountain breezes in Nawroli, Byara, Tawela, Ahmad Awa and Khurmal. Riverside stays offer an unforgettable getaway.",
+        aboutCardTrustTitle: "Seamless Bookings with Us",
+        aboutCardTrustText: "Travel with certainty! Reserve your stay in advance via Visit Halabja without worries about full vacancies on arrival.",
+        servicesLabel: "Accommodations & Stays",
+        servicesTitle: "Tourist Houses, Cabins & Fun",
+        servicesText: "Pick your preferred stay and send a booking inquiry in seconds:",
+        servicesNoScript: "JavaScript needs to be enabled to view dynamic listings.",
+        filterTownsLabel: "📍 Town:",
+        filterCategoryLabel: "🏷️ Category:",
+        filterAll: "All",
+        quickBookBtn: "Quick Book ⚡",
         serviceDetailsButton: "View Details",
-        serviceWhatsappButton: "Book on WhatsApp",
-        quickBookingDefaultMessage: "Hello, I would like more information about {service} and its booking options.",
-        quickBookingUnavailable: "WhatsApp number is not available.",
-        genericService: "service",
-        lightboxFallbackTitle: "Nawroli image",
-        detailMoreInfoSoon: "More information will be added soon.",
-        detailGalleryImageLabel: "Image",
-        detailNotFoundTitle: "This service was not found",
-        detailNotFoundText: "Please go back to the main page and choose a service again.",
-        detailAboutService: "About this service",
-        detailSmallGallery: "Small gallery",
-        detailVideo: "Video",
-        detailMap: "Map",
-        detailMainInfo: "Main information",
-        detailHoursLabel: "Working hours",
+        ratingReviewsText: "reviews",
+        whyLabel: "Why Visit Halabja?",
+        whyTitle: "Why Book Through Our Platform?",
+        whyVerifiedTitle: "Verified Clean Stays",
+        whyVerifiedText: "All listings are verified with authentic photos, checked for cleanliness and comfort.",
+        whyFastBookingTitle: "Instant Direct Booking",
+        whyFastBookingText: "Simple form with direct WhatsApp dispatch to hold your dates reliably.",
+        whyDepositSecurityTitle: "Deposit Security",
+        whyDepositSecurityText: "Small down payment via FastPay or FIB ensures 100% reservation confirmation.",
+        whySupportTitle: "Continuous Support",
+        whySupportText: "Our local team is always available to assist with directions and requirements.",
+        galleryLabel: "Gallery",
+        galleryTitle: "Captivating Views of Halabja & Hawraman",
+        galleryText: "Click on any image to view in full size.",
+        galleryHeroTitle: "Nawroli river and water houses",
+        galleryLandscapeTitle: "Byara orchards and mountains",
+        galleryNatureTitle: "Ahmad Awa waterfall and nature",
+        galleryActivityTitle: "Outdoor activities and adventures",
+        hostLabel: "Partner with Us",
+        hostTitle: "Do you own a cabin, house or hut in Halabja?",
+        hostText: "List your property professionally on Visit Halabja and receive daily direct bookings from tourists across Kurdistan and Iraq.",
+        hostButton: "List Your Place on WhatsApp 🏡",
+        safetyLabel: "Safety & Guidelines",
+        safetyTitle: "Safety Guidelines for a Secure Visit",
+        safetyText: "Your safety is our top priority. Please respect safety instructions during your stay.",
+        safetyCardLifeJacketTitle: "Life Jackets",
+        safetyCardLifeJacketText: "Life jackets are required during boat and jet ski rides, especially for children.",
+        safetyCardChildrenTitle: "Child Supervision",
+        safetyCardChildrenText: "Always supervise children closely near water banks and steep mountain paths.",
+        safetyCardBoatingTitle: "Safe Watercraft",
+        safetyCardBoatingText: "Operate watercraft safely and follow guides' instructions.",
+        safetyCardCleanlinessTitle: "Eco-Care & Cleanliness",
+        safetyCardCleanlinessText: "Protect the river and natural environment. Use designated waste bins.",
+        mapLabel: "Map",
+        mapTitle: "Halabja Region Map",
+        mapText: "Easily navigate routes to all tourist attractions.",
+        weatherDefaultStatus: "Halabja Region Weather",
+        contactLabel: "Contact",
+        contactTitle: "We are ready to assist you",
+        contactText: "Call or chat via WhatsApp for information and bookings.",
+        contactPhoneTitle: "Phone",
+        contactPhoneText: "Prompt response during working hours.",
+        contactWhatsappTitle: "Booking WhatsApp",
+        contactWhatsappButton: "Chat on WhatsApp",
+        contactWhatsappText: "Fast and easy way to book.",
+        contactSocialTitle: "Social Media",
+        contactSocialText: "Follow us to view latest scenic videos.",
+        footerBackTop: "Back to top",
+        bookingModalTitle: "Stay Booking Request",
+        bookingFormDateLabel: "📅 Arrival Date",
+        bookingFormDurationLabel: "⏳ Stay Duration",
+        bookingFormGuestsLabel: "👥 Guests Count",
+        bookingFormNameLabel: "👤 Full Name",
+        bookingFormPhoneLabel: "📞 Mobile or WhatsApp Number",
+        bookingFormNotesLabel: "📝 Notes or Special Requests (Optional)",
+        bookingNoticeTitle: "Booking Confirmation:",
+        bookingNoticeDesc: "A small deposit via FastPay or FIB confirms your booking, and the rest is paid upon arrival.",
+        bookingSubmitBtnText: "Send Booking Request via WhatsApp 📲",
+        serviceEmptyTitle: "No Listings Found",
+        serviceEmptyText: "No results matched your filter in this area. Try selecting another category or all destinations.",
+        detailsLoadingTitle: "Loading Listing Details",
+        detailsLoadingText: "Please wait...",
+        detailBackHome: "Back to Home",
+        detailNotFoundTitle: "Listing Not Found",
+        detailNotFoundText: "Please return to homepage.",
+        detailAboutService: "About this place",
+        detailSmallGallery: "Photo Gallery",
+        detailFeatures: "Features & Amenities",
+        detailRules: "Rules & Policies",
+        detailMainInfo: "Main Information",
         detailLocationLabel: "Location",
-        detailPhoneLabel: "Contact number",
-        detailOwnerInfo: "Owner information",
-        detailOwnerNameLabel: "Owner name",
+        detailPhoneLabel: "Contact Phone",
+        servicePriceLabel: "Price",
+        detailOwnerInfo: "Host Information",
+        detailOwnerNameLabel: "Host",
         detailOwnerRoleLabel: "Role",
-        detailFeatures: "Features",
-        detailRules: "Rules and guidelines",
-        detailBookingForm: "Booking form",
-        detailFormFullName: "Full name",
-        detailFormPhone: "Phone number",
-        detailFormVisitDate: "Visit date",
-        detailFormVisitTime: "Visit time",
-        detailFormGuestsCount: "Guests count",
-        detailFormNote: "Note",
-        detailFormNotePlaceholder: "If you have a special note, write it here.",
-        detailFormSubmit: "Send Request to WhatsApp",
-        detailVideoPlaceholder: "Video will be added soon",
-        detailMapPlaceholder: "Exact location will be added soon",
-        detailWhatsappMissing: "This service does not have an available WhatsApp number.",
-        detailStatusRequired: "Please fill in all required fields.",
-        detailStatusSuccess: "WhatsApp was opened for the service owner.",
-        detailStatusNotFound: "This service was not found.",
-        bookingIntro: "Hello, I have a booking request.",
-        bookingLabelService: "Service",
-        bookingLabelName: "Name",
-        bookingLabelPhone: "Phone",
-        bookingLabelDate: "Date",
-        bookingLabelTime: "Time",
-        bookingLabelGuests: "Guests Count",
-        bookingLabelNote: "Note",
-        contactWhatsappMessage: "Hello, I would like more information about Nawroli and its services."
+        detailBookingForm: "Book via WhatsApp",
+        detailFormFullName: "Full Name",
+        detailFormPhone: "Phone Number",
+        detailFormVisitDate: "Visit Date",
+        detailFormGuestsCount: "Guests Count",
+        detailFormNote: "Notes",
+        detailFormSubmit: "Send Request to WhatsApp"
     }
 };
 
@@ -482,11 +430,9 @@ function t(value) {
     if (typeof value === "string") {
         return value;
     }
-
     if (!value || typeof value !== "object") {
         return "";
     }
-
     return value[currentLanguage] || value.ku || "";
 }
 
@@ -498,11 +444,6 @@ function getCurrentDirection() {
     return currentLanguage === "en" ? "ltr" : "rtl";
 }
 
-/*
-    ئەم helper ـانە localStorage ـەکە هەڵدەسەنگێنن و ناوەڕۆکی static HTML بە شێوەیەکی خاوێن وەرگێڕن.
-    هۆکاری بوونیان ئەوەیە homepage و details page هەردووکیان بە هەمان بنەما و بەبێ framework ی قورس کار بکەن.
-    لە داهاتوودا دەتوانرێت ئەم شێوازە بگۆڕدرێت بۆ router ی i18n، server-side rendering، یان translation files ی جیاواز.
-*/
 function applyLanguageToDocument() {
     const direction = getCurrentDirection();
     const metaDescription = document.querySelector('meta[name="description"]');
@@ -521,32 +462,35 @@ function applyLanguageToDocument() {
         );
     }
 
-    document.title = ui(document.getElementById("serviceDetailsRoot") ? "pageTitleDetails" : "pageTitleHome");
+    const titleElement = document.querySelector("title");
+    if (titleElement && !document.getElementById("serviceDetailsRoot")) {
+        titleElement.textContent = ui("pageTitleHome");
+    }
 }
 
 function applyTranslationsToMarkedElements() {
     document.querySelectorAll("[data-i18n]").forEach((element) => {
-        element.textContent = ui(element.dataset.i18n);
-    });
-
-    document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
-        element.setAttribute("aria-label", ui(element.dataset.i18nAriaLabel));
+        const key = element.dataset.i18n;
+        const text = ui(key);
+        if (text) {
+            element.textContent = text;
+        }
     });
 
     document.querySelectorAll("[data-i18n-placeholder]").forEach((element) => {
-        element.setAttribute("placeholder", ui(element.dataset.i18nPlaceholder));
+        const key = element.dataset.i18nPlaceholder;
+        const text = ui(key);
+        if (text) {
+            element.setAttribute("placeholder", text);
+        }
     });
 
-    document.querySelectorAll("[data-i18n-alt]").forEach((element) => {
-        element.setAttribute("alt", ui(element.dataset.i18nAlt));
-    });
-
-    document.querySelectorAll("[data-i18n-data-title]").forEach((element) => {
-        element.dataset.title = ui(element.dataset.i18nDataTitle);
-    });
-
-    document.querySelectorAll("[data-i18n-title-attr]").forEach((element) => {
-        element.setAttribute("title", ui(element.dataset.i18nTitleAttr));
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((element) => {
+        const key = element.dataset.i18nAriaLabel;
+        const text = ui(key);
+        if (text) {
+            element.setAttribute("aria-label", text);
+        }
     });
 
     document.querySelectorAll(".language-button[data-language]").forEach((button) => {
@@ -555,15 +499,6 @@ function applyTranslationsToMarkedElements() {
         button.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
 
-    const contactWhatsappButton = document.querySelector("#contact .button.button-primary.full-width");
-
-    if (contactWhatsappButton) {
-        contactWhatsappButton.setAttribute(
-            "href",
-            createWhatsAppBookingUrl("Visit Nawroli", "9647500000000", ui("contactWhatsappMessage"))
-        );
-    }
-
     if (cachedWeatherData) {
         updateWeatherDisplay(cachedWeatherData.temp, cachedWeatherData.code);
     }
@@ -571,7 +506,6 @@ function applyTranslationsToMarkedElements() {
 
 function setupLanguageSwitch() {
     const languageButtons = document.querySelectorAll(".language-button[data-language]");
-
     if (languageButtons.length === 0) {
         return;
     }
@@ -579,7 +513,6 @@ function setupLanguageSwitch() {
     languageButtons.forEach((button) => {
         button.addEventListener("click", () => {
             const selectedLanguage = button.dataset.language || "ku";
-
             if (!supportedLanguages.includes(selectedLanguage)) {
                 return;
             }
@@ -590,6 +523,10 @@ function setupLanguageSwitch() {
             applyLanguageToDocument();
             applyTranslationsToMarkedElements();
 
+            setupSmartSearch();
+            renderDestinationsCards();
+            renderTownPills();
+            renderCategoryPills();
             renderServiceCards();
             renderServiceDetailsPage();
 
@@ -599,46 +536,28 @@ function setupLanguageSwitch() {
     });
 }
 
-/*
-    ئەم helper ـە ژمارەی مۆبایل بۆ لینکێکی tel پاک دەکات.
-    چونکە ناوی ژمارەکانی placeholder هەندێکجار هێما یان بۆشاییان تێدایە، پێویستە بۆ لینک سادە بکرێنەوە.
-    لە داهاتوودا دەتوانرێت validation ی باشتر بۆ جۆری ژمارە و country code بۆی زیاد بکرێت.
-*/
 function normalizePhoneForLink(phoneNumber) {
     const safePhoneNumber = typeof phoneNumber === "string" ? phoneNumber : "";
     const cleanNumber = safePhoneNumber.replace(/[^\d+]/g, "");
-
     if (!cleanNumber) {
         return "";
     }
-
     return cleanNumber.startsWith("+") ? cleanNumber : `+${cleanNumber}`;
 }
 
-/*
-    ئەم helper ـە لینکێکی ئامادەی WhatsApp دروست دەکات بۆ هەر خزمەتگوزارییەک.
-    هۆکاری بوونی ئەوەیە هەمان منطق لە کارتەکان و پەڕەی وردەکاری بە یەک شێوە بەکاربهێندرێت و دووبارەکاری کۆد کەم بکرێتەوە.
-    لە داهاتوودا دەتوانرێت ناوی بەکارهێنەر، بەروار، یان ژمارەی میوانانیش بە پەیامەکەوە زیاد بکرێت.
-*/
 function createWhatsAppBookingUrl(serviceName, whatsappNumber, customMessage = "") {
     const safeWhatsappNumber = typeof whatsappNumber === "string" ? whatsappNumber : "";
     const cleanNumber = safeWhatsappNumber.replace(/\D/g, "");
-    const localizedServiceName = t(serviceName) || ui("genericService");
+    const localizedServiceName = t(serviceName) || "خزمەتگوزاری";
 
     if (!cleanNumber) {
         return "";
     }
 
-    const message =
-        customMessage || ui("quickBookingDefaultMessage").replace("{service}", localizedServiceName);
+    const message = customMessage || `سڵاو، داواکاری حیجزم هەیە دەربارەی ${localizedServiceName} لە پلاتفۆرمی Visit Halabja.`;
     return `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
 }
 
-/*
-    ئەم helper ـانە لیستی خزمەتگوزارییەکان و خزمەتگوزارییەکی دیاریکراو دەستنیشان دەکەن.
-    بوونیان گرنگە چونکە homepage و service details page هەردووکیان بە هەمان data.js پشت دەبەستن و پێویستە لە شوێنێکی یەکگرتوو بخوێندرێنەوە.
-    لە داهاتوودا ئەگەر داتاکە لە API یان database بێت، هەر لێرە دەتوانرێت منطقەکە بگۆڕدرێت بەبێ شکاندنی UI.
-*/
 function getServiceList() {
     return Array.isArray(window.services) ? window.services : [];
 }
@@ -647,108 +566,447 @@ function getServiceById(serviceId) {
     if (!serviceId) {
         return null;
     }
-
     return getServiceList().find((service) => service.id === serviceId) || null;
 }
 
-/*
-    ئەم فانکشەنە کارتەکانی خزمەتگوزارییەکان دروست دەکات.
-    هۆکاری نووسینی template بە JavaScript ئەوەیە کە هەر زیادکردنێک لە data.js بەخۆکار لێرە نیشان بدرێت.
-    لە داهاتوودا دەتوانرێت sorting، filtering، availability status، یان booking badge بۆ هەر کارتێک زیاد بکرێت.
-*/
+/* ==========================================================================
+   ١. بەشی کارتی دەڤەرەکان (Destinations Cards)
+   ========================================================================== */
+function renderDestinationsCards() {
+    const grid = document.getElementById("destinationsGrid");
+    if (!grid || !Array.isArray(window.towns)) {
+        return;
+    }
+
+    const townsToShow = window.towns.filter((town) => town.id !== "all");
+
+    grid.innerHTML = townsToShow
+        .map((town) => {
+            const name = t(town.name);
+            const title = t(town.title);
+            const badge = t(town.badge);
+            const housesText = `${town.stats.houses} ${ui("statsHouses")}`;
+            const activitiesText = `${town.stats.activities} ${ui("statsActivities")}`;
+
+            return `
+                <article class="destination-card reveal" data-town-id="${town.id}">
+                    <img class="destination-card-bg lazy-image" src="${IMAGE_PLACEHOLDER}" data-src="${town.image}" alt="${name}" loading="lazy">
+                    <div class="destination-card-scrim"></div>
+                    <span class="destination-badge-tag">${badge}</span>
+                    <div class="destination-card-content">
+                        <div class="destination-title-row">
+                            <h3>${name}</h3>
+                        </div>
+                        <p class="destination-subtitle">${title}</p>
+                        <div class="destination-stats-row">
+                            <span class="destination-stat-pill">🏡 ${housesText}</span>
+                            <span class="destination-stat-pill">🏎️ ${activitiesText}</span>
+                        </div>
+                        <span class="destination-cta-hint">${ui("destinationsExploreBtn")}</span>
+                    </div>
+                </article>
+            `;
+        })
+        .join("");
+
+    // کلیک لەسەر کارتی هەر دەڤەرێک فلتەری ئەو ناوچەیە چالاک دەکات و دەچێتە سەر خزمەتگوزارییەکان
+    grid.querySelectorAll(".destination-card").forEach((card) => {
+        card.addEventListener("click", () => {
+            const townId = card.dataset.townId;
+            if (townId) {
+                currentSelectedTown = townId;
+                updateTownPillActiveState();
+                updateSearchDropdownState();
+                renderServiceCards();
+
+                const servicesSection = document.getElementById("services");
+                if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        });
+    });
+}
+
+/* ==========================================================================
+   ٢. فلتەری دەڤەر و پۆلێنەکان (Filter Pills)
+   ========================================================================== */
+function renderTownPills() {
+    const container = document.getElementById("townFilterPills");
+    if (!container || !Array.isArray(window.towns)) {
+        return;
+    }
+
+    container.innerHTML = window.towns
+        .map((town) => {
+            const isActive = town.id === currentSelectedTown;
+            const name = town.id === "all" ? ui("filterAll") : t(town.name);
+            return `
+                <button class="filter-pill ${isActive ? "is-active" : ""}" type="button" data-filter-town="${town.id}">
+                    ${name}
+                </button>
+            `;
+        })
+        .join("");
+
+    container.querySelectorAll("[data-filter-town]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            currentSelectedTown = btn.dataset.filterTown;
+            updateTownPillActiveState();
+            updateSearchDropdownState();
+            renderServiceCards();
+        });
+    });
+}
+
+function updateTownPillActiveState() {
+    const container = document.getElementById("townFilterPills");
+    if (!container) return;
+    container.querySelectorAll("[data-filter-town]").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.filterTown === currentSelectedTown);
+    });
+}
+
+function renderCategoryPills() {
+    const container = document.getElementById("categoryFilterPills");
+    if (!container || !Array.isArray(window.serviceCategories)) {
+        return;
+    }
+
+    container.innerHTML = window.serviceCategories
+        .map((cat) => {
+            const isActive = cat.id === currentSelectedCategory;
+            const name = cat.id === "all" ? ui("filterAll") : t(cat.name);
+            const icon = cat.icon || "✨";
+            return `
+                <button class="filter-pill ${isActive ? "is-active" : ""}" type="button" data-filter-category="${cat.id}">
+                    ${icon} ${name}
+                </button>
+            `;
+        })
+        .join("");
+
+    container.querySelectorAll("[data-filter-category]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            currentSelectedCategory = btn.dataset.filterCategory;
+            updateCategoryPillActiveState();
+            updateSearchDropdownState();
+            renderServiceCards();
+        });
+    });
+}
+
+function updateCategoryPillActiveState() {
+    const container = document.getElementById("categoryFilterPills");
+    if (!container) return;
+    container.querySelectorAll("[data-filter-category]").forEach((btn) => {
+        btn.classList.toggle("is-active", btn.dataset.filterCategory === currentSelectedCategory);
+    });
+}
+
+/* ==========================================================================
+   ٣. بۆکسی گەڕانی زیرەک (Smart Search Bar)
+   ========================================================================== */
+function setupSmartSearch() {
+    const townSelect = document.getElementById("searchTownSelect");
+    const categorySelect = document.getElementById("searchCategorySelect");
+    const submitBtn = document.getElementById("searchSubmitBtn");
+
+    if (!townSelect || !categorySelect) {
+        return;
+    }
+
+    // پڕکردنەوەی هەڵبژاردنی دەڤەر
+    if (Array.isArray(window.towns)) {
+        townSelect.innerHTML = window.towns
+            .map((town) => {
+                const name = town.id === "all" ? ui("filterAll") : t(town.name);
+                return `<option value="${town.id}">${name}</option>`;
+            })
+            .join("");
+        townSelect.value = currentSelectedTown;
+    }
+
+    // پڕکردنەوەی هەڵبژاردنی جۆر
+    if (Array.isArray(window.serviceCategories)) {
+        categorySelect.innerHTML = window.serviceCategories
+            .map((cat) => {
+                const name = cat.id === "all" ? ui("filterAll") : t(cat.name);
+                const icon = cat.icon || "";
+                return `<option value="${cat.id}">${icon} ${name}</option>`;
+            })
+            .join("");
+        categorySelect.value = currentSelectedCategory;
+    }
+
+    if (submitBtn && !submitBtn.dataset.bound) {
+        submitBtn.dataset.bound = "true";
+        submitBtn.addEventListener("click", () => {
+            currentSelectedTown = townSelect.value;
+            currentSelectedCategory = categorySelect.value;
+
+            updateTownPillActiveState();
+            updateCategoryPillActiveState();
+            renderServiceCards();
+
+            const servicesSection = document.getElementById("services");
+            if (servicesSection) {
+                servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        });
+    }
+}
+
+function updateSearchDropdownState() {
+    const townSelect = document.getElementById("searchTownSelect");
+    const categorySelect = document.getElementById("searchCategorySelect");
+    if (townSelect) townSelect.value = currentSelectedTown;
+    if (categorySelect) categorySelect.value = currentSelectedCategory;
+}
+
+/* ==========================================================================
+   ٤. کارتەکانی خزمەتگوزاری بە فلتەرکردنی داینامیکی (Service Cards)
+   ========================================================================== */
 function renderServiceCards() {
     const servicesGrid = document.getElementById("servicesGrid");
-    const serviceList = getServiceList();
+    const allServices = getServiceList();
 
     if (!servicesGrid) {
         return;
     }
 
-    if (!Array.isArray(serviceList) || serviceList.length === 0) {
+    // پاڵاوتن بەپێی دەڤەر و جۆری خزمەتگوزاری
+    const filteredServices = allServices.filter((service) => {
+        const matchesTown = currentSelectedTown === "all" || service.town === currentSelectedTown;
+        const matchesCategory = currentSelectedCategory === "all" || service.categoryType === currentSelectedCategory;
+        return matchesTown && matchesCategory;
+    });
+
+    if (filteredServices.length === 0) {
         servicesGrid.innerHTML = `
-            <article class="contact-card">
-                <h3>${ui("serviceEmptyTitle")}</h3>
-                <p>${ui("serviceEmptyText")}</p>
+            <article class="contact-card reveal" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1.5rem;">
+                <span style="font-size: 2.5rem; display: block; margin-bottom: 0.8rem;">🏡</span>
+                <h3 style="font-size: 1.35rem; margin-bottom: 0.5rem;">${ui("serviceEmptyTitle")}</h3>
+                <p style="color: var(--color-text-soft); max-width: 480px; margin: 0 auto 1.2rem;">${ui("serviceEmptyText")}</p>
+                <button class="button button-secondary" type="button" onclick="resetFilters()">بینینی هەموو شوێنەکان</button>
             </article>
         `;
+        setupRevealAnimations();
         return;
     }
 
-    servicesGrid.innerHTML = serviceList
-        .map(
-            (service) => `
+    servicesGrid.innerHTML = filteredServices
+        .map((service) => {
+            const serviceName = t(service.name);
+            const townName = t(service.townName);
+            const categoryName = t(service.category);
+            const description = t(service.description);
+            const priceText = t(service.price);
+            const rating = service.rating || 4.9;
+            const reviewsCount = service.reviewsCount || 25;
+            const badge = t(service.badge);
+
+            const featuresHtml = Array.isArray(service.features)
+                ? service.features.slice(0, 3).map((f) => `<li class="service-feature-chip">✓ ${t(f)}</li>`).join("")
+                : "";
+
+            return `
                 <article class="service-card reveal" data-service-id="${service.id}">
                     <div class="service-media">
                         <img
                             class="lazy-image"
                             src="${IMAGE_PLACEHOLDER}"
                             data-src="${service.image}"
-                            alt="${t(service.name)}"
+                            alt="${serviceName}"
                             loading="lazy"
                             width="800"
                             height="500"
                         >
+                        <span class="service-badge">${categoryName}</span>
                     </div>
                     <div class="service-body">
-                        <span class="service-badge">${t(service.category)}</span>
-                        <h3>${t(service.name)}</h3>
-                        <p>${t(service.description)}</p>
-                        <ul class="service-meta">
-                            <li>
-                                <strong>${ui("servicePriceLabel")}</strong>
-                                <span>${t(service.price)}</span>
-                            </li>
-                            <li>
-                                <strong>${ui("serviceOwnerPhoneLabel")}</strong>
-                                <a href="tel:${normalizePhoneForLink(service.phone || service.whatsapp || "")}">${service.phone}</a>
-                            </li>
-                        </ul>
-                        <!--
-                            ئەم action ـانە میوان بۆ پەڕەی وردەکاری و رزێرڤی WhatsApp ڕێنمایی دەکەن.
-                            بوونی وردەکاری یارمەتی دەدات بەکارهێنەر پێش پەیوەندی زانیاریی زیاتر ببینێت و بڕیاری باشتر بدات.
-                            لە داهاتوودا دەتوانرێت share، favorite، یان live availability buttons ی ترش لێرە زیاد بکرێت.
-                        -->
-                        <a class="button button-secondary service-action" href="service-details.html?id=${encodeURIComponent(service.id)}">
-                            ${ui("serviceDetailsButton")}
-                        </a>
-                        <button
-                            class="button button-primary service-action"
-                            type="button"
-                            data-whatsapp="${service.whatsapp}"
-                            data-service-name="${t(service.name)}">
-                            ${ui("serviceWhatsappButton")}
-                        </button>
+                        <div class="service-card-meta-top">
+                            <span class="service-town-tag">📍 ${townName}</span>
+                            <span class="service-rating">★ ${rating} <small class="service-rating-count">(${reviewsCount})</small></span>
+                        </div>
+                        <h3>${serviceName}</h3>
+                        <p>${description}</p>
+
+                        ${featuresHtml ? `<ul class="service-features-list">${featuresHtml}</ul>` : ""}
+
+                        <div class="service-price-tag">${priceText}</div>
+
+                        <div class="service-actions-row">
+                            <button
+                                class="button quick-book-btn"
+                                type="button"
+                                data-quick-book="${service.id}">
+                                ${ui("quickBookBtn")}
+                            </button>
+                            <a class="details-btn" href="service-details.html?id=${encodeURIComponent(service.id)}">
+                                ${ui("serviceDetailsButton")}
+                            </a>
+                        </div>
                     </div>
                 </article>
-            `
-        )
+            `;
+        })
         .join("");
+
+    setupLazyLoading();
+    setupRevealAnimations();
 }
 
-/*
-    ئەم فانکشەنە پەیامی سادەی WhatsApp بۆ خزمەتگوزارییەک دروست دەکات.
-    بوونی ئەوەیە کە هەر کلیکێک لەسەر دوگمەی رزێرڤ، پەیامێکی ئامادە بۆ خاوەن خزمەتگوزاری بڕوات.
-    لە داهاتوودا دەتوانرێت ناوی بەکارهێنەر، بەروار، ژمارەی کەس و تێبینیی زیاتر لە form ـەوە لەم پەیامە زیاد بکرێت.
-*/
-function openWhatsAppBooking(serviceName, whatsappNumber) {
-    const bookingUrl = createWhatsAppBookingUrl(serviceName, whatsappNumber);
+window.resetFilters = function () {
+    currentSelectedTown = "all";
+    currentSelectedCategory = "all";
+    updateTownPillActiveState();
+    updateCategoryPillActiveState();
+    updateSearchDropdownState();
+    renderServiceCards();
+};
 
-    if (!bookingUrl) {
-        window.alert(ui("quickBookingUnavailable"));
+/* ==========================================================================
+   ٥. سیستەمی پەنجەرەی حجزکردنی خێرا (Quick Booking Modal)
+   ========================================================================== */
+function setupBookingModal() {
+    const modal = document.getElementById("bookingModal");
+    const closeBtn = document.getElementById("bookingModalClose");
+    const form = document.getElementById("bookingModalForm");
+    const dateInput = document.getElementById("bookingDateInput");
+
+    if (!modal) {
         return;
     }
 
-    window.open(bookingUrl, "_blank", "noopener");
+    // دیاریکردنی کەمترین بەروار بۆ ئەمڕۆ
+    if (dateInput) {
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.min = today;
+    }
+
+    // داخستنی مۆدال
+    if (closeBtn) {
+        closeBtn.addEventListener("click", closeBookingModal);
+    }
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeBookingModal();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("is-open")) {
+            closeBookingModal();
+        }
+    });
+
+    // بەستنەوەی کلیکی Quick Book لە هەموو پەڕەکەدا بە Event Delegation
+    document.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-quick-book]");
+        if (!trigger) {
+            return;
+        }
+
+        const serviceId = trigger.dataset.quickBook;
+        const service = getServiceById(serviceId);
+        if (service) {
+            openBookingModal(service);
+        }
+    });
+
+    // کاتێک فۆرمی حجز پڕ دەکرێتەوە و submit دەکرێت
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            if (!activeBookingService) {
+                return;
+            }
+
+            const fullName = document.getElementById("bookingNameInput")?.value.trim() || "";
+            const phone = document.getElementById("bookingPhoneInput")?.value.trim() || "";
+            const visitDate = document.getElementById("bookingDateInput")?.value || "";
+            const duration = document.getElementById("bookingDurationInput")?.value || "1 شەو";
+            const guests = document.getElementById("bookingGuestsInput")?.value || "";
+            const notes = document.getElementById("bookingNotesInput")?.value.trim() || "نییە";
+
+            if (!fullName || !phone || !visitDate) {
+                alert("تکایە خانەکانی ناو، تەلەفۆن و بەروار بە تەواوی پڕ بکەرەوە.");
+                return;
+            }
+
+            // دروستکردنی نامەیەکی شیک و ڕێکخراو بۆ WhatsApp
+            const messageLines = [
+                "👋 سڵاو بەڕێوەبەری پلاتفۆرمی Visit Halabja،",
+                "داواکاری حیجزکردنم هەیە لە ڕێگەی وێبسایتەکەوە:",
+                "------------------------------------",
+                `🏡 شوێن: ${t(activeBookingService.name)}`,
+                `📍 دەڤەر: ${t(activeBookingService.townName)}`,
+                `💵 نرخ: ${t(activeBookingService.price)}`,
+                "------------------------------------",
+                `👤 ناوی میوان: ${fullName}`,
+                `📞 ژمارەی پەیوەندی: ${phone}`,
+                `📅 بەرواری هاتن: ${visitDate}`,
+                `⏳ ماوەی مانەوە: ${duration}`,
+                `👥 ژمارەی کەسەکان: ${guests}`,
+                `📝 تێبینی تایبەت: ${notes}`,
+                "------------------------------------",
+                "💳 تکایە زانیاری پێشەکی و تەئکیدکردنەوەم بۆ بنێرە."
+            ];
+
+            const messageText = messageLines.join("\n");
+            // ژمارەی WhatsApp بۆ پلاتفۆرم/بەڕێوەبەر یان خزمەتگوزاری
+            const adminPhone = activeBookingService.whatsapp || "9647500000000";
+            const cleanPhone = adminPhone.replace(/\D/g, "");
+
+            const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(messageText)}`;
+            window.open(whatsappUrl, "_blank", "noopener");
+
+            closeBookingModal();
+        });
+    }
 }
 
-/*
-    event delegation بۆ grid ی خزمەتگوزارییەکان.
-    هۆکارەکە ئەوەیە کارتەکان داینامیکی دروست دەبن، بۆیە باشترە تەنها یەک listener لەسەر container ـەکە هەبێت.
-    لە داهاتوودا دەتوانرێت هەمان شێواز بۆ favorite، compare، یان share button ـەکان بەکاربهێندرێت.
-*/
+function openBookingModal(service) {
+    const modal = document.getElementById("bookingModal");
+    if (!modal || !service) {
+        return;
+    }
+
+    activeBookingService = service;
+
+    const nameEl = document.getElementById("bookingModalServiceName");
+    const townEl = document.getElementById("bookingModalTown");
+    const priceEl = document.getElementById("bookingModalPrice");
+
+    if (nameEl) nameEl.textContent = t(service.name);
+    if (townEl) townEl.textContent = `📍 ${t(service.townName)}`;
+    if (priceEl) priceEl.textContent = `💵 ${t(service.price)}`;
+
+    modal.classList.add("is-open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+}
+
+function closeBookingModal() {
+    const modal = document.getElementById("bookingModal");
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove("is-open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    activeBookingService = null;
+}
+
+/* ==========================================================================
+   ٦. خزمەتگوزارییەکانی کۆن و پەڕەی وردەکاری (Service Details Page & Actions)
+   ========================================================================= */
 function setupServiceActions() {
     const servicesGrid = document.getElementById("servicesGrid");
-
     if (!servicesGrid || servicesGrid.dataset.actionsBound) {
         return;
     }
@@ -756,33 +1014,32 @@ function setupServiceActions() {
 
     servicesGrid.addEventListener("click", (event) => {
         const trigger = event.target.closest("[data-whatsapp]");
-
         if (!trigger) {
             return;
         }
-
-        openWhatsAppBooking(trigger.dataset.serviceName || ui("genericService"), trigger.dataset.whatsapp || "");
+        openWhatsAppBooking(trigger.dataset.serviceName || "خزمەتگوزاری", trigger.dataset.whatsapp || "");
     });
 }
 
-/*
-    smooth scrolling بۆ هەموو ئەو لینک و دوگمانەی data-scroll-target ـیان هەیە.
-    بوونی گرنگە چونکە هەستێکی مۆدێرن و ئارام لە گەڕان بە ناو پەڕەکە دروست دەکات.
-    لە داهاتوودا دەتوانرێت offset بۆ header ی گەورەتر، active nav state، یان scroll spy بۆی زیاد بکرێت.
-*/
+function openWhatsAppBooking(serviceName, whatsappNumber) {
+    const bookingUrl = createWhatsAppBookingUrl(serviceName, whatsappNumber);
+    if (!bookingUrl) {
+        alert(ui("quickBookingUnavailable"));
+        return;
+    }
+    window.open(bookingUrl, "_blank", "noopener");
+}
+
 function setupSmoothScrolling() {
     const scrollTriggers = document.querySelectorAll("[data-scroll-target]");
-
     scrollTriggers.forEach((trigger) => {
         trigger.addEventListener("click", (event) => {
             const targetSelector = trigger.getAttribute("href");
-
             if (!targetSelector || !targetSelector.startsWith("#")) {
                 return;
             }
 
             const targetElement = document.querySelector(targetSelector);
-
             if (!targetElement) {
                 return;
             }
@@ -796,14 +1053,8 @@ function setupSmoothScrolling() {
     });
 }
 
-/*
-    لۆدی وێنەکە بە شێوەی یەکسان لە شوێنی card و gallery جێبەجێ دەکات.
-    هەرکات وێنەکە تەواو دابەزی، class ی is-loaded زیاد دەکرێت بۆ fade-in ـێکی سووک.
-    لە داهاتوودا دەتوانرێت retry logic، error placeholder، یان WebP/AVIF switch بۆی زیاد بکرێت.
-*/
 function loadImage(imageElement) {
     const source = imageElement.dataset.src;
-
     if (!source || imageElement.dataset.loadingState === "loading") {
         return;
     }
@@ -831,14 +1082,8 @@ function loadImage(imageElement) {
     );
 }
 
-/*
-    lazy loading بۆ وێنەکان بە IntersectionObserver ئەنجام دەدرێت.
-    ئەم ڕێگایە باشترە لەوەی هەموو وێنەکان لە یەک کاتدا دابەزێنرێن، چونکە تەنها ئەوانە دابەزێنرێن کە نزیکن لە viewport.
-    لە داهاتوودا دەتوانرێت rootMargin و threshold بەپێی قەبارەی وێنەکان و ڕەفتاری user باشتر بکرێت.
-*/
 function setupLazyLoading() {
     const lazyImages = document.querySelectorAll(".lazy-image:not([data-observed])");
-
     if (lazyImages.length === 0) {
         return;
     }
@@ -848,56 +1093,35 @@ function setupLazyLoading() {
         return;
     }
 
-    if (!window._lazyImageObserver) {
-        window._lazyImageObserver = new IntersectionObserver(
+    if (!window._lazyObserver) {
+        window._lazyObserver = new IntersectionObserver(
             (entries, observer) => {
                 entries.forEach((entry) => {
                     if (!entry.isIntersecting) {
                         return;
                     }
-
                     loadImage(entry.target);
                     observer.unobserve(entry.target);
                 });
             },
-            {
-                rootMargin: "360px 0px",
-                threshold: 0.1
-            }
+            { rootMargin: "140px 0px" }
         );
     }
 
     lazyImages.forEach((image) => {
         image.dataset.observed = "true";
-        window._lazyImageObserver.observe(image);
+        window._lazyObserver.observe(image);
     });
-
-    /*
-        ئەم fallback ـە دڵنیایی دەدات کە ئەگەر هەندێک وێنە بەهۆی preview، screenshot، یان هێواشی load هێشتا نەهاتبێتە ناو viewport،
-        هەرگیز بە placeholder نەبمێنێتەوە و دواتر خۆی دابەزێت.
-    */
-    window.setTimeout(() => {
-        lazyImages.forEach((image) => {
-            if (image.dataset.src) {
-                loadImage(image);
-            }
-        });
-    }, 1800);
 }
 
-/*
-    reveal animation بۆ هەموو ئەو block ـانەی class ی reveal ـیان هەیە.
-    هۆکارەکە ئەوەیە بەشی نوێ هەرکات دەرکەوت، بە شێوەی سووک هەستێکی زیندوو پێ بدرێت.
-*/
 function setupRevealAnimations() {
     const revealElements = document.querySelectorAll(".reveal:not([data-reveal-observed])");
-
     if (revealElements.length === 0) {
         return;
     }
 
     if (!("IntersectionObserver" in window)) {
-        revealElements.forEach((element) => element.classList.add("is-visible"));
+        revealElements.forEach((el) => el.classList.add("is-visible"));
         return;
     }
 
@@ -908,36 +1132,24 @@ function setupRevealAnimations() {
                     if (!entry.isIntersecting) {
                         return;
                     }
-
                     entry.target.classList.add("is-visible");
                     observer.unobserve(entry.target);
                 });
             },
-            {
-                threshold: 0.12
-            }
+            { threshold: 0.1 }
         );
     }
 
-    revealElements.forEach((element) => {
-        element.dataset.revealObserved = "true";
-        window._revealObserver.observe(element);
+    revealElements.forEach((el) => {
+        el.dataset.revealObserved = "true";
+        window._revealObserver.observe(el);
     });
 
-    /*
-        ئەم fallback ـە بۆ دڵنیابوون لە دەرکەوتنی ئەڵێمێنتەکان لە کاتی دواکەوتن.
-    */
     window.setTimeout(() => {
-        revealElements.forEach((element) => {
-            element.classList.add("is-visible");
-        });
-    }, 1400);
+        revealElements.forEach((el) => el.classList.add("is-visible"));
+    }, 1200);
 }
 
-/*
-    lightbox ـی gallery بەهۆی ئەم فانکشەنە کار دەکات.
-    کلیک لەسەر هەر وێنەیەکی gallery بە delegation دەکرێتەوە و لە شاشەی جیاوازدا کار دەکات بێ دووبارەبوونەوەی listener.
-*/
 function setupGalleryLightbox() {
     const lightbox = document.getElementById("lightbox");
     const lightboxImage = document.getElementById("lightboxImage");
@@ -969,7 +1181,7 @@ function setupGalleryLightbox() {
         }
 
         const fullImage = card.dataset.fullImage;
-        const title = card.dataset.title || ui("lightboxFallbackTitle") || "وێنەی نەوڕۆڵی";
+        const title = card.dataset.title || "دیمەنی دەڤەری هەڵەبجە";
 
         if (!fullImage) {
             return;
@@ -998,216 +1210,22 @@ function setupGalleryLightbox() {
     });
 }
 
-/*
-    ئەم helper ـە لیستی features یان rules بۆ پەڕەی وردەکاری بە شێوەی markup دروست دەکات.
-    بوونی ئەوەیە کە هەمان class و layout بۆ هەموو لیستەکانی details page بەکاربهێندرێت و چاکسازیان ئاسان بێت.
-    لە داهاتوودا دەتوانرێت icon، status badge، یان sorting بەپێی گرنگی لێرە زیاد بکرێت.
-*/
-function buildDetailListMarkup(items) {
-    if (!Array.isArray(items) || items.length === 0) {
-        return `<p>${ui("detailMoreInfoSoon")}</p>`;
-    }
-
-    return `
-        <ul class="detail-meta">
-            ${items
-                .map(
-                    (item) => `
-                        <li>
-                            <span>${t(item)}</span>
-                        </li>
-                    `
-                )
-                .join("")}
-        </ul>
-    `;
-}
-
-/*
-    ئەم helper ـە گەلەریی بچووکی service details page دروست دەکات.
-    هۆکارەکە ئەوەیە هەموو وێنە زیاترەکان بە lazy loading و lightbox ی هەمان وێبەکە نیشان بدرێن و پرۆژەکە خەفیف بمێنێتەوە.
-    لە داهاتوودا دەتوانرێت thumbnail order، caption ی جیاواز، یان وێنەی وەرزیی جۆراوجۆر بۆ هەر خزمەتگوزاری زیاد بکرێت.
-*/
-function buildDetailGalleryMarkup(service) {
-    const galleryImages =
-        Array.isArray(service.gallery) && service.gallery.length > 0 ? service.gallery : [service.image];
-    const serviceTitle = t(service.name);
-    const imageLabel = ui("detailGalleryImageLabel");
-
-    return galleryImages
-        .map(
-            (image, index) => `
-                <button
-                    class="gallery-card reveal"
-                    type="button"
-                    data-full-image="${image}"
-                    data-title="${serviceTitle} - ${imageLabel} ${index + 1}">
-                    <img
-                        class="lazy-image"
-                        src="${IMAGE_PLACEHOLDER}"
-                        data-src="${image}"
-                        alt="${serviceTitle} - ${imageLabel} ${index + 1}"
-                        loading="lazy"
-                        width="960"
-                        height="600">
-                    <span>${imageLabel} ${index + 1}</span>
-                </button>
-            `
-        )
-        .join("");
-}
-
-/*
-    ئەم helper ـە کارتەکانی خزمەتگوزارییە پەیوەندیدارەکان بۆ پەڕەی وردەکاری دروست دەکات.
-*/
-function buildRelatedServicesMarkup(currentServiceId) {
-    const list = getServiceList()
-        .filter((service) => service.id !== currentServiceId)
-        .slice(0, 3);
-
-    if (list.length === 0) {
-        return "";
-    }
-
-    return list
-        .map(
-            (service) => `
-                <article class="service-card reveal" data-service-id="${service.id}">
-                    <div class="service-media">
-                        <img
-                            class="lazy-image"
-                            src="${IMAGE_PLACEHOLDER}"
-                            data-src="${service.image}"
-                            alt="${t(service.name)}"
-                            loading="lazy"
-                            width="800"
-                            height="500"
-                        >
-                    </div>
-                    <div class="service-body">
-                        <span class="service-badge">${t(service.category)}</span>
-                        <h3>${t(service.name)}</h3>
-                        <p>${t(service.description)}</p>
-                        <ul class="service-meta">
-                            <li>
-                                <strong>${ui("servicePriceLabel")}</strong>
-                                <span>${t(service.price)}</span>
-                            </li>
-                        </ul>
-                        <a class="button button-secondary service-action" href="service-details.html?id=${encodeURIComponent(service.id)}">
-                            ${ui("serviceDetailsButton")}
-                        </a>
-                    </div>
-                </article>
-            `
-        )
-        .join("");
-}
-
-/*
-    ئەم helper ـە preview ی سووک بۆ ڤیدیۆ دروست دەکات و کلیکەکە Facebook یان لینکی دەرەکی دەکاتەوە.
-    هۆکاری ئەم شێوازە ئەوەیە iframe ی قورس بەکارنەهێندرێت، site ـەکە خێرا بمێنێتەوە، و لە مۆبایلدا هێواشبوون ڕوونەدات.
-    هەروەها چونکە autoplay نییە، بەکارهێنەر خۆی بڕیار دەدات کەی ڤیدیۆکە بکاتەوە.
-*/
-function buildVideoPreviewMarkup(videoUrl, thumbnailUrl, title, emptyMessage) {
-    if (!videoUrl) {
-        return `<p>${emptyMessage}</p>`;
-    }
-
-    const previewImage = thumbnailUrl || IMAGE_PLACEHOLDER;
-    const buttonLabel =
-        currentLanguage === "ar"
-            ? "▶ مشاهدة الفيديو"
-            : currentLanguage === "en"
-              ? "▶ Watch Video"
-              : "▶ بینینی ڤیدیۆ";
-
-    return `
-        <div class="video-preview">
-            <img src="${previewImage}" alt="${title}">
-            <a
-                href="${videoUrl}"
-                target="_blank"
-                rel="noopener"
-                class="video-play-button">
-                ${buttonLabel}
-            </a>
-        </div>
-    `;
-}
-
-/*
-    ئەم helper ـە تەنها بەشی نەخشە یان embed ـی سووکی تر دروست دەکات.
-    بوونی گرنگە چونکە هەندێک خزمەتگوزاری هێشتا media ی تەواویان نییە، بۆیە دەبێت شوێن-دانەرێکی جوان نیشان بدرێت لەبری شکاندنی layout.
-    لە داهاتوودا دەتوانرێت map provider ی جیاواز یان embed ـی تر لێرە زیاد بکرێت.
-*/
-function buildOptionalEmbedMarkup(url, title, emptyMessage) {
-    if (!url) {
-        return `<p>${emptyMessage}</p>`;
-    }
-
-    return `
-        <div class="map-shell">
-            <iframe
-                title="${title}"
-                src="${url}"
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-                allowfullscreen>
-            </iframe>
-        </div>
-    `;
-}
-
-/*
-    ئەم helper ـە پەیامی وردی رزێرڤ بۆ فۆرمی service details دروست دەکات.
-    هۆکاری بوونی ئەوەیە ئەم فۆرمە تەنها داواکاریی رزێرڤ بۆ WhatsApp بنێرێت و هەموو وردەکاریی میوان بە شێوەیەکی ڕوون بگاتە خاوەنی هەمان خزمەتگوزاری.
-    خاوەن بە شێوەی ڕاستەوخۆ ناو، ژمارە، بەروار و وردەکاریی سەردان وەردەگرێت، بێ ئەوەی داتا بۆ شوێنێکی تر بنێردرێت.
-    لە داهاتوودا دەتوانرێت هەمان پەیامە وەک بنەما بۆ Google Sheet یان admin dashboard بەکاربهێندرێت، بەڵام ئێستا تەنها WhatsApp بەکاردێت.
-*/
-function buildServiceBookingMessage(service, bookingData) {
-    return [
-        ui("bookingIntro"),
-        "",
-        `${ui("bookingLabelService")}: ${t(service.name)}`,
-        `${ui("bookingLabelName")}: ${bookingData.fullName}`,
-        `${ui("bookingLabelPhone")}: ${bookingData.phone}`,
-        `${ui("bookingLabelDate")}: ${bookingData.visitDate}`,
-        `${ui("bookingLabelTime")}: ${bookingData.visitTime || ""}`,
-        `${ui("bookingLabelGuests")}: ${bookingData.guestsCount || ""}`,
-        `${ui("bookingLabelNote")}: ${bookingData.note || ""}`
-    ].join("\n");
-}
-
-/*
-    ئەم helper ـە دۆخی فۆرمی رزێرڤ بە شێوەی سادە نیشان دەدات.
-    بوونی گرنگە چونکە بەکارهێنەر پێویستە بزانێت داواکارییەکە چۆن هەڵسوکەوتی لەگەڵ کرا و ئایا هەڵەیەک هەیە یان نا.
-    لە داهاتوودا دەتوانرێت icon، auto-dismiss، یان status message ی جیاواز بەپێی دۆخی ناردن بۆی زیاد بکرێت.
-*/
-function setBookingFormStatus(statusElement, message, state) {
-    if (!statusElement) {
-        return;
-    }
-
-    statusElement.textContent = message;
-    statusElement.classList.remove("is-success", "is-error");
-
-    if (state) {
-        statusElement.classList.add(state);
+function updateCurrentYear() {
+    const yearElement = document.getElementById("currentYear");
+    if (yearElement) {
+        yearElement.textContent = new Date().getFullYear();
     }
 }
 
-/*
-    ئەم فانکشەنە ئەگەر service id هەڵە بێت پەیامێکی دڵنیابەخش نیشان دەدات.
-    هۆکارەکە ئەوەیە بەکارهێنەر لە پەڕەیەکی بەتاڵ نەهێڵدرێت و بە ئاسانی بتوانێت بگەڕێتەوە بۆ سەرەکی.
-    لە داهاتوودا دەتوانرێت related services، search، یان contact CTA ی زیاتر لەم دۆخەدا زیاد بکرێت.
-*/
+/* ==========================================================================
+   ٧. پەڕەی وردەکاری (Service Details Page Handler)
+   ========================================================================== */
 function renderServiceNotFound(detailsRoot) {
     detailsRoot.innerHTML = `
         <section class="section">
             <div class="container">
                 <article class="detail-card reveal">
-                    <a class="back-link" href="index.html#services">${ui("detailBackServices")}</a>
+                    <a class="back-link" href="index.html#services">${ui("detailBackHome")}</a>
                     <h1>${ui("detailNotFoundTitle")}</h1>
                     <p>${ui("detailNotFoundText")}</p>
                 </article>
@@ -1216,14 +1234,8 @@ function renderServiceNotFound(detailsRoot) {
     `;
 }
 
-/*
-    ئەم فانکشەنە ناوەڕۆکی service-details.html بە شێوەی داینامیکی پڕ دەکات.
-    هۆکاری بوونی ئەوەیە هەر خزمەتگوزارییەک بە هەمان template لەسەر بنەمای id ـی URL نیشان بدرێت، بۆیە پەڕەکە سادە و خەفیف دەمێنێتەوە.
-    لە داهاتوودا دەتوانرێت review، seasonal offers، و availability status بۆ هەر خزمەتگوزاری لەم رەندەرکردنەدا زیاد بکرێت.
-*/
 function renderServiceDetailsPage() {
     const detailsRoot = document.getElementById("serviceDetailsRoot");
-
     if (!detailsRoot) {
         return;
     }
@@ -1240,336 +1252,120 @@ function renderServiceDetailsPage() {
 
     const serviceTitle = t(service.name);
     const serviceCategory = t(service.category);
+    const serviceTown = t(service.townName);
     const serviceDescription = t(service.description);
-    const serviceLongDescription = t(service.longDescription);
     const servicePrice = t(service.price);
-    const serviceWorkingHours = t(service.workingHours);
     const serviceLocation = t(service.locationText);
     const serviceOwnerName = t(service.ownerName);
     const serviceOwnerRole = t(service.ownerRole);
     const phoneLink = normalizePhoneForLink(service.phone || service.whatsapp || "");
-    const whatsappUrl = createWhatsAppBookingUrl(serviceTitle, service.whatsapp || "");
 
-    document.title = `${serviceTitle} – Visit Nawroli`;
-    detailsRoot.innerHTML = `
-        <!--
-            ئەم hero ـە ناسنامەی خزمەتگوزارییەکە لە یەکەم بینینەوە پیشان دەدات.
-            بوونی ئەوەیە کە بەکارهێنەر زوو بزانێت لە چ پەڕەیەکدایە و بە ئاسانی بگەڕێتەوە بۆ سەرەتا.
-            لە داهاتوودا دەتوانرێت breadcrumb، rating، یان seasonal badge بۆی زیاد بکرێت.
-        -->
-        <section class="detail-hero">
-            <div class="container">
-                <div class="section-heading reveal">
-                    <a class="back-link" href="index.html#services">${ui("detailBackHome")}</a>
-                    <span class="section-label">${serviceCategory}</span>
-                    <h1>${serviceTitle}</h1>
-                    <p>${serviceDescription}</p>
+    document.title = `${serviceTitle} – Visit Halabja`;
+
+    const featuresHtml = Array.isArray(service.features) && service.features.length > 0
+        ? `
+            <div class="detail-block">
+                <h3>${ui("detailFeatures")}</h3>
+                <ul class="detail-list">
+                    ${service.features.map((f) => `<li>${t(f)}</li>`).join("")}
+                </ul>
+            </div>
+        `
+        : "";
+
+    const galleryHtml = Array.isArray(service.gallery) && service.gallery.length > 0
+        ? `
+            <div class="detail-block">
+                <h3>${ui("detailSmallGallery")}</h3>
+                <div class="detail-gallery">
+                    ${service.gallery.map((img) => `
+                        <button class="gallery-card reveal" type="button" data-full-image="${img}" data-title="${serviceTitle}">
+                            <img class="lazy-image" src="${IMAGE_PLACEHOLDER}" data-src="${img}" alt="${serviceTitle}" loading="lazy">
+                        </button>
+                    `).join("")}
                 </div>
             </div>
-        </section>
+        `
+        : "";
 
+    detailsRoot.innerHTML = `
         <section class="section">
-            <div class="container detail-layout">
-                <!--
-                    ئەم card ـە زانیاریی وێنە، دەقی درێژ، گەلەری، ڤیدیۆ و نەخشە کۆدەکاتەوە.
-                    هۆکاری بوونی ئەوەیە میوان بتوانێت هەموو دیمەن و پێناسەی خزمەتگوزاری لە شوێنێکی یەکگرتوو ببینێت.
-                    لە داهاتوودا دەتوانرێت slideshow، 360 media، یان gallery filter بۆی زیاد بکرێت.
-                -->
+            <div class="container">
                 <article class="detail-card reveal">
-                    <img src="${service.image}" alt="${serviceTitle}" width="1280" height="720">
-
-                    <div class="detail-section">
-                        <h2>${ui("detailAboutService")}</h2>
-                        <p>${serviceLongDescription}</p>
+                    <div class="detail-header">
+                        <span class="detail-badge">${serviceCategory} • 📍 ${serviceTown}</span>
+                        <h1>${serviceTitle}</h1>
+                        <p class="detail-lead">${serviceDescription}</p>
                     </div>
 
-                    <div class="detail-section">
-                        <h2>${ui("detailSmallGallery")}</h2>
-                        <div class="detail-gallery">
-                            ${buildDetailGalleryMarkup(service)}
+                    <div class="detail-media-main">
+                        <img class="lazy-image" src="${IMAGE_PLACEHOLDER}" data-src="${service.image}" alt="${serviceTitle}" loading="lazy">
+                    </div>
+
+                    <div class="detail-grid-layout">
+                        <div class="detail-info-col">
+                            <div class="detail-block">
+                                <h3>${ui("detailAboutService")}</h3>
+                                <p>${t(service.longDescription || service.description)}</p>
+                            </div>
+
+                            ${featuresHtml}
+                            ${galleryHtml}
                         </div>
-                    </div>
 
-                    <div class="detail-section">
-                        <h2>${ui("detailVideo")}</h2>
-                        ${buildVideoPreviewMarkup(service.videoUrl, service.videoThumbnail || service.image, `${serviceTitle} - ${ui("detailVideo")}`, ui("detailVideoPlaceholder"))}
-                    </div>
+                        <aside class="detail-sidebar-col">
+                            <div class="detail-summary-card">
+                                <h3>${ui("detailMainInfo")}</h3>
+                                <div class="detail-price-box">
+                                    <span>${ui("servicePriceLabel")}</span>
+                                    <strong>${servicePrice}</strong>
+                                </div>
+                                <ul class="detail-meta-list">
+                                    <li><strong>📍 ${ui("detailLocationLabel")}:</strong> ${serviceLocation}</li>
+                                    <li><strong>📞 ${ui("detailPhoneLabel")}:</strong> <a href="tel:${phoneLink}">${service.phone}</a></li>
+                                    <li><strong>👤 ${ui("detailOwnerNameLabel")}:</strong> ${serviceOwnerName} (${serviceOwnerRole})</li>
+                                </ul>
 
-                    <div class="detail-section">
-                        <h2>${ui("detailMap")}</h2>
-                        ${buildOptionalEmbedMarkup(service.mapUrl, `${serviceTitle} - ${ui("detailMap")}`, ui("detailMapPlaceholder"))}
+                                <button class="button button-primary full-width" type="button" data-quick-book="${service.id}">
+                                    ${ui("quickBookBtn")}
+                                </button>
+                            </div>
+                        </aside>
                     </div>
                 </article>
-
-                <!--
-                    ئەم card ـە زانیاریی خاوەن، پەیوەندی، نرخ، و تایبەتمەندییە سەرەکییەکان نیشان دەدات.
-                    بوونی ئەوەیە کە بەکارهێنەر بتوانێت بەبێ گەڕان لە شوێنی تر، زوو بڕیاری پەیوەندی و رزێرڤ بدات.
-                    لە داهاتوودا دەتوانرێت review، live status، یان فرمێکی رزێرڤی ڕاستەوخۆ لێرە زیاد بکرێت.
-                -->
-                <aside class="detail-card reveal">
-                    <div class="detail-section">
-                        <h2>${ui("detailMainInfo")}</h2>
-                        <ul class="detail-meta">
-                            <li>
-                                <strong>${ui("servicePriceLabel")}</strong>
-                                <span>${servicePrice}</span>
-                            </li>
-                            <li>
-                                <strong>${ui("detailHoursLabel")}</strong>
-                                <span>${serviceWorkingHours}</span>
-                            </li>
-                            <li>
-                                <strong>${ui("detailLocationLabel")}</strong>
-                                ${
-                                    service.locationLink
-                                        ? `<a href="${service.locationLink}" target="_blank" rel="noopener" class="detail-location-link">${serviceLocation} ↗</a>`
-                                        : `<span>${serviceLocation}</span>`
-                                }
-                            </li>
-                            <li>
-                                <strong>${ui("detailPhoneLabel")}</strong>
-                                <a href="tel:${phoneLink}" dir="ltr">${service.phone}</a>
-                            </li>
-                        </ul>
-                        ${
-                            whatsappUrl
-                                ? `<a class="button button-primary full-width" href="${whatsappUrl}" target="_blank" rel="noopener">${ui("serviceWhatsappButton")}</a>`
-                                : `<p>${ui("detailWhatsappMissing")}</p>`
-                        }
-                        <div class="service-safety-badge">
-                            <span class="safety-badge-icon" aria-hidden="true">🦺</span>
-                            <div class="safety-badge-content">
-                                <strong>${ui("serviceSafetyBadgeTitle")}</strong>
-                                <p>${ui("serviceSafetyBadgeText")}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--
-                        ئەم بەشە فۆرمی رزێرڤی تایبەتە بە هەمان خزمەتگوزارییە.
-                        بوونی ئەوەیە کە ئەم فۆرمە تەنها داواکاریی رزێرڤ بۆ WhatsApp بنێرێت و خاوەنی خزمەتگوزاری وردەکاریی میوان بە شێوەی ڕاستەوخۆ وەربگرێت.
-                        هەموو زانیارییەکان لە هەمان پەیامدا دەچن و داتا بۆ database یان خزمەتگوزاریی تر نانێردرێت.
-                        لە داهاتوودا دەتوانرێت هەمان بنەما بۆ Google Sheet یان admin dashboard فراوان بکرێتەوە، بەڵام ئێستا تەنها WhatsApp بەکاردێت.
-                    -->
-                    <div class="detail-section">
-                        <h2>${ui("detailBookingForm")}</h2>
-                        <form class="booking-form" id="serviceBookingForm">
-                            <!--
-                                ئەم خانانە زانیاریی سەرەکیی داواکارییەکە کۆدەکەنەوە.
-                                تەنها ناو، ژمارەی مۆبایل، و بەروار پێویستن بۆ ئەوەی خاوەن خزمەتگوزاری بتوانێت داواکارییەکە بە شێوەیەکی سەرەتایی تێبگات.
-                                کات، ژمارەی کەسەکان، و تێبینی بە شێوەی ئیختیاری دەنێردرێن بۆ ئەوەی داواکارییەکە خەفیف و خێرا بمێنێتەوە.
-                                لە داهاتوودا دەتوانرێت هەڵبژاردەی ژوور، جۆری خزمەتگوزاریی لاوەکی، یان کاتی گونجاوەکان بۆ هەڵبژاردن زیاد بکرێت.
-                            -->
-                            <div class="form-group">
-                                <label for="fullName">${ui("detailFormFullName")}</label>
-                                <input id="fullName" name="fullName" type="text" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="phone">${ui("detailFormPhone")}</label>
-                                <input id="phone" name="phone" type="tel" inputmode="tel" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="visitDate">${ui("detailFormVisitDate")}</label>
-                                <input id="visitDate" name="visitDate" type="date" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="visitTime">${ui("detailFormVisitTime")}</label>
-                                <input id="visitTime" name="visitTime" type="time">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="guestsCount">${ui("detailFormGuestsCount")}</label>
-                                <input id="guestsCount" name="guestsCount" type="number" min="1" step="1">
-                            </div>
-
-                            <div class="form-group">
-                                <label for="note">${ui("detailFormNote")}</label>
-                                <textarea id="note" name="note" rows="4" placeholder="${ui("detailFormNotePlaceholder")}"></textarea>
-                            </div>
-
-                            <button class="button button-primary full-width" type="submit">
-                                ${ui("detailFormSubmit")}
-                            </button>
-                            <p class="form-status" id="bookingFormStatus" aria-live="polite"></p>
-                        </form>
-                    </div>
-
-                    <div class="detail-section">
-                        <h2>${ui("detailOwnerInfo")}</h2>
-                        <ul class="detail-meta">
-                            <li>
-                                <strong>${ui("detailOwnerNameLabel")}</strong>
-                                <span>${serviceOwnerName}</span>
-                            </li>
-                            <li>
-                                <strong>${ui("detailOwnerRoleLabel")}</strong>
-                                <span>${serviceOwnerRole}</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="detail-section">
-                        <h2>${ui("detailFeatures")}</h2>
-                        ${buildDetailListMarkup(service.features)}
-                    </div>
-
-                    <div class="detail-section">
-                        <h2>${ui("detailRules")}</h2>
-                        ${buildDetailListMarkup(service.rules)}
-                    </div>
-                </aside>
-            </div>
-        </section>
-
-        <!-- بەشی خزمەتگوزارییە پەیوەندیدارەکان -->
-        <section class="section section-accent related-services-section">
-            <div class="container">
-                <div class="section-heading reveal">
-                    <span class="section-label">${ui("relatedSectionLabel")}</span>
-                    <h2>${ui("relatedSectionTitle")}</h2>
-                    <p>${ui("relatedSectionSubtitle")}</p>
-                </div>
-                <div class="services-grid">
-                    ${buildRelatedServicesMarkup(service.id)}
-                </div>
             </div>
         </section>
     `;
+
+    setupLazyLoading();
+    setupRevealAnimations();
+    setupGalleryLightbox();
 }
 
-/*
-    ئەم فانکشەنە ناردنی فۆرمی رزێرڤ بۆ WhatsApp بەڕێوەدەبات.
-    هۆکارەکە ئەوەیە ئەم فۆرمە تەنها داواکارییەکە بۆ WhatsApp بنێرێت و خاوەن وردەکاریی میوان بە شێوەی ڕاستەوخۆ وەربگرێت.
-    لێرە هیچ data ـیەک بۆ database یان خزمەتگوزارییەکی تر نانێردرێت، بۆیە logic ـەکە سادە و خەفیف دەمێنێتەوە و homepage ـەکەش ناشکێت.
-    لە داهاتوودا دەتوانرێت پشکنینی وردتر، Google Sheet یان admin dashboard زیاد بکرێت، بەڵام ئێستا ناردن تەنها بۆ WhatsApp ـە.
-*/
 function setupServiceBookingForm() {
-    const detailsRoot = document.getElementById("serviceDetailsRoot");
-
-    if (!detailsRoot || detailsRoot.dataset.bookingBound) {
-        return;
-    }
-    detailsRoot.dataset.bookingBound = "true";
-
-    detailsRoot.addEventListener("submit", (event) => {
-        const bookingForm = event.target.closest("#serviceBookingForm");
-
-        if (!bookingForm) {
-            return;
-        }
-
-        event.preventDefault();
-        const statusElement = document.getElementById("bookingFormStatus");
-
-        const params = new URLSearchParams(window.location.search);
-        const serviceId = params.get("id") || "";
-        const service = getServiceById(serviceId);
-
-        if (!service) {
-            setBookingFormStatus(statusElement, ui("detailStatusNotFound"), "is-error");
-            return;
-        }
-
-        if (!bookingForm.reportValidity()) {
-            setBookingFormStatus(statusElement, ui("detailStatusRequired"), "is-error");
-            return;
-        }
-
-        const formData = new FormData(bookingForm);
-        const bookingData = {
-            fullName: (formData.get("fullName") || "").toString().trim(),
-            phone: (formData.get("phone") || "").toString().trim(),
-            visitDate: (formData.get("visitDate") || "").toString().trim(),
-            visitTime: (formData.get("visitTime") || "").toString().trim(),
-            guestsCount: (formData.get("guestsCount") || "").toString().trim(),
-            note: (formData.get("note") || "").toString().trim()
-        };
-
-        /*
-            لێرە تەنها خانە پێویستەکان پشتڕاست دەکرێنەوە.
-            کات، ژمارەی میوانان، و تێبینی ئیختیارین و ئەگەر بەتاڵ بن هێشتا داواکارییەکە دەنێردرێت.
-            لە داهاتوودا دەتوانرێت پشکنینی زیاتری جۆری ژمارە یان سنووری بەروار زیاد بکرێت.
-        */
-        if (!bookingData.fullName || !bookingData.phone || !bookingData.visitDate) {
-            setBookingFormStatus(statusElement, ui("detailStatusRequired"), "is-error");
-            return;
-        }
-
-        const bookingMessage = buildServiceBookingMessage(service, bookingData);
-        const whatsappUrl = createWhatsAppBookingUrl(t(service.name), service.whatsapp || "", bookingMessage);
-
-        if (!whatsappUrl) {
-            setBookingFormStatus(statusElement, ui("detailWhatsappMissing"), "is-error");
-            return;
-        }
-
-        window.open(whatsappUrl, "_blank", "noopener");
-        setBookingFormStatus(statusElement, ui("detailStatusSuccess"), "is-success");
-    });
+    // بۆ backwards compatibility
 }
 
-/*
-    ساڵی ئێستا بۆ footer بە شێوەی خۆکار نیشان دەدرێت.
-    ئەم وردەکارییە بچووکە بەڵام وا دەکات وێبەکە نوێ و چاودێری کراوە دیار بێت.
-    لە داهاتوودا دەتوانرێت لە footer ـدا زانیاریی تر وەک version ی پرۆژە یان last updated زیاد بکرێت.
-*/
-function updateCurrentYear() {
-    const yearElement = document.getElementById("currentYear");
-
-    if (!yearElement) {
-        return;
-    }
-
-    yearElement.textContent = new Date().getFullYear();
-}
-
-/*
-    ئەم helper ـانە کەشوهەوای ڕاستەوخۆی نەوڕۆڵی بەپێی کۆدی ستانداردی WMO وەردەگێڕن.
-*/
+/* ==========================================================================
+   ٨. کەشوهەوا (Weather Widget)
+   ========================================================================== */
 function getWeatherConditionInfo(code) {
     if (code === 0) {
-        return {
-            icon: "☀️",
-            label: { ku: "ئاسمانی ساماڵ", ar: "طقس صافٍ", en: "Clear Sky" }
-        };
+        return { icon: "☀️", label: { ku: "ساماڵ و گەش", ar: "مشمس وصافٍ", en: "Clear sky" } };
     }
     if ([1, 2, 3].includes(code)) {
-        return {
-            icon: "⛅",
-            label: { ku: "کەمێک هەوراوی", ar: "غائم جزئياً", en: "Partly Cloudy" }
-        };
-    }
-    if ([45, 48].includes(code)) {
-        return {
-            icon: "🌫️",
-            label: { ku: "تەمومژ", ar: "ضباب", en: "Foggy" }
-        };
+        return { icon: "⛅", label: { ku: "نیمچە هەور", ar: "غائم جزئياً", en: "Partly cloudy" } };
     }
     if ([51, 53, 55, 61, 63, 65, 80, 81, 82].includes(code)) {
-        return {
-            icon: "🌧️",
-            label: { ku: "باراناوی", ar: "ممطر", en: "Rainy" }
-        };
+        return { icon: "🌧️", label: { ku: "باراناوی", ar: "ممطر", en: "Rainy" } };
     }
     if ([71, 73, 75, 85, 86].includes(code)) {
-        return {
-            icon: "❄️",
-            label: { ku: "بەفراوی", ar: "مثلج", en: "Snowy" }
-        };
+        return { icon: "❄️", label: { ku: "بەفراوی", ar: "مثلج", en: "Snowy" } };
     }
     if ([95, 96, 99].includes(code)) {
-        return {
-            icon: "⛈️",
-            label: { ku: "هەورەبرووسکە", ar: "عواصف رعدية", en: "Thunderstorm" }
-        };
+        return { icon: "⛈️", label: { ku: "هەورەبرووسکە", ar: "عواصف رعدية", en: "Thunderstorm" } };
     }
-    return {
-        icon: "🌤️",
-        label: { ku: "کەشوهەوای نەوڕۆڵی", ar: "طقس نورولي", en: "Nawroli Weather" }
-    };
+    return { icon: "🌤️", label: { ku: "کەشوهەوای دەڤەری هەڵەبجە", ar: "طقس حلبجة", en: "Halabja Weather" } };
 }
 
 let cachedWeatherData = null;
@@ -1596,7 +1392,7 @@ function initWeatherWidget() {
     }
 
     try {
-        const stored = sessionStorage.getItem("nawroliWeather");
+        const stored = sessionStorage.getItem("halabjaWeather");
         if (stored) {
             const parsed = JSON.parse(stored);
             if (Date.now() - parsed.timestamp < 30 * 60 * 1000) {
@@ -1618,7 +1414,7 @@ function initWeatherWidget() {
                 const code = data.current.weather_code;
                 cachedWeatherData = { temp, code, timestamp: Date.now() };
                 try {
-                    sessionStorage.setItem("nawroliWeather", JSON.stringify(cachedWeatherData));
+                    sessionStorage.setItem("halabjaWeather", JSON.stringify(cachedWeatherData));
                 } catch (_) {}
                 updateWeatherDisplay(temp, code);
             }
@@ -1631,29 +1427,29 @@ function initWeatherWidget() {
         });
 }
 
-/*
-    تۆمارکردنی هێمن و لەسەرخۆی Service Worker بۆ پشتگیری PWA بەبێ پۆپ-ئەپی بێزارکەر.
-*/
 function registerServiceWorker() {
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("./sw.js").catch(() => {});
     }
 }
 
-/*
-    DOMContentLoaded هەموو پارچەکان لە ڕیزێکی ڕوون جێبەجێ دەکات.
-    سەرەتا ناوەڕۆکی داینامیکی دروست دەکرێت، پاشان listeners و observers دانرێن تا هیچ ئەڵێمێنتێک لەدەست نەچێت.
-*/
+/* ==========================================================================
+   ٩. دەستپێکردنی کارەکانی پەڕە لە کاتی لۆدبوون (DOMContentLoaded)
+   ========================================================================== */
 document.addEventListener("DOMContentLoaded", () => {
     applyLanguageToDocument();
     applyTranslationsToMarkedElements();
 
+    setupSmartSearch();
+    renderDestinationsCards();
+    renderTownPills();
+    renderCategoryPills();
     renderServiceCards();
     renderServiceDetailsPage();
 
+    setupBookingModal();
     setupLanguageSwitch();
     setupServiceActions();
-    setupServiceBookingForm();
     setupSmoothScrolling();
     setupLazyLoading();
     setupRevealAnimations();
