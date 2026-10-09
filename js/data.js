@@ -1,4 +1,4 @@
-/*
+﻿/*
     Visit Halabja - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و هەورامان
     دەڤەرە سەرەکییەکان:
     ١. نەوڕۆڵی
@@ -140,8 +140,8 @@ const services = [
         ownerName: localize("سەرپەرشتیاری خانووەکان", "مشرف البيوت", "Host"),
         ownerRole: localize("خاوەنی خزمەتگوزاری", "صاحب الخدمة", "Service Owner"),
         locationText: localize("نەوڕۆڵی، هەڵەبجە", "نورولي، حلبجة", "Nawroli, Halabja"),
-        phone: "07500000000",
-        whatsapp: "9647500000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("دانیشتن و سەکووی سەر ئاو", "جلسات فوق الماء مباشرة", "Direct over-water deck"),
             localize("ڕوانگەی ڕاستەوخۆ بۆ ڕووبار", "إطلالة مباشرة على النهر", "Direct river vista"),
@@ -170,8 +170,8 @@ const services = [
         ownerName: localize("سەرپەرشتیاری ڤێلا", "مشرف الفيلا", "Villa Manager"),
         ownerRole: localize("خاوەن موڵک", "صاحب العقار", "Host"),
         locationText: localize("نەوڕۆڵی، بەشی سەرەوەی ڕووبار", "نورولي، الجزء العلوي", "Nawroli Upper River"),
-        phone: "07500000000",
-        whatsapp: "9647500000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("٢ ژووری نووستن + هۆڵی گەورە", "٢ غرف نوم + صالة واسعة", "2 Bedrooms + Large hall"),
             localize("سپلیت و گەرمکەرەوە و فێنککەرەوە", "تكييف وتدفئة", "Full AC & Heating"),
@@ -200,8 +200,8 @@ const services = [
         ownerName: localize("لوقمان حەمە عەزیز", "لقمان حمه عزيز", "Luqman Hama Aziz"),
         ownerRole: localize("خاوەنی کەپرەکان", "صاحب الأكواخ", "Huts Owner"),
         locationText: localize("کەپرەکانی هانە ژاڵە، نەوڕۆڵی", "أكواخ هانة ژالة، نورولي", "Hana Zhala Huts, Nawroli"),
-        phone: "07500000000",
-        whatsapp: "9647500000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("سێبەری چڕ و هەوای فێنک", "ظلال وافرة وهواء عليل", "Cool natural shade"),
             localize("دانیشتنی خێزانی و تایبەت", "جلسات عائلية مريحة", "Private family seating"),
@@ -230,8 +230,8 @@ const services = [
         ownerName: localize("کاپتنی گەشتی نەوڕۆڵی", "كابتن الجولات", "Boat Captain"),
         ownerRole: localize("سەرپەرشتیاری بەلەمەکان", "مشرف النشاط المائي", "Activities Supervisor"),
         locationText: localize("نەوڕۆڵی، لەنگەری بەلەمەکان", "نورولي، مرسى القوارب", "Nawroli Boat Marina"),
-        phone: "07500000000",
-        whatsapp: "9647500000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("هێلەکی مەلە بۆ هەموو تەمەنێک", "سترات نجاة لجميع الأعمار", "Life jackets for all sizes"),
             localize("شۆفێری بە ئەزموون و کارامە", "سائقون محترفون وذوو خبرة", "Certified operators"),
@@ -262,8 +262,8 @@ const services = [
         ownerName: localize("خاوەن خانوو (تەوێڵە)", "المالك (طويلة)", "Tawela Host"),
         ownerRole: localize("خاوەن موڵک", "صاحب العقار", "Host"),
         locationText: localize("تەوێڵە، گەڕەکی سەرەوە", "طويلة، الحي العلوي", "Tawela, Upper Quarter"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("دیزاینی کلتووری بەردین و دار", "تصميم حجري وخشبي تقليدي", "Authentic stone & wood craft"),
             localize("بان و باڵکۆنی گەورە بەرامبەر شاخ", "شرفة واسعة مقابلة للجبال", "Grand mountain-facing rooftop"),
@@ -292,8 +292,8 @@ const services = [
         ownerName: localize("خاوەن کابینە", "المالك", "Host"),
         ownerRole: localize("سەرپەرشتیار", "المشرف", "Host"),
         locationText: localize("تەوێڵە، ڕێگای سەرەوە", "طويلة، الطريق العلوي", "Tawela Heights"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("باڵکۆنی گەورە بۆ وێنەگرتن", "شرفة واسعة للتصوير", "Scenic photography balcony"),
             localize("ئاو و کارەبای بەردەوام", "ماء وكهرباء مستمر", "24/7 Utilities"),
@@ -322,8 +322,8 @@ const services = [
         ownerName: localize("کاک دانەر", "كاك دانر", "Kak Daner"),
         ownerRole: localize("سەرپەرشتیار", "المشرف", "Supervisor"),
         locationText: localize("تەوێڵە، لوتکەی سەیرانگا", "طويلة، القمة السياحية", "Tawela Summit"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("بەرزترین ڕوانگەی شارۆچکەکە", "أعلى نقطة مطلة في البلدة", "Highest lookout point"),
             localize("چای خەڵوز بە هەڵوژە و هێل", "شاي فحم بالهيل", "Cardamom charcoal tea"),
@@ -354,8 +354,8 @@ const services = [
         ownerName: localize("خاوەن خانوو (تەئکیدکراو)", "المالك (معتمد)", "Verified Host"),
         ownerRole: localize("خاوەن موڵک لە بیارە", "صاحب العقار", "Property Owner"),
         locationText: localize("بیارە، نزیک باخەکانی سەرەوە", "بيارة، قرب البساتين العلوية", "Byara, Upper Orchards"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("٢ ژووری نووستن + هۆڵ", "٢ غرف نوم + صالة", "2 Bedrooms + Living room"),
             localize("سیستەمی فێنککەرەوە و سپلیت", "تكييف وسبلت", "Air conditioning"),
@@ -385,8 +385,8 @@ const services = [
         ownerName: localize("سەرپەرشتیاری کابینەکان", "مشرف الأكواخ", "Cabin Manager"),
         ownerRole: localize("کابینەی گەشتیاری", "إدارة الإقامة", "Host"),
         locationText: localize("بیارە، ڕێگای سەرچاوە", "بيارة، طريق النبع", "Byara, Spring Road"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("تەواو کەلوپەلی چێشتلێنان", "مطبخ متكامل التجهيزات", "Fully equipped kitchen"),
             localize("باڵکۆنی پانۆراما بۆ باخەکان", "شرفة مطلة على البساتين", "Panoramic orchard balcony"),
@@ -415,8 +415,8 @@ const services = [
         ownerName: localize("کاپتن ئاراس", "كابتن أراس", "Captain Aras"),
         ownerRole: localize("ڕاهێنەری ماتۆڕسواری", "مدرب دبابات", "ATV Guide"),
         locationText: localize("بیارە، سەرەتای پێچە شاخاوییەکان", "بيارة، بداية المسار الجبلي", "Byara, Mountain Trail Head"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("کڵاو و پێداویستی سەلامەتی تەواو", "خوذات ومعدات سلامة كاملة", "Full safety equipment"),
             localize("ڕێڕەوی تایبەت بە وێنەگرتن", "مسارات مخصصة للتصوير", "Scenic photography stops"),
@@ -447,8 +447,8 @@ const services = [
         ownerName: localize("خاوەن خانوو (تەئکیدکراو)", "المالك (معتمد)", "Verified Host"),
         ownerRole: localize("خاوەن موڵک لە ئەحمەدئاوا", "صاحب العقار", "Property Owner"),
         locationText: localize("ئەحمەدئاوا، نزیک تاڤگەی زەڵم", "أحمد آوا، قرب شلال زلم", "Ahmad Awa, Near Zalm Waterfall"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("٣ ژووری نووستن فراوان", "٣ غرف نوم واسعة", "3 Large bedrooms"),
             localize("باخچەی سەوز و مەرجەلی دانیشتن", "حديقة خضراء وجلسة خارجية", "Green lawn & patio"),
@@ -478,8 +478,8 @@ const services = [
         ownerName: localize("خاوەن خانوو", "المالك", "Host"),
         ownerRole: localize("خانەی گەشتیاری", "إدارة السكن", "Host"),
         locationText: localize("ئەحمەدئاوا، لای چەمی زەڵم", "أحمد آوا، ضفاف النهر", "Ahmad Awa, Riverside"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("دانیشتنی دەرەوە لەسەر ئاو", "جلسات خارجية فوق الماء", "Outdoor water deck"),
             localize("گونجاو بۆ ٨ کەس", "يتسع لـ ٨ أشخاص", "Accommodates 8 guests"),
@@ -508,8 +508,8 @@ const services = [
         ownerName: localize("مام کاروان", "مام كاروان", "Mam Karwan"),
         ownerRole: localize("سەرپەرشتیار", "المشرف", "Supervisor"),
         locationText: localize("ئەحمەدئاوا، کەنار تاڤگە", "أحمد آوا، شلال زلم", "Ahmad Awa, Waterfalls"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("نزیکترین خاڵ بۆ تاڤگە", "أقرب نقطة للشلال", "Closest spot to falls"),
             localize("شوێنی تایبەتی خێزانی", "جلسات عائلية مريحة", "Private family huts"),
@@ -540,8 +540,8 @@ const services = [
         ownerName: localize("خاوەن خانوو (خورماڵ)", "المالك (خورمال)", "Khurmal Host"),
         ownerRole: localize("خاوەن موڵک", "صاحب العقار", "Host"),
         locationText: localize("خورماڵ، نزیک سەیرانگای چەمە سارد", "خورمال، قرب نبع جَمَه سارد", "Khurmal, Near Chama Sard"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("حەوشەی گەورە بۆ یاری مناڵان", "ساحة خضراء واسعة لألعاب الأطفال", "Large child play yard"),
             localize("ژووری دانیشتنی فراوان", "صالة جلوس واسعة ومؤثثة", "Spacious furnished lounge"),
@@ -570,8 +570,8 @@ const services = [
         ownerName: localize("خاوەن کابینە", "صاحب الكوخ", "Host"),
         ownerRole: localize("سەرپەرشتیار", "المشرف", "Host"),
         locationText: localize("خورماڵ، سەیرانگای چەمە سارد", "خورمال، مصيف جَمَه سارد", "Khurmal, Chama Sard"),
-        phone: "07700000000",
-        whatsapp: "9647700000000",
+        phone: "07510485057",
+        whatsapp: "9647510485057",
         features: [
             localize("نزیک لە کانی ئاو", "قريب من ينبوع الماء", "Near cold water spring"),
             localize("پێداویستی چێشتلێنان", "أدوات طبخ أساسية", "Basic cooking amenities"),
@@ -636,3 +636,4 @@ window.towns = towns;
 window.serviceCategories = serviceCategories;
 window.services = services;
 window.nearbyAttractions = nearbyAttractions;
+

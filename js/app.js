@@ -958,7 +958,7 @@ function setupBookingModal() {
 
             const messageText = messageLines.join("\n");
             // ژمارەی WhatsApp بۆ پلاتفۆرم/بەڕێوەبەر یان خزمەتگوزاری
-            const adminPhone = activeBookingService.whatsapp || "9647500000000";
+            const adminPhone = activeBookingService.whatsapp || "9647510485057";
             const cleanPhone = adminPhone.replace(/\D/g, "");
 
             const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(messageText)}`;
