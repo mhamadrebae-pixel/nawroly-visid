@@ -1,0 +1,731 @@
+/*
+    ===================================================================
+    Visit Halabja & Nawroli - iOS Native App Experience & Settings
+    ئەم فایلە تایبەتمەندی و ڕووکاری فەرمیی ئەپی ئایفۆن (iOS) و بەشی سیتینگ
+    و دۆخی تاریک (Dark Mode) و وردەکارییە پێشکەوتووەکان لەخۆدەگرێت.
+    ===================================================================
+*/
+
+/* ١. هەستی دەستلێدانی ئایفۆن (iOS Touch & Feel) */
+html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    overscroll-behavior-y: none;
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* دوورکەوتنەوە لە نیشانکردنی دەق لە کاتی دەستلێدان لە دوگمە و کارتەکان */
+button,
+a,
+.brand,
+.service-card,
+.destination-card,
+.ios-tab-item,
+.ios-settings-item {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* ٢. کێشی نەرم و کاتی پەستاندن لەسەر شاشەی ئایفۆن (iOS Tactile Spring) */
+.button,
+.service-card,
+.destination-card,
+.smart-search-bar button,
+.language-button,
+.filter-chip,
+.ios-tab-item,
+.ios-settings-item {
+    transition: transform 0.18s cubic-bezier(0.25, 1, 0.5, 1), 
+                box-shadow 0.18s ease, 
+                opacity 0.18s ease !important;
+}
+
+.button:active,
+.service-card:active,
+.destination-card:active,
+.language-button:active,
+.ios-tab-item:active,
+.ios-settings-item:active {
+    transform: scale(0.97) !important;
+    opacity: 0.9 !important;
+}
+
+/* ٣. پشتگیری تەواوی شوێنی نۆچ و هۆم باری ئایفۆن (Safe Area Insets) */
+.site-header {
+    padding-top: max(0.5rem, env(safe-area-inset-top, 0px)) !important;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+
+    .header-tools .main-nav {
+        display: none !important;
+    }
+
+    .site-header {
+        backdrop-filter: blur(24px) saturate(180%) !important;
+        -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+        background: rgba(244, 251, 248, 0.88) !important;
+        border-bottom: 1px solid rgba(15, 123, 116, 0.08);
+    }
+
+    .header-inner {
+        padding: 0.45rem 0 !important;
+    }
+}
+
+/* ٤. شریتی ڕێنمایی فەرمیی خوارەوەی ئایفۆن (iOS Bottom Tab Bar) */
+.ios-tab-bar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .ios-tab-bar {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(24px) saturate(190%);
+        -webkit-backdrop-filter: blur(24px) saturate(190%);
+        border-top: 1px solid rgba(15, 123, 116, 0.12);
+        box-shadow: 0 -4px 20px rgba(10, 56, 55, 0.06);
+        padding-top: 6px;
+        padding-bottom: max(8px, env(safe-area-inset-bottom, 0px));
+        justify-content: space-around;
+        align-items: center;
+        margin: 0;
+    }
+
+    .ios-tab-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        text-decoration: none;
+        color: #6a827e;
+        flex: 1;
+        padding: 4px 0;
+        font-size: 0.72rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    .ios-tab-item .tab-icon {
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .ios-tab-item .tab-icon svg {
+        width: 22px;
+        height: 22px;
+        fill: currentColor;
+    }
+
+    .ios-tab-item .tab-title {
+        letter-spacing: -0.2px;
+        line-height: 1.1;
+    }
+
+    .ios-tab-item.active {
+        color: #0f7b74;
+        font-weight: 700;
+    }
+
+    .ios-tab-item.active .tab-icon {
+        transform: scale(1.12);
+    }
+
+    .ios-tab-item.active .tab-icon svg {
+        fill: #0f7b74;
+    }
+}
+
+/* ٥. کارتی خاوێن و شێوازی مۆدێرنی ئایفۆن (iOS Smooth Cards) */
+.service-card,
+.destination-card,
+.about-card,
+.smart-search-bar {
+    border-radius: 20px !important;
+    border: 1px solid rgba(15, 123, 116, 0.09) !important;
+    box-shadow: 0 8px 24px rgba(10, 56, 55, 0.05) !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: #0f7b74 !important;
+    padding: 0.35rem 0.65rem;
+    border-radius: 12px;
+    background: rgba(15, 123, 116, 0.08);
+}
+
+/* ٦. بەشی ڕێکخستنەکان (iOS Settings Section) */
+.ios-settings-section {
+    padding: 2.5rem 0 4rem;
+}
+
+.ios-settings-header {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.ios-settings-header h2 {
+    font-family: "Marhey", sans-serif;
+    color: var(--color-primary);
+    font-size: 1.6rem;
+    margin: 0 0 0.3rem;
+}
+
+.ios-settings-header p {
+    color: var(--color-text-soft);
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+/* کارتی ناسنامەی ئەپ لە سەرەوەی سیتینگ */
+.ios-app-profile-card {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    background: var(--color-surface-strong);
+    border: 1px solid var(--color-border);
+    border-radius: 22px;
+    padding: 1.25rem 1.4rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 6px 20px var(--color-shadow);
+}
+
+.ios-app-profile-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    background: linear-gradient(135deg, #0f7b74, #5cb6c4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.9rem;
+    font-family: "Marhey", sans-serif;
+    box-shadow: 0 8px 18px rgba(15, 123, 116, 0.28);
+    flex-shrink: 0;
+}
+
+.ios-app-profile-info h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.15rem;
+    color: var(--color-text);
+}
+
+.ios-app-profile-info p {
+    margin: 0 0 0.35rem;
+    font-size: 0.85rem;
+    color: var(--color-text-soft);
+}
+
+.ios-version-badge {
+    display: inline-block;
+    background: rgba(15, 123, 116, 0.1);
+    color: var(--color-primary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.15rem 0.55rem;
+    border-radius: 8px;
+}
+
+/* کۆمەڵە ڕێکخستنەکان بە شێوازی فەرمیی ئایفۆن (iOS Inset Grouped List) */
+.ios-settings-group {
+    margin-bottom: 1.6rem;
+}
+
+.ios-settings-group-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-soft);
+    margin: 0 0 0.5rem 0.5rem;
+    letter-spacing: 0.3px;
+}
+
+.ios-settings-list {
+    background: var(--color-surface-strong);
+    border: 1px solid var(--color-border);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px var(--color-shadow);
+}
+
+.ios-settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.95rem 1.15rem;
+    border-bottom: 1px solid rgba(15, 123, 116, 0.08);
+    text-decoration: none;
+    color: inherit;
+    gap: 0.75rem;
+}
+
+.ios-settings-item:last-child {
+    border-bottom: none;
+}
+
+.ios-settings-item-left {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex: 1;
+}
+
+/* ئایکۆنە ڕەنگاوڕەنگەکانی سیتینگی ئایفۆن */
+.ios-setting-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+
+.icon-blue { background: #007AFF; }
+.icon-green { background: #34C759; }
+.icon-orange { background: #FF9500; }
+.icon-teal { background: #0f7b74; }
+.icon-purple { background: #AF52DE; }
+.icon-red { background: #FF3B30; }
+
+.ios-setting-text strong {
+    display: block;
+    font-size: 0.95rem;
+    color: var(--color-text);
+}
+
+.ios-setting-text small {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-text-soft);
+}
+
+.ios-settings-item-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* سویچی ئایفۆن (iOS Switch Toggle) */
+.ios-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+.ios-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.ios-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #d1d5db;
+    transition: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 28px;
+}
+
+.ios-slider::before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ios-switch input:checked + .ios-slider {
+    background-color: #34C759;
+}
+
+.ios-switch input:checked + .ios-slider::before {
+    transform: translateX(20px);
+}
+
+/* ==========================================================================
+   Apple iOS Segmented Control (UISegmentedControl) - دراو و زمان
+   ========================================================================== */
+.ios-settings-item-stacked {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.85rem !important;
+}
+
+.ios-settings-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.ios-segmented-control {
+    display: flex;
+    align-items: center;
+    background: rgba(118, 118, 128, 0.14);
+    padding: 3px;
+    border-radius: 12px;
+    position: relative;
+    user-select: none;
+    -webkit-user-select: none;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    gap: 2px;
+}
+
+.ios-segment {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    border-radius: 9px;
+    font-size: 0.84rem;
+    font-weight: 500;
+    color: var(--color-text-soft);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.22s cubic-bezier(0.25, 1, 0.5, 1);
+    outline: none;
+    font-family: inherit;
+}
+
+.ios-segment:active {
+    transform: scale(0.97);
+}
+
+.ios-segment.active {
+    background: #ffffff;
+    color: #0f7b74;
+    font-weight: 700;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* iOS Segmented Toolbar Quick Currency Toggle */
+.services-currency-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(118, 118, 128, 0.12);
+    padding: 2px;
+    border-radius: 10px;
+    border: 1px solid rgba(15, 123, 116, 0.1);
+}
+
+.services-currency-pill .currency-mini-btn {
+    padding: 5px 10px;
+    border: 0;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-text-soft);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.services-currency-pill .currency-mini-btn.active {
+    background: #ffffff;
+    color: #0f7b74;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ڕێکخستنی شێوازی دوگمەی زمانی سەرەوە وەک ئایفۆن (Header iOS Language Switch) */
+.language-switch {
+    background: rgba(118, 118, 128, 0.12) !important;
+    border: 1px solid rgba(15, 123, 116, 0.08) !important;
+    border-radius: 12px !important;
+    padding: 3px !important;
+    box-shadow: none !important;
+    gap: 2px !important;
+}
+
+.language-button {
+    border-radius: 9px !important;
+    padding: 0.38rem 0.65rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    color: var(--color-text-soft) !important;
+    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+
+.language-button.active {
+    background: #ffffff !important;
+    color: #0f7b74 !important;
+    font-weight: 700 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.ios-chevron {
+    color: var(--color-text-soft);
+    font-size: 1.15rem;
+    font-weight: 700;
+    opacity: 0.5;
+}
+
+/* وردەکاریی تایبەتمەندییەکان لەسەر کارتی خانووەکان (Amenities Pills) */
+.card-amenities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.6rem 0;
+}
+
+.amenity-tag {
+    font-size: 0.72rem;
+    background: rgba(15, 123, 116, 0.08);
+    color: var(--color-primary-dark);
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* ==========================================================================
+   ٧. دۆخی شەوی ڕاستەقینەی ئایفۆن (Apple iOS Native Dark Mode System)
+   ========================================================================== */
+html.dark-mode,
+body.dark-mode {
+    --color-background: #000000;
+    --color-surface: rgba(28, 28, 30, 0.88);
+    --color-surface-strong: #1c1c1e;
+    --color-border: rgba(255, 255, 255, 0.12);
+    --color-text: #f5f5f7;
+    --color-text-soft: #a1a1a6;
+    --color-primary: #2dd4bf;
+    --color-primary-dark: #14b8a6;
+    --color-secondary: #38bdf8;
+    --color-accent: rgba(45, 212, 191, 0.15);
+    --color-shadow: rgba(0, 0, 0, 0.75);
+    background-color: #000000 !important;
+    background: radial-gradient(circle at top right, rgba(15, 123, 116, 0.22), transparent 26rem),
+                radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 24rem),
+                #000000 !important;
+    color: #f5f5f7 !important;
+}
+
+/* Header & Tab Bar لە دارک مۆددا بە شێوازی شووشەی ڕەشی ئەپڵ */
+body.dark-mode .site-header {
+    background: rgba(20, 20, 22, 0.85) !important;
+    backdrop-filter: blur(24px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .ios-tab-bar {
+    background: rgba(22, 22, 24, 0.92) !important;
+    backdrop-filter: blur(24px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(24px) saturate(190%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5) !important;
+}
+
+body.dark-mode .ios-tab-item {
+    color: #8e8e93 !important;
+}
+
+body.dark-mode .ios-tab-item.active {
+    color: #2dd4bf !important;
+}
+
+body.dark-mode .ios-tab-item.active .tab-icon svg {
+    fill: #2dd4bf !important;
+}
+
+/* هەموو کارتەکانی مۆبایل بە ڕەنگی فەرمیی Apple Dark Card */
+body.dark-mode .service-card,
+body.dark-mode .destination-card,
+body.dark-mode .about-card,
+body.dark-mode .why-visit-item,
+body.dark-mode .gallery-item,
+body.dark-mode .host-cta-box,
+body.dark-mode .contact-card,
+body.dark-mode .detail-card,
+body.dark-mode .detail-sidebar,
+body.dark-mode .detail-owner-card,
+body.dark-mode .price-box,
+body.dark-mode .smart-search-bar,
+body.dark-mode .ios-settings-list,
+body.dark-mode .ios-app-profile-card {
+    background: #1c1c1e !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+    color: #f5f5f7 !important;
+}
+
+/* ناونیشان و دەقەکان لە دارک مۆددا بە ڕوونی باڵا */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .card-title,
+body.dark-mode .service-title,
+body.dark-mode strong {
+    color: #ffffff !important;
+}
+
+body.dark-mode p,
+body.dark-mode small,
+body.dark-mode .service-description,
+body.dark-mode .ios-settings-group-title {
+    color: #a1a1a6 !important;
+}
+
+/* نرخی شوێنەکان بە ڕەنگی سەوزی درەوشاوەی ئایفۆن */
+body.dark-mode .service-price,
+body.dark-mode .card-price,
+body.dark-mode .price-amount,
+body.dark-mode .service-meta strong,
+body.dark-mode .service-meta span,
+body.dark-mode .service-meta a {
+    color: #2dd4bf !important;
+}
+
+body.dark-mode .service-meta li {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* وردەکاری و تاگەکان (Tags & Badges) */
+body.dark-mode .amenity-tag {
+    background: rgba(45, 212, 191, 0.14) !important;
+    color: #5eead4 !important;
+    border: 1px solid rgba(45, 212, 191, 0.25) !important;
+}
+
+body.dark-mode .service-views-badge {
+    background: #2c2c2e !important;
+    color: #a1a1a6 !important;
+}
+
+body.dark-mode .service-social-proof {
+    background: rgba(245, 158, 11, 0.18) !important;
+    color: #fbbf24 !important;
+}
+
+/* Segmented Control لە دۆخی تاریکدا بە تەواوی وەک iOS */
+body.dark-mode .ios-segmented-control,
+body.dark-mode .services-currency-pill,
+body.dark-mode .language-switch {
+    background: rgba(118, 118, 128, 0.26) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+body.dark-mode .ios-segment,
+body.dark-mode .currency-mini-btn,
+body.dark-mode .language-button {
+    color: #a1a1a6 !important;
+}
+
+body.dark-mode .ios-segment.active,
+body.dark-mode .currency-mini-btn.active,
+body.dark-mode .language-button.active {
+    background: #636366 !important;
+    color: #ffffff !important;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45) !important;
+}
+
+/* دوگمەی سیتینگ و هێڵەکان */
+body.dark-mode .ios-settings-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .ios-slider {
+    background-color: #39393d !important;
+}
+
+body.dark-mode .ios-slider::before {
+    background-color: #ffffff !important;
+}
+
+/* فلتەرەکانی شارۆچکە و شوێنەکان (Filter Chips & Pills) */
+body.dark-mode .town-pill,
+body.dark-mode .filter-chip,
+body.dark-mode .view-mode-btn,
+body.dark-mode .fav-filter-btn {
+    background: #2c2c2e !important;
+    color: #a1a1a6 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .town-pill.active,
+body.dark-mode .filter-chip.active,
+body.dark-mode .view-mode-btn.is-active,
+body.dark-mode .fav-filter-btn.is-active {
+    background: #0f7b74 !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+}
+
+/* فۆرمەکان، گەڕان و مۆداڵ */
+body.dark-mode .smart-search-bar input,
+body.dark-mode .smart-search-bar select,
+body.dark-mode .modal-card input,
+body.dark-mode .modal-card select,
+body.dark-mode .modal-card textarea,
+body.dark-mode .booking-form input,
+body.dark-mode .booking-form select,
+body.dark-mode .booking-form textarea {
+    background: #2c2c2e !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+body.dark-mode .modal-card {
+    background: #1c1c1e !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+body.dark-mode .detail-nearby-grid li {
+    background: #2c2c2e !important;
+    color: #f5f5f7 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .site-footer {
+    background: #000000 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+

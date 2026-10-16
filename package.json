@@ -1,0 +1,27 @@
+{
+  "name": "visit-halabja-nawroli",
+  "version": "1.0.0",
+  "description": "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری لە هەڵەبجە و نەوڕۆڵی",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8080 --directory www",
+    "build": "node build.js",
+    "sync": "node build.js && npx cap sync",
+    "open:android": "npx cap open android",
+    "open:ios": "npx cap open ios"
+  },
+  "keywords": [
+    "tourism",
+    "halabja",
+    "nawroli",
+    "kurdistan"
+  ],
+  "author": "Mhamad Rebar",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/cli": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3"
+  }
+}

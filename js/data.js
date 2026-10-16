@@ -1,4 +1,4 @@
-﻿/*
+/*
     Visit Halabja - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و هەورامان
     دەڤەرە سەرەکییەکان:
     ١. نەوڕۆڵی
@@ -135,8 +135,8 @@ const services = [
         rating: 4.9,
         reviewsCount: 52,
         badge: localize("هەڵبژاردەی گەشتیاران", "خيار المسافرين الأول", "Traveler's Choice"),
-        image: "images/xanu A1.jpg",
-        gallery: ["images/xanu A1.jpg", "images/xanu A2.jpg", "images/xanu A3.jpg", "images/hero.jpg"],
+        image: "images/xanu-a1.jpg",
+        gallery: ["images/xanu-a1.jpg", "images/xanu-a2.jpg", "images/xanu-a3.jpg", "images/hero.jpg"],
         ownerName: localize("سەرپەرشتیاری خانووەکان", "مشرف البيوت", "Host"),
         ownerRole: localize("خاوەنی خزمەتگوزاری", "صاحب الخدمة", "Service Owner"),
         locationText: localize("نەوڕۆڵی، هەڵەبجە", "نورولي، حلبجة", "Nawroli, Halabja"),
@@ -165,8 +165,8 @@ const services = [
         rating: 4.8,
         reviewsCount: 34,
         badge: localize("تایبەت و خێزانی", "عائلي ومريح", "Family Comfort"),
-        image: "images/xanu A2.jpg",
-        gallery: ["images/xanu A2.jpg", "images/xanu A3.jpg", "images/landscape.jpg"],
+        image: "images/xanu-a2.jpg",
+        gallery: ["images/xanu-a2.jpg", "images/xanu-a3.jpg", "images/landscape.jpg"],
         ownerName: localize("سەرپەرشتیاری ڤێلا", "مشرف الفيلا", "Villa Manager"),
         ownerRole: localize("خاوەن موڵک", "صاحب العقار", "Host"),
         locationText: localize("نەوڕۆڵی، بەشی سەرەوەی ڕووبار", "نورولي، الجزء العلوي", "Nawroli Upper River"),
@@ -195,8 +195,8 @@ const services = [
         rating: 4.8,
         reviewsCount: 40,
         badge: localize("کەپری خێزانی", "أكواخ عائلية", "Family Huts"),
-        image: "images/kapr A1.png",
-        gallery: ["images/kapr A1.png", "images/landscape.jpg", "images/hero.jpg"],
+        image: "images/kapr-a1.png",
+        gallery: ["images/kapr-a1.png", "images/landscape.jpg", "images/hero.jpg"],
         ownerName: localize("لوقمان حەمە عەزیز", "لقمان حمه عزيز", "Luqman Hama Aziz"),
         ownerRole: localize("خاوەنی کەپرەکان", "صاحب الأكواخ", "Huts Owner"),
         locationText: localize("کەپرەکانی هانە ژاڵە، نەوڕۆڵی", "أكواخ هانة ژالة، نورولي", "Hana Zhala Huts, Nawroli"),
@@ -257,8 +257,8 @@ const services = [
         rating: 4.9,
         reviewsCount: 36,
         badge: localize("تایبەتمەند و کلتووری", "تراثي أصيل", "Heritage Gem"),
-        image: "images/xanu A1.jpg",
-        gallery: ["images/xanu A1.jpg", "images/nature.jpg", "images/landscape.jpg"],
+        image: "images/xanu-a1.jpg",
+        gallery: ["images/xanu-a1.jpg", "images/nature.jpg", "images/landscape.jpg"],
         ownerName: localize("خاوەن خانوو (تەوێڵە)", "المالك (طويلة)", "Tawela Host"),
         ownerRole: localize("خاوەن موڵک", "صاحب العقار", "Host"),
         locationText: localize("تەوێڵە، گەڕەکی سەرەوە", "طويلة، الحي العلوي", "Tawela, Upper Quarter"),
@@ -287,8 +287,8 @@ const services = [
         rating: 4.8,
         reviewsCount: 25,
         badge: localize("ئارامی و فێنکی", "أجواء عليلة", "Cool & Calm"),
-        image: "images/xanu A3.jpg",
-        gallery: ["images/xanu A3.jpg", "images/landscape.jpg"],
+        image: "images/xanu-a3.jpg",
+        gallery: ["images/xanu-a3.jpg", "images/landscape.jpg"],
         ownerName: localize("خاوەن کابینە", "المالك", "Host"),
         ownerRole: localize("سەرپەرشتیار", "المشرف", "Host"),
         locationText: localize("تەوێڵە، ڕێگای سەرەوە", "طويلة، الطريق العلوي", "Tawela Heights"),
@@ -349,8 +349,8 @@ const services = [
         rating: 4.9,
         reviewsCount: 38,
         badge: localize("داواکراوی هەفتە", "الأكثر طلباً", "Top Pick"),
-        image: "images/xanu A1.jpg",
-        gallery: ["images/xanu A1.jpg", "images/xanu A2.jpg", "images/xanu A3.jpg", "images/landscape.jpg"],
+        image: "images/xanu-a1.jpg",
+        gallery: ["images/xanu-a1.jpg", "images/xanu-a2.jpg", "images/xanu-a3.jpg", "images/landscape.jpg"],
         ownerName: localize("خاوەن خانوو (تەئکیدکراو)", "المالك (معتمد)", "Verified Host"),
         ownerRole: localize("خاوەن موڵک لە بیارە", "صاحب العقار", "Property Owner"),
         locationText: localize("بیارە، نزیک باخەکانی سەرەوە", "بيارة، قرب البساتين العلوية", "Byara, Upper Orchards"),
@@ -380,8 +380,8 @@ const services = [
         rating: 4.8,
         reviewsCount: 22,
         badge: localize("ئارام و خێزانی", "هادئ وعائلي", "Quiet Retreat"),
-        image: "images/xanu A2.jpg",
-        gallery: ["images/xanu A2.jpg", "images/xanu A3.jpg", "images/nature.jpg"],
+        image: "images/xanu-a2.jpg",
+        gallery: ["images/xanu-a2.jpg", "images/xanu-a3.jpg", "images/nature.jpg"],
         ownerName: localize("سەرپەرشتیاری کابینەکان", "مشرف الأكواخ", "Cabin Manager"),
         ownerRole: localize("کابینەی گەشتیاری", "إدارة الإقامة", "Host"),
         locationText: localize("بیارە، ڕێگای سەرچاوە", "بيارة، طريق النبع", "Byara, Spring Road"),
@@ -442,8 +442,8 @@ const services = [
         rating: 4.9,
         reviewsCount: 45,
         badge: localize("شاهانە و تایبەت", "إقامة فاخرة", "Luxury Stay"),
-        image: "images/xanu A3.jpg",
-        gallery: ["images/xanu A3.jpg", "images/xanu A1.jpg", "images/nature.jpg"],
+        image: "images/xanu-a3.jpg",
+        gallery: ["images/xanu-a3.jpg", "images/xanu-a1.jpg", "images/nature.jpg"],
         ownerName: localize("خاوەن خانوو (تەئکیدکراو)", "المالك (معتمد)", "Verified Host"),
         ownerRole: localize("خاوەن موڵک لە ئەحمەدئاوا", "صاحب العقار", "Property Owner"),
         locationText: localize("ئەحمەدئاوا، نزیک تاڤگەی زەڵم", "أحمد آوا، قرب شلال زلم", "Ahmad Awa, Near Zalm Waterfall"),
@@ -473,8 +473,8 @@ const services = [
         rating: 4.8,
         reviewsCount: 31,
         badge: localize("دیمەنی ئاو", "إطلالة مائية", "Waterfront"),
-        image: "images/xanu A2.jpg",
-        gallery: ["images/xanu A2.jpg", "images/nature.jpg"],
+        image: "images/xanu-a2.jpg",
+        gallery: ["images/xanu-a2.jpg", "images/nature.jpg"],
         ownerName: localize("خاوەن خانوو", "المالك", "Host"),
         ownerRole: localize("خانەی گەشتیاری", "إدارة السكن", "Host"),
         locationText: localize("ئەحمەدئاوا، لای چەمی زەڵم", "أحمد آوا، ضفاف النهر", "Ahmad Awa, Riverside"),
@@ -536,7 +536,7 @@ const services = [
         reviewsCount: 19,
         badge: localize("تایبەت و پارێزراو", "خصوصية تامة", "High Privacy"),
         image: "images/nature.jpg",
-        gallery: ["images/nature.jpg", "images/landscape.jpg", "images/xanu A2.jpg"],
+        gallery: ["images/nature.jpg", "images/landscape.jpg", "images/xanu-a2.jpg"],
         ownerName: localize("خاوەن خانوو (خورماڵ)", "المالك (خورمال)", "Khurmal Host"),
         ownerRole: localize("خاوەن موڵک", "صاحب العقار", "Host"),
         locationText: localize("خورماڵ، نزیک سەیرانگای چەمە سارد", "خورمال، قرب نبع جَمَه سارد", "Khurmal, Near Chama Sard"),
@@ -631,6 +631,55 @@ const nearbyAttractions = [
         image: "images/nature.jpg"
     }
 ];
+
+// Enrich services with views count, today's views, VIP status, and local nearby amenities (restaurants, springs, sights)
+services.forEach((s, idx) => {
+    if (!s.viewsCount) {
+        s.viewsCount = 980 + ((idx * 179) % 1650);
+    }
+    if (!s.viewsToday) {
+        s.viewsToday = 14 + ((idx * 7) % 27);
+    }
+    if (s.isFeatured === undefined) {
+        s.isFeatured = idx === 0 || idx === 1 || idx === 7 || idx === 10;
+    }
+    if (!s.nearbyAttractions) {
+        if (s.town === "nawroli") {
+            s.nearbyAttractions = [
+                localize("ڕووبار و کەناری نەوڕۆڵی (٠ خولەک)", "نهر وضفاف نورولي (٠ دقيقة)", "Nawroli Riverfront (0 min)"),
+                localize("کەبابخانەی سەر ڕووبار (٢ خولەک)", "مطاعم الكباب النهرية (٢ دقيقة)", "Riverside Kebab (2 mins)"),
+                localize("لەنگەری بەلەم و جێتسکی (٣ خولەک)", "مرسى القوارب والجت سكي (٣ دقائق)", "Boat Marina & Jet Ski (3 mins)"),
+                localize("مارکێتی نەوڕۆڵی (٥ خولەک)", "ماركت نورولي (٥ دقائق)", "Local Market (5 mins)"),
+                localize("مۆنۆمێنتی هەڵەبجە (١٥ خولەک)", "نصب حلبجة (١٥ دقيقة)", "Halabja Monument (15 mins)")
+            ];
+        } else if (s.town === "byara") {
+            s.nearbyAttractions = [
+                localize("باخ و کانیاوەکانی بیارە (پیادە)", "بساتين وينابيع بيارة (مشياً)", "Byara Springs (Walking)"),
+                localize("ڕێستورانتی هەردی (٨ خولەک)", "مطعم هاردي (٨ دقائق)", "Hardi Restaurant (8 mins)"),
+                localize("بازاڕی سۆغاتی هەورامان (٥ خولەک)", "سوق هورامان التراثي (٥ دقائق)", "Hawraman Souvenir Market (5 mins)"),
+                localize("ماتۆڕسواری شاخی (٣ خولەک)", "دبابات جبلية (٣ دقائق)", "Mountain ATVs (3 mins)")
+            ];
+        } else if (s.town === "tawela") {
+            s.nearbyAttractions = [
+                localize("کۆڵانە بەردینە کۆنەکان (پیادە)", "الأزقة الحجرية القديمة (مشياً)", "Ancient Stone Alleys (Walking)"),
+                localize("سەیرانگای کەلی تەوێڵە (٥ خولەک)", "منتزه عقبة طويلة (٥ دقائق)", "Tawela Pass Vista (5 mins)"),
+                localize("دوکانی کڵاشی هەورامی (٣ خولەک)", "محلات الكلاش الهورامي (٣ دقائق)", "Handmade Klash Shops (3 mins)")
+            ];
+        } else if (s.town === "ahmad-awa") {
+            s.nearbyAttractions = [
+                localize("تاڤگەی زەڵم و چەم (٥ خولەک)", "شلال زلم ومجرى الماء (٥ دقائق)", "Zalm Waterfall & Streams (5 mins)"),
+                localize("کەبابخانەی وەستا ئەمجەد (١٠ خولەک)", "كباب وستا أمجد (١٠ دقائق)", "Wasta Amjad Kebab (10 mins)"),
+                localize("ڕیڕەوی شاخەوانی زەڵم (پیادە)", "ممشى زلم الجبلي (مشياً)", "Zalm Hiking Trail (Walking)")
+            ];
+        } else {
+            s.nearbyAttractions = [
+                localize("باخی گوێزی خورماڵ (پیادە)", "بساتين جوز خورمال (مشياً)", "Khurmal Walnut Groves (Walking)"),
+                localize("مۆنۆمێنتی هەڵەبجە (١٢ خولەک)", "نصب حلبجة (١٢ دقيقة)", "Halabja Monument (12 mins)"),
+                localize("مارکێت و چێشتخانە (٣ خولەک)", "ماركت ومطاعم (٣ دقائق)", "Markets & Restaurants (3 mins)")
+            ];
+        }
+    }
+});
 
 window.towns = towns;
 window.serviceCategories = serviceCategories;

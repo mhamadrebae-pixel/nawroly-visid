@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ku" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="ڕێکخستنەکانی ئەپڵیکەیشنی گەشتی هەڵەبجە و هەورامان - Visit Halabja">
+    <meta name="author" content="Mhamad Rebar">
+    <meta name="theme-color" content="#0f7b74">
+    <title>ڕێکخستنەکان – Visit Halabja</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%230f7b74'/%3E%3Ctext x='50' y='65' font-size='50' font-family='sans-serif' text-anchor='middle' fill='white' font-weight='bold'%3E%D9%87%D9%80%3C/text%3E%3C/svg%3E">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ڕێکخستنەکان – Visit Halabja">
+    <meta property="og:description" content="ڕێکخستنی شێوازی پیشاندان، زمان، دراو و تایبەتمەندییەکانی ئەپی گەشتی هەڵەبجە">
+    <meta property="og:image" content="images/hero.jpg">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Visit Halabja">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/ios-app.css">
+    <script>
+        if (localStorage.getItem("siteDarkMode") === "true") {
+            document.documentElement.classList.add("dark-mode");
+        }
+    </script>
+</head>
+
+<body>
+    <!-- Site Header بە شێوازی ڕەسەنی ئایفۆن -->
+    <header class="site-header" id="top">
+        <div class="container header-inner" style="display: flex; align-items: center; justify-content: space-between;">
+            <a class="back-link" href="index.html">
+                <span>‹</span>
+                <span data-i18n="settingsBackHome">گەڕانەوە</span>
+            </a>
+
+            <div style="font-weight: 700; font-size: 1.1rem; color: var(--color-primary);" data-i18n="settingsPageHeader">
+                ⚙️ ڕێکخستنەکان
+            </div>
+
+            <a class="brand" href="index.html" style="margin: 0;">
+                <span class="brand-mark" style="inline-size: 2.1rem; block-size: 2.1rem; font-size: 0.95rem;">هـ</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <!-- بەشی سەربەخۆی سیتینگی ئایفۆن -->
+        <section class="ios-settings-section" style="padding-top: 1.5rem;">
+            <div class="container" style="max-width: 680px;">
+                <!-- Profile & App Card -->
+                <div class="ios-app-profile-card">
+                    <div class="ios-app-profile-icon">هـ</div>
+                    <div class="ios-app-profile-info">
+                        <h3 data-i18n="settingsAppName">گەشتی هەڵەبجە و هەورامان</h3>
+                        <p data-i18n="settingsAppTagline">پلاتفۆرمی فەرمی بۆ خانووی گەشتیاری و مانەوە</p>
+                        <span class="ios-version-badge">Version 1.2.0 • iOS Edition</span>
+                    </div>
+                </div>
+
+                <!-- Group 1: Preferences & Display -->
+                <div class="ios-settings-group">
+                    <h3 class="ios-settings-group-title" data-i18n="settingsGroupPreferences">ڕێکخستنی شاشە و گشتی</h3>
+                    <div class="ios-settings-list">
+                        <!-- Dark Mode Row -->
+                        <div class="ios-settings-item">
+                            <div class="ios-settings-item-left">
+                                <span class="ios-setting-icon icon-purple">🌙</span>
+                                <div class="ios-setting-text">
+                                    <strong data-i18n="settingsDarkModeTitle">دۆخی شەو (Dark Mode)</strong>
+                                    <small data-i18n="settingsDarkModeSubtitle">پاشەکەوتکردنی وزە و ئاسوودەیی چاو لە تاریکیدا</small>
+                                </div>
+                            </div>
+                            <div class="ios-settings-item-right">
+                                <label class="ios-switch">
+                                    <input type="checkbox" id="darkModeToggle" aria-label="دۆخی تاریک">
+                                    <span class="ios-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Currency Selector Row (iOS Segmented Control) -->
+                        <div class="ios-settings-item ios-settings-item-stacked">
+                            <div class="ios-settings-item-header">
+                                <div class="ios-settings-item-left">
+                                    <span class="ios-setting-icon icon-green">💰</span>
+                                    <div class="ios-setting-text">
+                                        <strong data-i18n="settingsCurrencyTitle">دراوی نرخەکان (Currency)</strong>
+                                        <small data-i18n="settingsCurrencySubtitle">گۆڕینی هەموو نرخەکان لەنێوان دینار و دۆلار</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ios-segmented-control" id="currencySegmented" role="group" aria-label="دراوی نرخ">
+                                <button type="button" class="ios-segment" data-currency="IQD">
+                                    <span>🇮🇶 دینار (IQD)</span>
+                                </button>
+                                <button type="button" class="ios-segment" data-currency="USD">
+                                    <span>💵 دۆلار (USD $)</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Language Row (iOS Segmented Control) -->
+                        <div class="ios-settings-item ios-settings-item-stacked">
+                            <div class="ios-settings-item-header">
+                                <div class="ios-settings-item-left">
+                                    <span class="ios-setting-icon icon-blue">🌐</span>
+                                    <div class="ios-setting-text">
+                                        <strong data-i18n="settingsLangTitle">زمانی بەرنامە (App Language)</strong>
+                                        <small data-i18n="settingsLangSubtitle">کوردی • عربي • English</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ios-segmented-control" id="langSegmented" role="group" aria-label="زمانی بەرنامە">
+                                <button type="button" class="ios-segment" data-lang="ku">کوردی</button>
+                                <button type="button" class="ios-segment" data-lang="ar">عربي</button>
+                                <button type="button" class="ios-segment" data-lang="en">English</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Group 2: Notifications & Emergency -->
+                <div class="ios-settings-group">
+                    <h3 class="ios-settings-group-title" data-i18n="settingsGroupServices">فریاگوزاری و خزمەتگوزاری</h3>
+                    <div class="ios-settings-list">
+                        <!-- Notifications Row -->
+                        <div class="ios-settings-item">
+                            <div class="ios-settings-item-left">
+                                <span class="ios-setting-icon icon-orange">🔔</span>
+                                <div class="ios-setting-text">
+                                    <strong data-i18n="settingsNotifTitle">ئاگاداریی داشکاندن و شوێنی نوێ</strong>
+                                    <small data-i18n="settingsNotifSubtitle">ئاگادارکردنەوە لە بۆنە و پشووەکاندا</small>
+                                </div>
+                            </div>
+                            <div class="ios-settings-item-right">
+                                <label class="ios-switch">
+                                    <input type="checkbox" id="notifToggle" checked aria-label="ئاگادارییەکان">
+                                    <span class="ios-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Tourism Police Helpline -->
+                        <a href="tel:104" class="ios-settings-item">
+                            <div class="ios-settings-item-left">
+                                <span class="ios-setting-icon icon-teal">👮‍♂️</span>
+                                <div class="ios-setting-text">
+                                    <strong data-i18n="settingsPoliceTitle">پۆلیسی گەشتوگوزار و هاوکاری</strong>
+                                    <small data-i18n="settingsPoliceSubtitle">هێڵی گەرمی بەردەوام (تەلەفۆن: 104)</small>
+                                </div>
+                            </div>
+                            <div class="ios-settings-item-right">
+                                <span class="ios-chevron">›</span>
+                            </div>
+                        </a>
+
+                        <!-- Ambulance / Emergency -->
+                        <a href="tel:122" class="ios-settings-item">
+                            <div class="ios-settings-item-left">
+                                <span class="ios-setting-icon icon-red">🚑</span>
+                                <div class="ios-setting-text">
+                                    <strong data-i18n="settingsAmbulanceTitle">فریاکەوتنی تەندروستی هەڵەبجە</strong>
+                                    <small data-i18n="settingsAmbulanceSubtitle">فریاگوزاریی خێرا (تەلەفۆن: 122)</small>
+                                </div>
+                            </div>
+                            <div class="ios-settings-item-right">
+                                <span class="ios-chevron">›</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Group 3: Data & Developer -->
+                <div class="ios-settings-group">
+                    <h3 class="ios-settings-group-title" data-i18n="settingsGroupData">زانیاری و بەڕێوەبردن</h3>
+                    <div class="ios-settings-list">
+                        <!-- Clear Cache -->
+                        <div class="ios-settings-item" id="clearCacheBtn" style="cursor: pointer;">
+                            <div class="ios-settings-item-left">
+                                <span class="ios-setting-icon icon-orange">🧹</span>
+                                <div class="ios-setting-text">
+                                    <strong data-i18n="settingsClearTitle">خاوێنکردنەوەی کەش و داتا</strong>
+                                    <small data-i18n="settingsClearSubtitle">نوێکردنەوەی داتای شوێنەکان و ڕێکخستنەکان</small>
+                                </div>
+                            </div>
+                            <div class="ios-settings-item-right">
+                                <span class="ios-chevron">›</span>
+                            </div>
+                        </div>
+
+                        <!-- Developer Profile -->
+                        <a href="https://mhamadrebae-pixel.github.io/my-profile/" target="_blank" rel="noopener noreferrer" class="ios-settings-item">
+                            <div class="ios-settings-item-left">
+                                <span class="ios-setting-icon icon-blue">👨‍💻</span>
+                                <div class="ios-setting-text">
+                                    <strong>گەشەپێدەر: Mhamad Rebar</strong>
+                                    <small>Full-Stack Web & Mobile App Developer</small>
+                                </div>
+                            </div>
+                            <div class="ios-settings-item-right">
+                                <span class="ios-chevron">›</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <div class="footer-meta">
+                <p>Visit Halabja © <span id="currentYear"></span> • گەشتی هەڵەبجە و هەورامان</p>
+                <div class="footer-credit">
+                    <strong class="credit-title">
+                        <span>دروستکراوە لەلایەن</span>
+                        <a class="credit-name" href="https://mhamadrebae-pixel.github.io/my-profile/" target="_blank" rel="noopener noreferrer" lang="en" dir="ltr">Mhamad Rebar</a>
+                    </strong>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- iOS Native Bottom Tab Bar -->
+    <nav class="ios-tab-bar" aria-label="شریتی ڕێنمایی مۆبایل" id="iosTabBar">
+        <a href="index.html#top" class="ios-tab-item" data-tab="home">
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabHome">سەرەکی</span>
+        </a>
+        <a href="index.html#services" class="ios-tab-item" data-tab="services">
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabServices">مانەوە</span>
+        </a>
+        <a href="index.html#destinations" class="ios-tab-item" data-tab="destinations">
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabDestinations">دەڤەرەکان</span>
+        </a>
+        <a href="index.html#services" class="ios-tab-item" data-tab="favorites">
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabFavorites">دڵخوازەکان</span>
+        </a>
+        <a href="settings.html" class="ios-tab-item active" data-tab="settings">
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabSettings">سیتینگ</span>
+        </a>
+    </nav>
+
+    <script src="js/data.js" defer></script>
+    <script src="js/app.js" defer></script>
+</body>
+
+</html>

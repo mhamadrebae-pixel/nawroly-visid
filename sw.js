@@ -3,13 +3,15 @@
     Provides lightweight offline support and caching for visitors.
 */
 
-const CACHE_NAME = "halabja-cache-v3";
+const CACHE_NAME = "halabja-cache-v6";
 const STATIC_ASSETS = [
     "./",
     "./index.html",
     "./service-details.html",
+    "./settings.html",
     "./css/style.css",
     "./css/responsive.css",
+    "./css/ios-app.css",
     "./js/data.js",
     "./js/app.js",
     "./manifest.webmanifest",
@@ -17,6 +19,10 @@ const STATIC_ASSETS = [
     "./images/nature.jpg",
     "./images/landscape.jpg",
     "./images/activity.jpg",
+    "./images/xanu-a1.jpg",
+    "./images/xanu-a2.jpg",
+    "./images/xanu-a3.jpg",
+    "./images/kapr-a1.png",
     "./images/icon-192.png",
     "./images/icon-512.png"
 ];

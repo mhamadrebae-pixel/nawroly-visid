@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Visit Halabja</string>
+    <string name="title_activity_main">Visit Halabja</string>
+    <string name="package_name">com.visithalabja.nawroli</string>
+    <string name="custom_url_scheme">com.visithalabja.nawroli</string>
+</resources>

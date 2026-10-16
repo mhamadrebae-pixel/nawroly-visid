@@ -1,0 +1,8 @@
+{
+  "appId": "com.visithalabja.nawroli",
+  "appName": "Visit Halabja",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  }
+}

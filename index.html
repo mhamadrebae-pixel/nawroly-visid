@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
     <meta name="description"
         content="گەشتی هەڵەبجە و هەورامان - Visit Halabja: پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە نەوڕۆڵی، تەوێڵە، بیارە، ئەحمەدئاوا و خورماڵ.">
     <meta name="author" content="Mhamad Rebar">
@@ -29,7 +29,14 @@
     <meta name="twitter:image" content="images/hero.jpg">
 
     <!-- PWA -->
-    <link rel="manifest" href="manifest.webmanifest">
+    <script>
+        if (window.location.protocol !== "file:") {
+            const manifestLink = document.createElement("link");
+            manifestLink.rel = "manifest";
+            manifestLink.href = "manifest.webmanifest";
+            document.head.appendChild(manifestLink);
+        }
+    </script>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="Visit Halabja">
@@ -39,6 +46,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/ios-app.css">
+    <script>
+        if (localStorage.getItem("siteDarkMode") === "true") {
+            document.documentElement.classList.add("dark-mode");
+        }
+    </script>
 </head>
 
 <body>
@@ -64,6 +77,7 @@
                     <a href="#gallery" data-scroll-target data-i18n="navGallery">گەلەری</a>
                     <a href="#host-cta" data-scroll-target data-i18n="navHost">تۆمارکردنی شوێن</a>
                     <a href="#contact" data-scroll-target data-i18n="navContact">پەیوەندی</a>
+                    <a href="settings.html" data-i18n="navSettings">⚙️ ڕێکخستن</a>
                 </nav>
 
                 <div class="language-switch" aria-label="هەڵبژاردنی زمان" data-i18n-aria-label="languageSwitchAria">
@@ -101,6 +115,10 @@
 
                 <!-- بۆکسی گەڕانی زیرەک (Smart Search Bar) -->
                 <div class="smart-search-bar reveal" id="smartSearchBar">
+                    <div class="search-field search-field-keyword">
+                        <label for="searchKeywordInput" data-i18n="searchKeywordLabel">🔍 گەڕان بە دەق</label>
+                        <input type="text" id="searchKeywordInput" placeholder="ناوی شوێن، ڤێلا، حەوز، کەپر..." data-i18n-placeholder="searchKeywordPlaceholder" autocomplete="off">
+                    </div>
                     <div class="search-field">
                         <label for="searchTownSelect" data-i18n="searchTownLabel">📍 دەڤەری گەشتیاری</label>
                         <select id="searchTownSelect" aria-label="دەڤەری گەشتیاری"></select>
@@ -193,6 +211,27 @@
                 <div class="filter-wrapper reveal">
                     <span class="filter-pills-label" data-i18n="filterCategoryLabel">🏷️ پۆلێن:</span>
                     <div class="filter-pills" id="categoryFilterPills" role="tablist"></div>
+                </div>
+
+                <!-- شریتی کۆنتڕۆڵی دڵخوازەکان، ڕیزبەندی و ژمارەی ئەنجامەکان -->
+                <div class="services-toolbar reveal" id="servicesToolbar">
+                    <div class="toolbar-left">
+                        <button class="filter-pill filter-pill-fav" type="button" id="favFilterBtn" aria-label="خانووە دڵخوازەکانم">
+                            <span>❤️</span> <span data-i18n="filterFavorites">دڵخوازەکانم</span> (<strong id="favCountBadge">0</strong>)
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <span class="results-count-badge" id="resultsCountBadge"></span>
+                        <div class="sort-box">
+                            <label for="servicesSortSelect" data-i18n="sortByLabel">ڕیزبەندی:</label>
+                            <select id="servicesSortSelect" aria-label="ڕیزبەندی">
+                                <option value="default" data-i18n="sortDefault">پێشنیارکراو</option>
+                                <option value="price-asc" data-i18n="sortPriceAsc">نرخ: کەم بۆ زۆر</option>
+                                <option value="price-desc" data-i18n="sortPriceDesc">نرخ: زۆر بۆ کەم</option>
+                                <option value="rating-desc" data-i18n="sortRatingDesc">بەرزترین هەڵسەنگاندن</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Grid بۆ نیشاندانی کارتەکان -->
@@ -293,11 +332,9 @@
                         <p data-i18n="hostText">
                             شوێنەکەت لە پلاتفۆرمی Visit Halabja بە شێوەیەکی پرۆفیشناڵ تۆمار بکە و ڕۆژانە پەیوەندی و حجز لە سەدان گەشتیارەوە لە سەرتاسەری کوردستان و عێراق بەدەستبهێنە.
                         </p>
-                        <a class="button button-primary host-cta-btn"
-                            href="https://wa.me/9647510485057?text=%D8%B3%DA%B5%D8%A7%D9%88%D8%8C%20%D8%AF%DB%95%D9%85%DB%95%D9%88%DB%8E%D8%AA%20%D8%AE%D8%A7%D9%86%D9%88%D9%88%20%DB%8C%D8%A7%D9%86%20%DA%A9%DB%95%D9%BE%D8%B1%DB%95%DA%A9%DB%95%D9%85%20%D9%84%DB%95%20Visit%20Halabja%20%D8%AA%DB%86%D9%85%D8%A7%D8%B1%20%D8%A8%DA%A9%DB%95%D9%85."
-                            target="_blank" rel="noopener" data-i18n="hostButton">
-                            تۆمارکردنی شوێنەکەت لە WhatsApp 🏡
-                        </a>
+                        <button class="button button-primary host-cta-btn" type="button" id="openHostModalBtn" data-i18n="hostButton">
+                            تۆمارکردنی شوێنەکەت لەگەڵ ئێمە 🏡
+                        </button>
                     </div>
                 </div>
             </div>
@@ -482,6 +519,77 @@
         </div>
     </div>
 
+    <!-- Host Property Registration Modal (تۆمارکردنی شوێن لەلایەن خاوەن موڵک) -->
+    <div class="booking-modal-overlay" id="hostModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="hostModalTitle">
+        <div class="booking-modal-card">
+            <button class="booking-modal-close" id="hostModalClose" type="button" aria-label="داخستن">×</button>
+            
+            <div class="booking-modal-header">
+                <span class="booking-modal-badge" data-i18n="hostModalBadge">تۆمارکردنی موڵکی نوێ</span>
+                <h3 id="hostModalTitle" data-i18n="hostModalTitle">شوێنەکەت لە پلاتفۆرمی Visit Halabja تۆمار بکە</h3>
+                <p style="color: var(--color-text-soft); font-size: 0.88rem; margin: 0.3rem 0 0;" data-i18n="hostModalSubtitle">
+                    فۆرمەکە پڕبکەرەوە و بە یەک کلیک زانیارییەکان بنێرە بۆ بەڕێوەبەر لە WhatsApp تا شوێنەکەت دابنرێت:
+                </p>
+            </div>
+
+            <form class="booking-modal-form" id="hostModalForm">
+                <div class="booking-form-grid">
+                    <div class="booking-form-group">
+                        <label for="hostOwnerName" data-i18n="hostFormOwnerLabel">👤 ناوی خاوەن موڵک</label>
+                        <input type="text" id="hostOwnerName" placeholder="ناوی بەڕێزت بنووسە..." required>
+                    </div>
+                    <div class="booking-form-group">
+                        <label for="hostPhone" data-i18n="hostFormPhoneLabel">📞 ژمارەی مۆبایل / WhatsApp</label>
+                        <input type="tel" id="hostPhone" placeholder="0750 000 0000" required>
+                    </div>
+                </div>
+
+                <div class="booking-form-grid">
+                    <div class="booking-form-group">
+                        <label for="hostPropertyName" data-i18n="hostFormPropertyLabel">🏡 ناوی شوێن یان ڤێلاکەت</label>
+                        <input type="text" id="hostPropertyName" placeholder="بۆ نموونە: ڤێلای کەنار ڕووباری نەوڕۆڵی" required>
+                    </div>
+                    <div class="booking-form-group">
+                        <label for="hostTownSelect" data-i18n="hostFormTownLabel">📍 دەڤەر / ناوچە</label>
+                        <select id="hostTownSelect">
+                            <option value="نەوڕۆڵی">نەوڕۆڵی</option>
+                            <option value="بیارە">بیارە</option>
+                            <option value="تەوێڵە">تەوێڵە</option>
+                            <option value="ئەحمەدئاوا و زەڵم">ئەحمەدئاوا و زەڵم</option>
+                            <option value="خورماڵ">خورماڵ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="booking-form-grid">
+                    <div class="booking-form-group">
+                        <label for="hostCategorySelect" data-i18n="hostFormCategoryLabel">🏷️ جۆری شوێن</label>
+                        <select id="hostCategorySelect">
+                            <option value="خانووی گەشتیاری">خانووی گەشتیاری</option>
+                            <option value="ڤێلا بە حەوز و باخ">ڤێلا بە حەوز و باخ</option>
+                            <option value="کەپری سەر ئاو">کەپری سەر ئاو</option>
+                            <option value="کوخی شاخاوی">کوخی شاخاوی</option>
+                            <option value="چالاکی و بەلەم">چالاکی و بەلەم</option>
+                        </select>
+                    </div>
+                    <div class="booking-form-group">
+                        <label for="hostPriceInput" data-i18n="hostFormPriceLabel">💰 نرخی شەوانە / ڕۆژانە (خەمڵێنراو)</label>
+                        <input type="text" id="hostPriceInput" placeholder="بۆ نموونە: ٧٥,٠٠٠ دینار">
+                    </div>
+                </div>
+
+                <div class="booking-form-group">
+                    <label for="hostNotes" data-i18n="hostFormNotesLabel">📝 تایبەتمەندی و تێبینی زیاتر</label>
+                    <textarea id="hostNotes" rows="2" placeholder="تایبەتمەندییەکان وەک: چەند ژوورە، سپلیت، حەوز، ڕوانگەی ڕووبار..."></textarea>
+                </div>
+
+                <button class="button button-primary booking-submit-btn" type="submit" data-i18n="hostSubmitBtn">
+                    ناردنی زانیاریی موڵک بۆ WhatsApp 📲
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Lightbox بۆ وێنەکانی گەلەری -->
     <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
         <button class="lightbox-close" id="lightboxClose" type="button" aria-label="داخستنی وێنە" data-i18n-aria-label="lightboxCloseLabel">×</button>
@@ -512,6 +620,40 @@
             </div>
         </div>
     </footer>
+
+    <!-- iOS Native Bottom Tab Bar (شریتی ڕێنمایی خوارەوەی مۆبایل) -->
+    <nav class="ios-tab-bar" aria-label="شریتی ڕێنمایی مۆبایل" id="iosTabBar">
+        <a href="#top" class="ios-tab-item active" data-tab="home" data-scroll-target>
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabHome">سەرەکی</span>
+        </a>
+        <a href="#services" class="ios-tab-item" data-tab="services" data-scroll-target>
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M7 13c1.66 0 3-1.34 3-3S8.66 7 7 7s-3 1.34-3 3 1.34 3 3 3zm12-6h-8v7H3V5H1v15h2v-3h18v3h2v-9c0-2.21-1.79-4-4-4z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabServices">مانەوە</span>
+        </a>
+        <a href="#destinations" class="ios-tab-item" data-tab="destinations" data-scroll-target>
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabDestinations">دەڤەرەکان</span>
+        </a>
+        <a href="#services" class="ios-tab-item" data-tab="favorites" id="tabFavoritesTrigger" data-scroll-target>
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabFavorites">دڵخوازەکان</span>
+        </a>
+        <a href="settings.html" class="ios-tab-item" data-tab="settings">
+            <span class="tab-icon">
+                <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+            </span>
+            <span class="tab-title" data-i18n="tabSettings">سیتینگ</span>
+        </a>
+    </nav>
 
     <script src="js/data.js" defer></script>
     <script src="js/app.js" defer></script>

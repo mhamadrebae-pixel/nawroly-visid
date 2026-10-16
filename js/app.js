@@ -13,7 +13,27 @@ let currentLanguage = supportedLanguages.includes(savedLanguage) ? savedLanguage
 /* دۆخی فلتەرە چالاکەکان */
 let currentSelectedTown = "all";
 let currentSelectedCategory = "all";
+let currentSearchKeyword = "";
+let currentSortOrder = "default";
+let showOnlyFavorites = false;
 let activeBookingService = null;
+const FAVORITES_STORAGE_KEY = "visitHalabjaFavorites";
+let currentCurrency = localStorage.getItem("siteCurrency") || "IQD";
+
+function formatServicePrice(service) {
+    if (!service) return "";
+    if (currentCurrency === "USD") {
+        const usdPrice = Math.round((service.priceNumber || 75000) / 1500);
+        if (currentLanguage === "ar") {
+            return `$${usdPrice} / ليلة`;
+        } else if (currentLanguage === "en") {
+            return `$${usdPrice} / night`;
+        } else {
+            return `$${usdPrice} / شەو`;
+        }
+    }
+    return t(service.price);
+}
 
 const translations = {
     ku: {
@@ -35,6 +55,36 @@ const translations = {
         navSafety: "سەلامەتی",
         navMap: "نەخشە",
         navContact: "پەیوەندی",
+        navSettings: "ڕێکخستن",
+        tabHome: "سەرەکی",
+        tabServices: "مانەوە",
+        tabDestinations: "دەڤەرەکان",
+        tabGallery: "گەلەری",
+        tabFavorites: "دڵخوازەکان",
+        tabSettings: "سیتینگ",
+        settingsTitle: "⚙️ ڕێکخستنەکانی ئەپڵیکەیشن",
+        settingsSubtitle: "شێوازی پیشاندان، زمان، دراو و تایبەتمەندییەکان بە دڵی خۆت بگۆڕە",
+        settingsAppName: "گەشتی هەڵەبجە و هەورامان",
+        settingsAppTagline: "پلاتفۆرمی فەرمی بۆ خانووی گەشتیاری و مانەوە",
+        settingsGroupPreferences: "ڕێکخستنی شاشە و گشتی",
+        settingsDarkModeTitle: "دۆخی شەو (Dark Mode)",
+        settingsDarkModeSubtitle: "پاشەکەوتکردنی وزە و ئاسوودەیی چاو لە تاریکیدا",
+        settingsCurrencyTitle: "دراوی نرخەکان (Currency)",
+        settingsCurrencySubtitle: "گۆڕینی هەموو نرخەکان لەنێوان دینار و دۆلار",
+        settingsLangTitle: "زمانی بەرنامە",
+        settingsLangSubtitle: "کوردی • عربي • English",
+        settingsGroupServices: "فریاگوزاری و خزمەتگوزاری",
+        settingsNotifTitle: "ئاگاداریی داشکاندن و شوێنی نوێ",
+        settingsNotifSubtitle: "ئاگادارکردنەوە لە بۆنە و پشووەکاندا",
+        settingsPoliceTitle: "پۆلیسی گەشتوگوزار و هاوکاری",
+        settingsPoliceSubtitle: "هێڵی گەرمی بەردەوام (تەلەفۆن: 104)",
+        settingsAmbulanceTitle: "فریاکەوتنی تەندروستی هەڵەبجە",
+        settingsAmbulanceSubtitle: "فریاگوزاریی خێرا (تەلەفۆن: 122)",
+        settingsGroupData: "زانیاری و بەڕێوەبردن",
+        settingsClearTitle: "خاوێنکردنەوەی کەش و داتا",
+        settingsClearSubtitle: "نوێکردنەوەی داتای شوێنەکان و ڕێکخستنەکان",
+        settingsBackHome: "گەڕانەوە",
+        settingsPageHeader: "⚙️ ڕێکخستنەکان",
         heroKicker: "هەڵەبجە و دەڤەری هەورامان • هەرێمی کوردستان • عێراق",
         heroTitle: "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
         heroSubtitle: "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا",
@@ -150,7 +200,40 @@ const translations = {
         detailFormVisitDate: "بەرواری سەردان",
         detailFormGuestsCount: "ژمارەی کەسەکان",
         detailFormNote: "تێبینی",
-        detailFormSubmit: "ناردنی داواکاری بۆ WhatsApp"
+        detailFormSubmit: "ناردنی داواکاری بۆ WhatsApp",
+        searchKeywordLabel: "🔍 گەڕان بە دەق",
+        searchKeywordPlaceholder: "ناوی شوێن، ڤێلا، حەوز، کەپر...",
+        filterFavorites: "دڵخوازەکانم",
+        favAddBtn: "زیادکردن بۆ دڵخوازەکان",
+        favRemoveBtn: "سڕینەوە لە دڵخوازەکان",
+        sortByLabel: "ڕیزبەندی:",
+        sortDefault: "پێشنیارکراو",
+        sortPriceAsc: "نرخ: کەم بۆ زۆر",
+        sortPriceDesc: "نرخ: زۆر بۆ کەم",
+        sortRatingDesc: "بەرزترین هەڵسەنگاندن",
+        shareBtnText: "هاوبەشکردنی شوێن",
+        shareSuccessAlert: "لینکی شوێنەکە بە سەرکەوتوویی کۆپی کرا!",
+        resultsCountText: "شوێن بەردەستە",
+        viewToggleAria: "شێوازی پیشاندان",
+        viewGridTitle: "پیشاندانی ٢ ستوونی",
+        viewGridAria: "پیشاندانی ٢ ستوونی",
+        viewListTitle: "پیشاندانی ١ ستوونی",
+        viewListAria: "پیشاندانی ١ ستوونی",
+        hostModalBadge: "تۆمارکردنی موڵکی نوێ",
+        hostModalTitle: "شوێنەکەت لە پلاتفۆرمی Visit Halabja تۆمار بکە",
+        hostModalSubtitle: "فۆرمەکە پڕبکەرەوە و بە یەک کلیک زانیارییەکان بنێرە بۆ بەڕێوەبەر لە WhatsApp:",
+        hostFormOwnerLabel: "👤 ناوی خاوەن موڵک",
+        hostFormPhoneLabel: "📞 ژمارەی مۆبایل / WhatsApp",
+        hostFormPropertyLabel: "🏡 ناوی شوێن یان ڤێلاکەت",
+        hostFormTownLabel: "📍 دەڤەر / ناوچە",
+        hostFormCategoryLabel: "🏷️ جۆری شوێن",
+        hostFormPriceLabel: "💰 نرخی خەمڵێنراو (شەوانە/ڕۆژانە)",
+        hostFormNotesLabel: "📝 تایبەتمەندی و تێبینی زیاتر",
+        hostSubmitBtn: "ناردنی زانیاریی موڵک بۆ WhatsApp 📲",
+        viewsTodayText: "ئەمڕۆ",
+        viewsTodaySuffix: "کەس سەیریان کردووە",
+        viewsSuffix: "بینەر",
+        detailNearbyAttractions: "لە دەوروبەری ئەم شوێنە چی هەیە؟"
     },
     ar: {
         metaDescriptionHome: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والنشاطات في حلبجة وهورامان.",
@@ -171,6 +254,36 @@ const translations = {
         navSafety: "السلامة",
         navMap: "الخريطة",
         navContact: "اتصال",
+        navSettings: "الإعدادات",
+        tabHome: "الرئيسية",
+        tabServices: "الإقامة",
+        tabDestinations: "المناطق",
+        tabGallery: "المعرض",
+        tabFavorites: "المفضلة",
+        tabSettings: "الإعدادات",
+        settingsTitle: "⚙️ إعدادات التطبيق",
+        settingsSubtitle: "تخصيص المظهر، اللغة، العملة والتفضيلات بسهولة",
+        settingsAppName: "سياحة حلبجة وهورامان",
+        settingsAppTagline: "المنصة الرسمية للإقامة والبيوت السياحية",
+        settingsGroupPreferences: "التفضيلات والمظهر",
+        settingsDarkModeTitle: "الوضع الليلي (Dark Mode)",
+        settingsDarkModeSubtitle: "راحة للعين وتوفير طاقة البطارية",
+        settingsCurrencyTitle: "عملة الأسعار (Currency)",
+        settingsCurrencySubtitle: "التحويل الفوري بين الدينار والدولار",
+        settingsLangTitle: "لغة التطبيق",
+        settingsLangSubtitle: "کوردی • عربي • English",
+        settingsGroupServices: "الطوارئ والخدمات",
+        settingsNotifTitle: "إشعارات العروض والأماكن الجديدة",
+        settingsNotifSubtitle: "تنبيهات في المناسبات والعطل",
+        settingsPoliceTitle: "شرطة السياحة والمساعدة",
+        settingsPoliceSubtitle: "الخط الساخن المستمر (هاتف: 104)",
+        settingsAmbulanceTitle: "طوارئ الإسعاف والإنقاذ",
+        settingsAmbulanceSubtitle: "طوارئ صحية سريعة (هاتف: 122)",
+        settingsGroupData: "البيانات والإدارة",
+        settingsClearTitle: "مسح الذاكرة المؤقتة",
+        settingsClearSubtitle: "تحديث البيانات وإعادة ضبط التفضيلات",
+        settingsBackHome: "رجوع",
+        settingsPageHeader: "⚙️ الإعدادات",
         heroKicker: "حلبجة ومنطقة هورامان • إقليم كردستان • العراق",
         heroTitle: "سياحة حلبجة وهورامان – Visit Halabja",
         heroSubtitle: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والمغامرات",
@@ -286,7 +399,40 @@ const translations = {
         detailFormVisitDate: "تاريخ الزيارة",
         detailFormGuestsCount: "عدد الأشخاص",
         detailFormNote: "ملاحظات",
-        detailFormSubmit: "إرسال الطلب إلى WhatsApp"
+        detailFormSubmit: "إرسال الطلب إلى WhatsApp",
+        searchKeywordLabel: "🔍 بحث نصي",
+        searchKeywordPlaceholder: "اسم المكان، فيلا، مسبح، كوخ...",
+        filterFavorites: "المفضلة",
+        favAddBtn: "إضافة إلى المفضلة",
+        favRemoveBtn: "إزالة من المفضلة",
+        sortByLabel: "الترتيب:",
+        sortDefault: "الموصى به",
+        sortPriceAsc: "السعر: من الأقل للأعلى",
+        sortPriceDesc: "السعر: من الأعلى للأقل",
+        sortRatingDesc: "الأعلى تقييماً",
+        shareBtnText: "مشاركة هذا المكان",
+        shareSuccessAlert: "تم نسخ رابط المكان بنجاح!",
+        resultsCountText: "مكان متوفر",
+        viewToggleAria: "طريقة العرض",
+        viewGridTitle: "عرض عمودين",
+        viewGridAria: "عرض عمودين",
+        viewListTitle: "عرض عمود واحد",
+        viewListAria: "عرض عمود واحد",
+        hostModalBadge: "تسجيل عقار جديد",
+        hostModalTitle: "سجل مكانك في منصة Visit Halabja",
+        hostModalSubtitle: "املأ البيانات وتواصل معنا مباشرة عبر واتساب لإدراج عقارك:",
+        hostFormOwnerLabel: "👤 اسم صاحب العقار",
+        hostFormPhoneLabel: "📞 رقم الهاتف / واتساب",
+        hostFormPropertyLabel: "🏡 اسم المكان أو الفيلا",
+        hostFormTownLabel: "📍 المنطقة",
+        hostFormCategoryLabel: "🏷️ نوع الإقامة",
+        hostFormPriceLabel: "💰 السعر التقديري (ليلي / يومي)",
+        hostFormNotesLabel: "📝 تفاصيل ومميزات إضافية",
+        hostSubmitBtn: "إرسال بيانات العقار إلى WhatsApp 📲",
+        viewsTodayText: "اليوم",
+        viewsTodaySuffix: "شخص شاهدوا هذا المكان",
+        viewsSuffix: "مشاهدة",
+        detailNearbyAttractions: "أبرز المعالم والخدمات القريبة من هذا المكان:"
     },
     en: {
         metaDescriptionHome: "Official tourism and booking platform for tourist houses, villas, huts and activities in Halabja and Hawraman.",
@@ -307,6 +453,36 @@ const translations = {
         navSafety: "Safety",
         navMap: "Map",
         navContact: "Contact",
+        navSettings: "Settings",
+        tabHome: "Home",
+        tabServices: "Stays",
+        tabDestinations: "Places",
+        tabGallery: "Gallery",
+        tabFavorites: "Favorites",
+        tabSettings: "Settings",
+        settingsTitle: "⚙️ App Settings",
+        settingsSubtitle: "Customize appearance, language, currency and preferences",
+        settingsAppName: "Visit Halabja & Hawraman",
+        settingsAppTagline: "Official Platform for Tourist Stays & Cabins",
+        settingsGroupPreferences: "Display & Preferences",
+        settingsDarkModeTitle: "Dark Mode",
+        settingsDarkModeSubtitle: "Eye comfort and battery saving",
+        settingsCurrencyTitle: "Display Currency",
+        settingsCurrencySubtitle: "Toggle between IQD and USD instantly",
+        settingsLangTitle: "App Language",
+        settingsLangSubtitle: "Kurdish • Arabic • English",
+        settingsGroupServices: "Helplines & Services",
+        settingsNotifTitle: "Offers & New Stays Notifications",
+        settingsNotifSubtitle: "Alerts on holidays and special weekends",
+        settingsPoliceTitle: "Tourism Police & Help",
+        settingsPoliceSubtitle: "Emergency helpline (Phone: 104)",
+        settingsAmbulanceTitle: "Ambulance & Healthcare",
+        settingsAmbulanceSubtitle: "Emergency hotline (Phone: 122)",
+        settingsGroupData: "Data & App Info",
+        settingsClearTitle: "Clear App Cache",
+        settingsClearSubtitle: "Reset local data and preferences",
+        settingsBackHome: "Back",
+        settingsPageHeader: "⚙️ Settings",
         heroKicker: "Halabja & Hawraman Region • Kurdistan • Iraq",
         heroTitle: "Visit Halabja & Hawraman",
         heroSubtitle: "Official booking directory for tourist houses, villas, huts and mountain adventures",
@@ -422,7 +598,40 @@ const translations = {
         detailFormVisitDate: "Visit Date",
         detailFormGuestsCount: "Guests Count",
         detailFormNote: "Notes",
-        detailFormSubmit: "Send Request to WhatsApp"
+        detailFormSubmit: "Send Request to WhatsApp",
+        searchKeywordLabel: "🔍 Keyword Search",
+        searchKeywordPlaceholder: "Name, villa, pool, hut...",
+        filterFavorites: "Favorites",
+        favAddBtn: "Add to Favorites",
+        favRemoveBtn: "Remove from Favorites",
+        sortByLabel: "Sort by:",
+        sortDefault: "Recommended",
+        sortPriceAsc: "Price: Low to High",
+        sortPriceDesc: "Price: High to Low",
+        sortRatingDesc: "Highest Rated",
+        shareBtnText: "Share this place",
+        shareSuccessAlert: "Link copied to clipboard successfully!",
+        resultsCountText: "places found",
+        viewToggleAria: "View layout mode",
+        viewGridTitle: "2-Column Grid View",
+        viewGridAria: "2-Column Grid View",
+        viewListTitle: "1-Column List View",
+        viewListAria: "1-Column List View",
+        hostModalBadge: "List a New Property",
+        hostModalTitle: "List Your Place on Visit Halabja",
+        hostModalSubtitle: "Fill in the details to submit your listing directly via WhatsApp:",
+        hostFormOwnerLabel: "👤 Property Owner Name",
+        hostFormPhoneLabel: "📞 Phone / WhatsApp Number",
+        hostFormPropertyLabel: "🏡 Property or Villa Name",
+        hostFormTownLabel: "📍 Destination / Town",
+        hostFormCategoryLabel: "🏷️ Property Type",
+        hostFormPriceLabel: "💰 Estimated Rate (per night / day)",
+        hostFormNotesLabel: "📝 Features & Extra Notes",
+        hostSubmitBtn: "Send Listing Details via WhatsApp 📲",
+        viewsTodayText: "Today",
+        viewsTodaySuffix: "people viewed this place",
+        viewsSuffix: "views",
+        detailNearbyAttractions: "Nearby Attractions & Amenities:"
     }
 };
 
@@ -463,8 +672,14 @@ function applyLanguageToDocument() {
     }
 
     const titleElement = document.querySelector("title");
-    if (titleElement && !document.getElementById("serviceDetailsRoot")) {
-        titleElement.textContent = ui("pageTitleHome");
+    if (titleElement) {
+        if (document.getElementById("serviceDetailsRoot")) {
+            // Managed in renderServiceDetailsPage
+        } else if (document.getElementById("darkModeToggle")) {
+            titleElement.textContent = (currentLanguage === "ar" ? "الإعدادات – Visit Halabja" : currentLanguage === "en" ? "Settings – Visit Halabja" : "ڕێکخستنەکان – Visit Halabja");
+        } else {
+            titleElement.textContent = ui("pageTitleHome");
+        }
     }
 }
 
@@ -513,25 +728,7 @@ function setupLanguageSwitch() {
     languageButtons.forEach((button) => {
         button.addEventListener("click", () => {
             const selectedLanguage = button.dataset.language || "ku";
-            if (!supportedLanguages.includes(selectedLanguage)) {
-                return;
-            }
-
-            currentLanguage = selectedLanguage;
-            localStorage.setItem("siteLanguage", selectedLanguage);
-
-            applyLanguageToDocument();
-            applyTranslationsToMarkedElements();
-
-            setupSmartSearch();
-            renderDestinationsCards();
-            renderTownPills();
-            renderCategoryPills();
-            renderServiceCards();
-            renderServiceDetailsPage();
-
-            setupLazyLoading();
-            setupRevealAnimations();
+            switchLanguageEverywhere(selectedLanguage);
         });
     });
 }
@@ -567,6 +764,163 @@ function getServiceById(serviceId) {
         return null;
     }
     return getServiceList().find((service) => service.id === serviceId) || null;
+}
+
+/* ==========================================================================
+   بەڕێوەبردنی دڵخوازەکان (Favorites / Wishlist)
+   ========================================================================== */
+function getFavorites() {
+    try {
+        const stored = localStorage.getItem(FAVORITES_STORAGE_KEY);
+        return stored ? JSON.parse(stored) : [];
+    } catch (_) {
+        return [];
+    }
+}
+
+function isFavorite(serviceId) {
+    return getFavorites().includes(serviceId);
+}
+
+function toggleFavorite(serviceId) {
+    if (!serviceId) return false;
+    let favs = getFavorites();
+    const index = favs.indexOf(serviceId);
+    let added = false;
+    if (index > -1) {
+        favs.splice(index, 1);
+        added = false;
+    } else {
+        favs.push(serviceId);
+        added = true;
+    }
+    try {
+        localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favs));
+    } catch (_) {}
+    updateFavoritesUI();
+    return added;
+}
+
+function updateFavoritesUI() {
+    const favs = getFavorites();
+    const countEl = document.getElementById("favCountBadge");
+    if (countEl) {
+        countEl.textContent = favs.length;
+    }
+
+    document.querySelectorAll("[data-fav-id]").forEach((btn) => {
+        const id = btn.dataset.favId;
+        const active = favs.includes(id);
+        btn.classList.toggle("is-active", active);
+        if (btn.classList.contains("service-action-circle-btn")) {
+            btn.innerHTML = active ? "❤️" : "🤍";
+        }
+    });
+
+    const detailFavBtn = document.getElementById("detailFavBtn");
+    if (detailFavBtn && detailFavBtn.dataset.favId) {
+        const isFav = favs.includes(detailFavBtn.dataset.favId);
+        detailFavBtn.classList.toggle("is-active", isFav);
+        detailFavBtn.innerHTML = isFav ? `❤️ ${ui("favRemoveBtn")}` : `🤍 ${ui("favAddBtn")}`;
+    }
+}
+
+/* ==========================================================================
+   هاوبەشکردنی شوێن (Web Share API & Clipboard Fallback)
+   ========================================================================== */
+function shareService(service) {
+    if (!service) return;
+    const currentBase = window.location.href.split("?")[0].replace(/\/[^/]*$/, "/");
+    const serviceUrl = `${currentBase}service-details.html?id=${encodeURIComponent(service.id)}`;
+    const title = `${t(service.name)} – Visit Halabja`;
+    const text = `${t(service.name)} (${t(service.townName)}): ${t(service.price)}`;
+
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text,
+            url: serviceUrl
+        }).catch(() => {});
+    } else {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(serviceUrl).then(() => {
+                alert(ui("shareSuccessAlert"));
+            }).catch(() => {
+                window.prompt("کۆپیکردنی لینک:", serviceUrl);
+            });
+        } else {
+            window.prompt("کۆپیکردنی لینک:", serviceUrl);
+        }
+    }
+}
+
+/* ==========================================================================
+   دروستکردنی نامەی WhatsApp بە فرەزمانی (Multilingual WhatsApp Booking)
+   ========================================================================== */
+function generateWhatsAppBookingMessage(service, details) {
+    const { fullName, phone, visitDate, duration, guests, notes } = details;
+    const localizedServiceName = t(service.name);
+    const localizedTownName = t(service.townName);
+    const localizedPrice = t(service.price);
+
+    if (currentLanguage === "ar") {
+        return [
+            "👋 مرحباً إدارة منصة Visit Halabja،",
+            "لدي طلب حجز عبر الموقع الإلكتروني:",
+            "------------------------------------",
+            `🏡 المكان: ${localizedServiceName}`,
+            `📍 المنطقة: ${localizedTownName}`,
+            `💵 السعر: ${localizedPrice}`,
+            "------------------------------------",
+            `👤 اسم الضيف: ${fullName}`,
+            `📞 رقم التواصل: ${phone}`,
+            `📅 تاريخ الزيارة: ${visitDate}`,
+            `⏳ مدة الإقامة: ${duration}`,
+            `👥 عدد الأشخاص: ${guests}`,
+            `📝 ملاحظات خاصة: ${notes}`,
+            "------------------------------------",
+            "💳 يرجى تزويدي بمعلومات دفع العربون وتأكيد الحجز."
+        ].join("\n");
+    }
+
+    if (currentLanguage === "en") {
+        return [
+            "👋 Hello Visit Halabja Team,",
+            "I would like to submit a booking request via the website:",
+            "------------------------------------",
+            `🏡 Accommodation: ${localizedServiceName}`,
+            `📍 Destination: ${localizedTownName}`,
+            `💵 Price: ${localizedPrice}`,
+            "------------------------------------",
+            `👤 Guest Name: ${fullName}`,
+            `📞 Contact Phone: ${phone}`,
+            `📅 Check-in Date: ${visitDate}`,
+            `⏳ Duration of Stay: ${duration}`,
+            `👥 Number of Guests: ${guests}`,
+            `📝 Special Notes: ${notes}`,
+            "------------------------------------",
+            "💳 Please provide deposit details and confirmation."
+        ].join("\n");
+    }
+
+    // بنەڕەتی: کوردی
+    return [
+        "👋 سڵاو بەڕێوەبەری پلاتفۆرمی Visit Halabja،",
+        "داواکاری حیجزکردنم هەیە لە ڕێگەی وێبسایتەکەوە:",
+        "------------------------------------",
+        `🏡 شوێن: ${localizedServiceName}`,
+        `📍 دەڤەر: ${localizedTownName}`,
+        `💵 نرخ: ${localizedPrice}`,
+        "------------------------------------",
+        `👤 ناوی میوان: ${fullName}`,
+        `📞 ژمارەی پەیوەندی: ${phone}`,
+        `📅 بەرواری هاتن: ${visitDate}`,
+        `⏳ ماوەی مانەوە: ${duration}`,
+        `👥 ژمارەی کەسەکان: ${guests}`,
+        `📝 تێبینی تایبەت: ${notes}`,
+        "------------------------------------",
+        "💳 تکایە زانیاری پێشەکی و تەئکیدکردنەوەم بۆ بنێرە."
+    ].join("\n");
 }
 
 /* ==========================================================================
@@ -708,9 +1062,21 @@ function updateCategoryPillActiveState() {
    ٣. بۆکسی گەڕانی زیرەک (Smart Search Bar)
    ========================================================================== */
 function setupSmartSearch() {
+    const keywordInput = document.getElementById("searchKeywordInput");
     const townSelect = document.getElementById("searchTownSelect");
     const categorySelect = document.getElementById("searchCategorySelect");
     const submitBtn = document.getElementById("searchSubmitBtn");
+
+    if (keywordInput) {
+        keywordInput.value = currentSearchKeyword;
+        if (!keywordInput.dataset.bound) {
+            keywordInput.dataset.bound = "true";
+            keywordInput.addEventListener("input", () => {
+                currentSearchKeyword = keywordInput.value.trim();
+                renderServiceCards();
+            });
+        }
+    }
 
     if (!townSelect || !categorySelect) {
         return;
@@ -744,6 +1110,9 @@ function setupSmartSearch() {
         submitBtn.addEventListener("click", () => {
             currentSelectedTown = townSelect.value;
             currentSelectedCategory = categorySelect.value;
+            if (keywordInput) {
+                currentSearchKeyword = keywordInput.value.trim();
+            }
 
             updateTownPillActiveState();
             updateCategoryPillActiveState();
@@ -758,10 +1127,67 @@ function setupSmartSearch() {
 }
 
 function updateSearchDropdownState() {
+    const keywordInput = document.getElementById("searchKeywordInput");
     const townSelect = document.getElementById("searchTownSelect");
     const categorySelect = document.getElementById("searchCategorySelect");
+    if (keywordInput) keywordInput.value = currentSearchKeyword;
     if (townSelect) townSelect.value = currentSelectedTown;
     if (categorySelect) categorySelect.value = currentSelectedCategory;
+}
+
+function setupServicesToolbar() {
+    const favFilterBtn = document.getElementById("favFilterBtn");
+    const sortSelect = document.getElementById("servicesSortSelect");
+    const viewToggle = document.getElementById("viewModeToggle");
+    const servicesGrid = document.getElementById("servicesGrid");
+
+    if (favFilterBtn && !favFilterBtn.dataset.bound) {
+        favFilterBtn.dataset.bound = "true";
+        favFilterBtn.addEventListener("click", () => {
+            showOnlyFavorites = !showOnlyFavorites;
+            favFilterBtn.classList.toggle("is-active", showOnlyFavorites);
+            renderServiceCards();
+        });
+    }
+
+    if (sortSelect && !sortSelect.dataset.bound) {
+        sortSelect.dataset.bound = "true";
+        sortSelect.addEventListener("change", () => {
+            currentSortOrder = sortSelect.value;
+            renderServiceCards();
+        });
+    }
+
+    if (viewToggle && servicesGrid && !viewToggle.dataset.bound) {
+        viewToggle.dataset.bound = "true";
+        const savedView = localStorage.getItem("visitHalabjaViewMode") || "grid";
+        applyViewMode(savedView);
+
+        viewToggle.addEventListener("click", (e) => {
+            const btn = e.target.closest(".view-mode-btn");
+            if (!btn) return;
+            const mode = btn.dataset.view;
+            applyViewMode(mode);
+            try {
+                localStorage.setItem("visitHalabjaViewMode", mode);
+            } catch (_) {}
+        });
+    }
+
+    function applyViewMode(mode) {
+        if (!servicesGrid || !viewToggle) return;
+        if (mode === "list") {
+            servicesGrid.classList.add("is-list-view");
+        } else {
+            servicesGrid.classList.remove("is-list-view");
+        }
+
+        viewToggle.querySelectorAll(".view-mode-btn").forEach((btn) => {
+            const isActive = btn.dataset.view === mode;
+            btn.classList.toggle("is-active", isActive);
+            btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
+    }
 }
 
 /* ==========================================================================
@@ -770,17 +1196,57 @@ function updateSearchDropdownState() {
 function renderServiceCards() {
     const servicesGrid = document.getElementById("servicesGrid");
     const allServices = getServiceList();
+    const favs = getFavorites();
 
     if (!servicesGrid) {
         return;
     }
 
-    // پاڵاوتن بەپێی دەڤەر و جۆری خزمەتگوزاری
+    // پاڵاوتن بەپێی دەڤەر، جۆری خزمەتگوزاری، دڵخوازەکان، و گەڕانی دەقی
     const filteredServices = allServices.filter((service) => {
         const matchesTown = currentSelectedTown === "all" || service.town === currentSelectedTown;
         const matchesCategory = currentSelectedCategory === "all" || service.categoryType === currentSelectedCategory;
-        return matchesTown && matchesCategory;
+        const matchesFavorites = !showOnlyFavorites || favs.includes(service.id);
+
+        let matchesKeyword = true;
+        if (currentSearchKeyword) {
+            const kw = currentSearchKeyword.toLowerCase();
+            const searchData = [
+                t(service.name),
+                t(service.description),
+                t(service.townName),
+                t(service.category),
+                t(service.locationText || ""),
+                ...(Array.isArray(service.features) ? service.features.map((f) => t(f)) : [])
+            ]
+                .join(" ")
+                .toLowerCase();
+            matchesKeyword = searchData.includes(kw);
+        }
+
+        return matchesTown && matchesCategory && matchesFavorites && matchesKeyword;
     });
+
+    // ڕیزبەندکردن (Sorting)
+    if (currentSortOrder === "price-asc") {
+        filteredServices.sort((a, b) => (a.priceNumber || 0) - (b.priceNumber || 0));
+    } else if (currentSortOrder === "price-desc") {
+        filteredServices.sort((a, b) => (b.priceNumber || 0) - (a.priceNumber || 0));
+    } else if (currentSortOrder === "rating-desc") {
+        filteredServices.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    }
+
+    // نوێکردنەوەی ژمارەی ئەنجامەکان
+    const resultsCountEl = document.getElementById("resultsCountBadge");
+    if (resultsCountEl) {
+        resultsCountEl.textContent = `${filteredServices.length} ${ui("resultsCountText")}`;
+    }
+
+    // نوێکردنەوەی ژمارەی دڵخوازەکان
+    const favBadge = document.getElementById("favCountBadge");
+    if (favBadge) {
+        favBadge.textContent = favs.length;
+    }
 
     if (filteredServices.length === 0) {
         servicesGrid.innerHTML = `
@@ -801,17 +1267,26 @@ function renderServiceCards() {
             const townName = t(service.townName);
             const categoryName = t(service.category);
             const description = t(service.description);
-            const priceText = t(service.price);
+            const priceText = formatServicePrice(service);
             const rating = service.rating || 4.9;
             const reviewsCount = service.reviewsCount || 25;
-            const badge = t(service.badge);
+            const isFav = favs.includes(service.id);
+            const viewsCount = service.viewsCount || 1240;
+            const viewsToday = service.viewsToday || 18;
+            const isVip = Boolean(service.isFeatured);
+
+            const amenitiesPills = Array.isArray(service.features)
+                ? `<div class="card-amenities">` +
+                  service.features.slice(0, 3).map((f) => `<span class="amenity-tag">✨ ${t(f)}</span>`).join("") +
+                  `</div>`
+                : "";
 
             const featuresHtml = Array.isArray(service.features)
                 ? service.features.slice(0, 3).map((f) => `<li class="service-feature-chip">✓ ${t(f)}</li>`).join("")
                 : "";
 
             return `
-                <article class="service-card reveal" data-service-id="${service.id}">
+                <article class="service-card reveal ${isVip ? "is-vip-card" : ""}" data-service-id="${service.id}">
                     <div class="service-media">
                         <img
                             class="lazy-image"
@@ -823,14 +1298,40 @@ function renderServiceCards() {
                             height="500"
                         >
                         <span class="service-badge">${categoryName}</span>
+                        ${isVip ? `<span class="service-vip-badge">⭐ VIP</span>` : ""}
+                        <div class="service-card-actions">
+                            <button
+                                class="service-action-circle-btn ${isFav ? "is-active" : ""}"
+                                type="button"
+                                data-fav-id="${service.id}"
+                                title="${ui("filterFavorites")}"
+                                aria-label="${ui("filterFavorites")}"
+                            >
+                                ${isFav ? "❤️" : "🤍"}
+                            </button>
+                            <button
+                                class="service-action-circle-btn"
+                                type="button"
+                                data-share-id="${service.id}"
+                                title="${ui("shareBtnText")}"
+                                aria-label="${ui("shareBtnText")}"
+                            >
+                                🔗
+                            </button>
+                        </div>
                     </div>
                     <div class="service-body">
                         <div class="service-card-meta-top">
                             <span class="service-town-tag">📍 ${townName}</span>
+                            <span class="service-views-badge" title="بینین">👁 ${viewsCount.toLocaleString()}</span>
                             <span class="service-rating">★ ${rating} <small class="service-rating-count">(${reviewsCount})</small></span>
                         </div>
                         <h3>${serviceName}</h3>
                         <p>${description}</p>
+
+                        <div class="service-social-proof">🔥 ${ui("viewsTodayText")} ${viewsToday} ${ui("viewsTodaySuffix")}</div>
+
+                        ${amenitiesPills}
 
                         ${featuresHtml ? `<ul class="service-features-list">${featuresHtml}</ul>` : ""}
 
@@ -860,6 +1361,19 @@ function renderServiceCards() {
 window.resetFilters = function () {
     currentSelectedTown = "all";
     currentSelectedCategory = "all";
+    currentSearchKeyword = "";
+    showOnlyFavorites = false;
+    currentSortOrder = "default";
+
+    const kw = document.getElementById("searchKeywordInput");
+    if (kw) kw.value = "";
+
+    const sortSel = document.getElementById("servicesSortSelect");
+    if (sortSel) sortSel.value = "default";
+
+    const favBtn = document.getElementById("favFilterBtn");
+    if (favBtn) favBtn.classList.remove("is-active");
+
     updateTownPillActiveState();
     updateCategoryPillActiveState();
     updateSearchDropdownState();
@@ -937,26 +1451,16 @@ function setupBookingModal() {
                 return;
             }
 
-            // دروستکردنی نامەیەکی شیک و ڕێکخراو بۆ WhatsApp
-            const messageLines = [
-                "👋 سڵاو بەڕێوەبەری پلاتفۆرمی Visit Halabja،",
-                "داواکاری حیجزکردنم هەیە لە ڕێگەی وێبسایتەکەوە:",
-                "------------------------------------",
-                `🏡 شوێن: ${t(activeBookingService.name)}`,
-                `📍 دەڤەر: ${t(activeBookingService.townName)}`,
-                `💵 نرخ: ${t(activeBookingService.price)}`,
-                "------------------------------------",
-                `👤 ناوی میوان: ${fullName}`,
-                `📞 ژمارەی پەیوەندی: ${phone}`,
-                `📅 بەرواری هاتن: ${visitDate}`,
-                `⏳ ماوەی مانەوە: ${duration}`,
-                `👥 ژمارەی کەسەکان: ${guests}`,
-                `📝 تێبینی تایبەت: ${notes}`,
-                "------------------------------------",
-                "💳 تکایە زانیاری پێشەکی و تەئکیدکردنەوەم بۆ بنێرە."
-            ];
+            // دروستکردنی نامەیەکی شیک و ڕێکخراو بۆ WhatsApp بەپێی زمانی چالاک
+            const messageText = generateWhatsAppBookingMessage(activeBookingService, {
+                fullName,
+                phone,
+                visitDate,
+                duration,
+                guests,
+                notes
+            });
 
-            const messageText = messageLines.join("\n");
             // ژمارەی WhatsApp بۆ پلاتفۆرم/بەڕێوەبەر یان خزمەتگوزاری
             const adminPhone = activeBookingService.whatsapp || "9647510485057";
             const cleanPhone = adminPhone.replace(/\D/g, "");
@@ -980,10 +1484,19 @@ function openBookingModal(service) {
     const nameEl = document.getElementById("bookingModalServiceName");
     const townEl = document.getElementById("bookingModalTown");
     const priceEl = document.getElementById("bookingModalPrice");
+    const dateInput = document.getElementById("bookingDateInput");
 
     if (nameEl) nameEl.textContent = t(service.name);
     if (townEl) townEl.textContent = `📍 ${t(service.townName)}`;
     if (priceEl) priceEl.textContent = `💵 ${t(service.price)}`;
+
+    if (dateInput) {
+        const today = new Date().toISOString().split("T")[0];
+        dateInput.min = today;
+        if (!dateInput.value) {
+            dateInput.value = today;
+        }
+    }
 
     modal.classList.add("is-open");
     modal.setAttribute("aria-hidden", "false");
@@ -1003,21 +1516,130 @@ function closeBookingModal() {
 }
 
 /* ==========================================================================
-   ٦. خزمەتگوزارییەکانی کۆن و پەڕەی وردەکاری (Service Details Page & Actions)
-   ========================================================================= */
-function setupServiceActions() {
-    const servicesGrid = document.getElementById("servicesGrid");
-    if (!servicesGrid || servicesGrid.dataset.actionsBound) {
+   تۆمارکردنی شوێن لەلایەن خاوەن موڵک (Host Onboarding Modal)
+   ========================================================================== */
+function setupHostModal() {
+    const modal = document.getElementById("hostModal");
+    const openBtn = document.getElementById("openHostModalBtn");
+    const closeBtn = document.getElementById("hostModalClose");
+    const form = document.getElementById("hostModalForm");
+
+    if (!modal) {
         return;
     }
-    servicesGrid.dataset.actionsBound = "true";
 
-    servicesGrid.addEventListener("click", (event) => {
-        const trigger = event.target.closest("[data-whatsapp]");
-        if (!trigger) {
+    function openModal() {
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+        const firstInput = modal.querySelector("input");
+        if (firstInput) firstInput.focus();
+    }
+
+    function closeModal() {
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+    }
+
+    if (openBtn) {
+        openBtn.addEventListener("click", openModal);
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", closeModal);
+    }
+
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("is-open")) {
+            closeModal();
+        }
+    });
+
+    if (form) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const ownerName = document.getElementById("hostOwnerName")?.value.trim() || "";
+            const phone = document.getElementById("hostPhone")?.value.trim() || "";
+            const propertyName = document.getElementById("hostPropertyName")?.value.trim() || "";
+            const town = document.getElementById("hostTownSelect")?.value || "";
+            const category = document.getElementById("hostCategorySelect")?.value || "";
+            const price = document.getElementById("hostPriceInput")?.value.trim() || "ڕێککەوتن لەسەر نرخ";
+            const notes = document.getElementById("hostNotes")?.value.trim() || "تێبینی نییە";
+
+            if (!ownerName || !phone || !propertyName) {
+                alert("تکایە ناوی خاوەن موڵک، ژمارەی پەیوەندی و ناوی شوێنەکە بنووسە.");
+                return;
+            }
+
+            const message = [
+                "🏡 *داواکاریی نوێی تۆمارکردنی شوێن لە پلاتفۆرمی Visit Halabja*",
+                "------------------------------------",
+                `👤 *ناوی خاوەن موڵک:* ${ownerName}`,
+                `📞 *مۆبایل / WhatsApp:* ${phone}`,
+                `📍 *دەڤەر / ناوچە:* ${town}`,
+                `🏷️ *جۆری شوێن:* ${category}`,
+                `🏡 *ناوی شوێن:* ${propertyName}`,
+                `💰 *نرخی شەوانە/ڕۆژانە:* ${price}`,
+                `📝 *تایبەتمەندی و تێبینی زیاتر:* ${notes}`,
+                "------------------------------------",
+                "تکایە شوێنەکەم لە ماڵپەڕ/ئەپڵیکەیشن دابنێن بۆ حجزکردن. سوپاس!"
+            ].join("\n");
+
+            const targetPhone = "9647510485057";
+            const waUrl = `https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`;
+            window.open(waUrl, "_blank", "noopener");
+
+            closeModal();
+            form.reset();
+        });
+    }
+}
+
+/* ==========================================================================
+   ٦. خزمەتگوزارییەکان و پەڕەی وردەکاری (Service Actions & Favorites / Share)
+   ========================================================================= */
+function setupServiceActions() {
+    if (document.body.dataset.serviceActionsBound) {
+        return;
+    }
+    document.body.dataset.serviceActionsBound = "true";
+
+    document.addEventListener("click", (event) => {
+        const favTrigger = event.target.closest("[data-fav-id]");
+        if (favTrigger) {
+            event.preventDefault();
+            event.stopPropagation();
+            const serviceId = favTrigger.dataset.favId;
+            toggleFavorite(serviceId);
+            if (showOnlyFavorites) {
+                renderServiceCards();
+            }
             return;
         }
-        openWhatsAppBooking(trigger.dataset.serviceName || "خزمەتگوزاری", trigger.dataset.whatsapp || "");
+
+        const shareTrigger = event.target.closest("[data-share-id]");
+        if (shareTrigger) {
+            event.preventDefault();
+            event.stopPropagation();
+            const serviceId = shareTrigger.dataset.shareId;
+            const service = getServiceById(serviceId);
+            if (service) {
+                shareService(service);
+            }
+            return;
+        }
+
+        const waTrigger = event.target.closest("[data-whatsapp]");
+        if (waTrigger) {
+            openWhatsAppBooking(waTrigger.dataset.serviceName || "خزمەتگوزاری", waTrigger.dataset.whatsapp || "");
+        }
     });
 }
 
@@ -1254,11 +1876,13 @@ function renderServiceDetailsPage() {
     const serviceCategory = t(service.category);
     const serviceTown = t(service.townName);
     const serviceDescription = t(service.description);
-    const servicePrice = t(service.price);
+    const servicePrice = formatServicePrice(service);
     const serviceLocation = t(service.locationText);
     const serviceOwnerName = t(service.ownerName);
     const serviceOwnerRole = t(service.ownerRole);
     const phoneLink = normalizePhoneForLink(service.phone || service.whatsapp || "");
+    const viewsCount = service.viewsCount || 1420;
+    const viewsToday = service.viewsToday || 24;
 
     document.title = `${serviceTitle} – Visit Halabja`;
 
@@ -1268,6 +1892,19 @@ function renderServiceDetailsPage() {
                 <h3>${ui("detailFeatures")}</h3>
                 <ul class="detail-list">
                     ${service.features.map((f) => `<li>${t(f)}</li>`).join("")}
+                </ul>
+            </div>
+        `
+        : "";
+
+    const nearbyHtml = Array.isArray(service.nearbyAttractions) && service.nearbyAttractions.length > 0
+        ? `
+            <div class="detail-block">
+                <h3>📍 ${ui("detailNearbyAttractions")}</h3>
+                <ul class="detail-nearby-grid">
+                    ${service.nearbyAttractions.map((att) => `
+                        <li><span class="nearby-icon">✨</span> <span>${t(att)}</span></li>
+                    `).join("")}
                 </ul>
             </div>
         `
@@ -1293,9 +1930,17 @@ function renderServiceDetailsPage() {
             <div class="container">
                 <article class="detail-card reveal">
                     <div class="detail-header">
-                        <span class="detail-badge">${serviceCategory} • 📍 ${serviceTown}</span>
+                        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.5rem;">
+                            <span class="detail-badge">${serviceCategory} • 📍 ${serviceTown}</span>
+                            ${service.isFeatured ? `<span class="service-vip-badge" style="display:inline-block;">⭐ VIP</span>` : ""}
+                        </div>
                         <h1>${serviceTitle}</h1>
                         <p class="detail-lead">${serviceDescription}</p>
+                        <div class="detail-social-proof-bar">
+                            <span>👁 ${viewsCount.toLocaleString()} ${ui("viewsSuffix")}</span>
+                            <span>🔥 ${ui("viewsTodayText")} ${viewsToday} ${ui("viewsTodaySuffix")}</span>
+                            <span>🛡️ ${ui("heroHighlightGuarantee")}</span>
+                        </div>
                     </div>
 
                     <div class="detail-media-main">
@@ -1310,6 +1955,7 @@ function renderServiceDetailsPage() {
                             </div>
 
                             ${featuresHtml}
+                            ${nearbyHtml}
                             ${galleryHtml}
                         </div>
 
@@ -1326,9 +1972,17 @@ function renderServiceDetailsPage() {
                                     <li><strong>👤 ${ui("detailOwnerNameLabel")}:</strong> ${serviceOwnerName} (${serviceOwnerRole})</li>
                                 </ul>
 
-                                <button class="button button-primary full-width" type="button" data-quick-book="${service.id}">
-                                    ${ui("quickBookBtn")}
-                                </button>
+                                <div class="detail-actions-stack">
+                                    <button class="button button-primary full-width" type="button" data-quick-book="${service.id}">
+                                        ${ui("quickBookBtn")}
+                                    </button>
+                                    <button class="button button-secondary full-width fav-toggle-btn ${isFavorite(service.id) ? "is-active" : ""}" type="button" id="detailFavBtn" data-fav-id="${service.id}">
+                                        ${isFavorite(service.id) ? "❤️ " + ui("favRemoveBtn") : "🤍 " + ui("favAddBtn")}
+                                    </button>
+                                    <button class="button button-outline full-width share-btn" type="button" id="detailShareBtn" data-share-id="${service.id}">
+                                        🔗 ${ui("shareBtnText")}
+                                    </button>
+                                </div>
                             </div>
                         </aside>
                     </div>
@@ -1340,6 +1994,7 @@ function renderServiceDetailsPage() {
     setupLazyLoading();
     setupRevealAnimations();
     setupGalleryLightbox();
+    updateFavoritesUI();
 }
 
 function setupServiceBookingForm() {
@@ -1428,8 +2083,220 @@ function initWeatherWidget() {
 }
 
 function registerServiceWorker() {
+    if (window.location.protocol === "file:") return;
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("./sw.js").catch(() => {});
+    }
+}
+
+function setupIosTabBar() {
+    const tabItems = document.querySelectorAll(".ios-tab-item");
+    if (!tabItems.length) return;
+
+    tabItems.forEach((tab) => {
+        tab.addEventListener("click", () => {
+            tabItems.forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+        });
+    });
+
+    // Scroll spy بۆ دیاریکردنی تابی چالاک لە کاتی ڕۆیشتن بە پەڕەکەدا
+    const sections = [
+        { id: "top", tab: "home" },
+        { id: "destinations", tab: "destinations" },
+        { id: "services", tab: "services" },
+        { id: "settings", tab: "settings" }
+    ];
+
+    window.addEventListener(
+        "scroll",
+        () => {
+            const scrollPos = window.scrollY + 220;
+            for (let i = sections.length - 1; i >= 0; i--) {
+                const sectionEl = document.getElementById(sections[i].id);
+                if (sectionEl && scrollPos >= sectionEl.offsetTop) {
+                    tabItems.forEach((t) => {
+                        if (t.dataset.tab === sections[i].tab) {
+                            t.classList.add("active");
+                        } else {
+                            t.classList.remove("active");
+                        }
+                    });
+                    break;
+                }
+            }
+        },
+        { passive: true }
+    );
+}
+
+function updateCurrencyUI(currency) {
+    // ١. نوێکردنەوەی دوگمەکانی سیتینگ (Settings Segmented Control)
+    document.querySelectorAll("#currencySegmented .ios-segment").forEach((btn) => {
+        if (btn.dataset.currency === currency) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    });
+
+    // ٢. نوێکردنەوەی دوگمەکانی شریتی سەرەوەی شوێنەکان (Toolbar Quick Currency Pill)
+    document.querySelectorAll("#toolbarCurrencyPill .currency-mini-btn").forEach((btn) => {
+        if (btn.dataset.currency === currency) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    });
+}
+
+function setAppCurrency(newCurrency) {
+    if (!newCurrency || !["IQD", "USD"].includes(newCurrency)) return;
+    currentCurrency = newCurrency;
+    localStorage.setItem("siteCurrency", currentCurrency);
+    updateCurrencyUI(currentCurrency);
+    renderServiceCards();
+    renderServiceDetailsPage();
+}
+
+function updateLanguageUI(lang) {
+    // ١. نوێکردنەوەی دوگمەی زمانی سیتینگ (Settings Segmented Control)
+    document.querySelectorAll("#langSegmented .ios-segment").forEach((btn) => {
+        if (btn.dataset.lang === lang) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    });
+
+    // ٢. نوێکردنەوەی دوگمەی زمانی سەرەوەی وێب و ئەپ (Header Language Switch)
+    document.querySelectorAll(".language-button").forEach((btn) => {
+        if (btn.dataset.language === lang) {
+            btn.classList.add("active");
+        } else {
+            btn.classList.remove("active");
+        }
+    });
+}
+
+function switchLanguageEverywhere(newLang) {
+    if (!supportedLanguages.includes(newLang)) return;
+    currentLanguage = newLang;
+    localStorage.setItem("siteLanguage", currentLanguage);
+    updateLanguageUI(currentLanguage);
+
+    applyLanguageToDocument();
+    applyTranslationsToMarkedElements();
+    renderDestinationsCards();
+    renderTownPills();
+    renderCategoryPills();
+    renderServiceCards();
+    renderServiceDetailsPage();
+    updateFavoritesUI();
+    updateSearchDropdownState();
+}
+
+function setupIosSettings() {
+    // ١. سیستەمی دۆخی تاریکی ئایفۆن (Apple iOS Native Dark Mode)
+    const darkModeToggle = document.getElementById("darkModeToggle");
+    const isDarkSaved = localStorage.getItem("siteDarkMode") === "true";
+
+    function applyDarkMode(isDark) {
+        document.documentElement.classList.toggle("dark-mode", isDark);
+        if (document.body) {
+            document.body.classList.toggle("dark-mode", isDark);
+        }
+        localStorage.setItem("siteDarkMode", isDark ? "true" : "false");
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) {
+            metaTheme.setAttribute("content", isDark ? "#000000" : "#0f7b74");
+        }
+        if (darkModeToggle) {
+            darkModeToggle.checked = isDark;
+        }
+    }
+
+    if (isDarkSaved) {
+        applyDarkMode(true);
+    }
+
+    if (darkModeToggle && !darkModeToggle.dataset.bound) {
+        darkModeToggle.dataset.bound = "true";
+        darkModeToggle.addEventListener("change", () => {
+            applyDarkMode(darkModeToggle.checked);
+        });
+    }
+
+    // ٢. دراوی نمایشکراو بە شێوازی Apple Segmented Control (IQD / USD)
+    updateCurrencyUI(currentCurrency);
+
+    // گوێگر لە دوگمەی سیتینگ
+    const currencySegments = document.querySelectorAll("#currencySegmented .ios-segment");
+    currencySegments.forEach((btn) => {
+        if (!btn.dataset.bound) {
+            btn.dataset.bound = "true";
+            btn.addEventListener("click", () => {
+                setAppCurrency(btn.dataset.currency);
+            });
+        }
+    });
+
+    // گوێگر لە دوگمەی شریتی شوێنەکان (Toolbar)
+    const toolbarCurrencyBtns = document.querySelectorAll("#toolbarCurrencyPill .currency-mini-btn");
+    toolbarCurrencyBtns.forEach((btn) => {
+        if (!btn.dataset.bound) {
+            btn.dataset.bound = "true";
+            btn.addEventListener("click", () => {
+                setAppCurrency(btn.dataset.currency);
+            });
+        }
+    });
+
+    // ٣. زمانی بەرنامە بە شێوازی Apple Segmented Control (کوردی • عربي • English)
+    updateLanguageUI(currentLanguage);
+
+    const langSegments = document.querySelectorAll("#langSegmented .ios-segment");
+    langSegments.forEach((btn) => {
+        if (!btn.dataset.bound) {
+            btn.dataset.bound = "true";
+            btn.addEventListener("click", () => {
+                switchLanguageEverywhere(btn.dataset.lang);
+            });
+        }
+    });
+
+    // ٤. خاوێنکردنەوەی کەش و داتای ئەپ (Clear Cache)
+    const clearCacheBtn = document.getElementById("clearCacheBtn");
+    if (clearCacheBtn && !clearCacheBtn.dataset.bound) {
+        clearCacheBtn.dataset.bound = "true";
+        clearCacheBtn.addEventListener("click", () => {
+            const confirmMsg = currentLanguage === "ar" 
+                ? "هل ترغب في إعادة ضبط الإعدادات ومسح الذاكرة المؤقتة؟"
+                : currentLanguage === "en" 
+                ? "Do you want to reset settings and clear cached data?"
+                : "ئایا دڵنیایت لە خاوێنکردنەوەی کەش و ڕێکخستنەکان؟";
+            if (confirm(confirmMsg)) {
+                localStorage.clear();
+                sessionStorage.clear();
+                window.location.reload();
+            }
+        });
+    }
+
+    // ٥. کرتەکردن لە تابی دڵخوازەکان (Favorites Trigger)
+    const tabFavoritesTrigger = document.getElementById("tabFavoritesTrigger");
+    if (tabFavoritesTrigger && !tabFavoritesTrigger.dataset.bound) {
+        tabFavoritesTrigger.dataset.bound = "true";
+        tabFavoritesTrigger.addEventListener("click", (e) => {
+            e.preventDefault();
+            showOnlyFavorites = true;
+            updateFavoritesUI();
+            renderServiceCards();
+            const servicesSection = document.getElementById("services");
+            if (servicesSection) {
+                servicesSection.scrollIntoView({ behavior: "smooth" });
+            }
+        });
     }
 }
 
@@ -1444,10 +2311,13 @@ document.addEventListener("DOMContentLoaded", () => {
     renderDestinationsCards();
     renderTownPills();
     renderCategoryPills();
+    setupServicesToolbar();
     renderServiceCards();
     renderServiceDetailsPage();
+    updateFavoritesUI();
 
     setupBookingModal();
+    setupHostModal();
     setupLanguageSwitch();
     setupServiceActions();
     setupSmoothScrolling();
@@ -1457,4 +2327,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCurrentYear();
     initWeatherWidget();
     registerServiceWorker();
+    setupIosTabBar();
+    setupIosSettings();
 });
+
