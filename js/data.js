@@ -681,8 +681,250 @@ services.forEach((s, idx) => {
     }
 });
 
+/* 
+    ===================================================================
+    ٥. شوێنە گەشتیارییە دیارەکانی ناوچەکە بەپێی پلاتفۆرمی KuTrip
+    ===================================================================
+*/
+const regionalHighlights = [
+    {
+        id: "awessar",
+        townId: "tawela",
+        name: localize("هاوینەهەواری ئاوێسەر", "منتجع أويسار السياحي", "Awessar Mountain Resort"),
+        tagline: localize("فێنکترین هاوینەهەوار لە هەورامان", "أبرد مصيف في هورامان", "Coolest Summer Resort in Hawraman"),
+        description: localize(
+            "ناوچەیەکی کانی و کوێستانی دڵڕفێن بە دار گوێزی چەندین سەدە، ئاوی بەستوو و کەشێکی سازگار کە پلەی گەرمای هاوینان بە دەگمەن ٢٧ پلە تێپەڕ دەکات.",
+            "منطقة ينابيع جبلية ساحرة تحيط بها أشجار الجوز المعمرة، مياه عذبة باردة وأجواء عليلة نادراً ما تتجاوز ٢٧ درجة صيفاً.",
+            "Scenic alpine spring oasis surrounded by centuries-old walnut groves, crystal icy waters, and cool air rarely exceeding 27°C in peak summer."
+        ),
+        badge: localize("فێنکترین هاوینەهەوار ❄️", "أبرد مصيف ❄️", "Coolest Escape ❄️"),
+        image: "images/nature.jpg",
+        tempTip: localize("زۆربەی کات ٦ تا ٨ پلە فێنکترە لە شارەکان", "أبرد بـ ٦-٨ درجات من مراكز المدن", "6-8°C cooler than city centers"),
+        category: localize("سەیرانگا و کانی", "مصيف وينابيع", "Resort & Springs")
+    },
+    {
+        id: "sarget",
+        townId: "byara",
+        name: localize("گوندی گەشتیاری سەرگەت", "قرية سركت السياحية", "Sarget Scenic Village"),
+        tagline: localize("سروشتی دەگمەن و کانیاوەکانی هەورامان", "طبيعة ساحرة وينابيع جبلية", "Pristine Nature & Mountain Springs"),
+        description: localize(
+            "گوندێکی مێژوویی سەرنجڕاکێش لە بناری شاخە بەرزەکانی هەورامان، بەستراوە بە باخی هەمەجۆر، هەنگوینی خۆماڵی، و دیمەنی پانۆرامای شاخەکان.",
+            "قرية جبلية خلابة عند سفوح جبال هورامان، تشتهر ببساتينها الغناء، العسل الجبلي الطبيعي، والإطلالات البانورامية الخلابة.",
+            "Breathtaking mountain village nestled under Hawraman peaks, famous for terraced gardens, pure wild honey, and dramatic panoramic vistas."
+        ),
+        badge: localize("سروشتی دەگمەن 🌲", "طبيعة خلابة 🌲", "Scenic Nature 🌲"),
+        image: "images/landscape.jpg",
+        tempTip: localize("هەوای شاخی پاک و کانیاوی سازگار", "هواء جبلي نقي وينابيع نقية", "Pure mountain air & springs"),
+        category: localize("گوند و کلتوور", "قرية وتراث", "Village & Heritage")
+    },
+    {
+        id: "hanezhala",
+        townId: "nawroli",
+        name: localize("کەپری هانەژاڵە و کەناراوەکانی سیروان", "أكواخ هانه ژاله وضفاف سيروان", "Hanezhala & Sirwan Riverfront"),
+        tagline: localize("کەپری سەر ئاو، بەلەم و جێتسکی", "جلسات عائمة وقوارب وجت سكي", "Floating Cabanas, Boat & Jet Ski"),
+        description: localize(
+            "دەڤەری کەنار ڕووباری سیروان و چەمی نەوڕۆڵی بە کەپری سەر ئاو، بەلەمسواری، جێتسکی و چێشتخانەی ماسی تازەی ڕووبار.",
+            "شواطئ نهر سيروان ووادي نورولي بأكواخ مائية مريحة، رحلات قوارب، جت سكي ومطاعم الأسماك النهرية الطازجة.",
+            "Vibrant waterfront haven along the Sirwan River offering overwater cabanas, boat cruising, jet skis, and fresh riverside grilled fish."
+        ),
+        badge: localize("کەناری ڕووبار 🌊", "ضفاف النهر 🌊", "Riverfront Haven 🌊"),
+        image: "images/hero.jpg",
+        tempTip: localize("دانیشتنی فێنک لەسەر شەپۆلی ئاو", "جلسات منعشة فوق مجرى الماء", "Cooling waterside breeze"),
+        category: localize("ڕووبار و چالاکی", "نهر وأنشطة", "River & Activities")
+    },
+    {
+        id: "zalm-castle",
+        townId: "ahmad-awa",
+        name: localize("تاڤگەی زەڵم و قەڵای مێژوویی", "شلال زلم وقلعة خان أحمد خان", "Zalm Waterfall & Historic Castle"),
+        tagline: localize("بەرزترین تاڤگە و شوێنەواری دێرین", "أعلى شلال وآثار تاريخية", "Spectacular Cascades & Historic Citadel"),
+        description: localize(
+            "سەرچاوەی خرۆشانی تاڤگەی بەناوبانگی زەڵم، چێشتخانەی کەبابی زەڵم، و شوێنەواری قەڵای دێرینی خان ئەحمەد خان لەسەر بەرزایی چیاکان.",
+            "مصب شلال زلم الشهير المنحدر من الجبال، كباب زلم التراثي، وآثار قلعة خان أحمد خان التاريخية الشامخة.",
+            "Roaring mountain cascades, renowned local Zalm kebab houses, and the ancient mountain cliff ruins of Khan Ahmad Khan Citadel."
+        ),
+        badge: localize("تاڤگە و مێژوو 💦", "شلال وتاريخ 💦", "Cascades & Citadel 💦"),
+        image: "images/nature.jpg",
+        tempTip: localize("دڵڕفێنترین تاڤگەی ناوچەکە", "أجمل شلال طبيعي في المنطقة", "Most famous waterfall in the region"),
+        category: localize("تاڤگە و شوێنەوار", "شلال وآثار", "Waterfall & History")
+    },
+    {
+        id: "halabja-monument",
+        townId: "halabja",
+        name: localize("مۆنۆمێنتی شەهیدانی هەڵەبجە", "نصب شهداء حلبجة التذكاري", "Halabja Martyrs Monument"),
+        tagline: localize("شوێنەواری مێژوویی و نەتەوەیی شارەکە", "المعلم الوطني والتاريخي الأبرز", "National Memorial & Heritage Landmark"),
+        description: localize(
+            "مۆنۆمێنت و مۆزەخانەی فەرمی هەڵەبجە بۆ ناساندنی مێژوو و قوربانیدانەکانی شارەکە، لەگەڵ پارکی گشتی و ڕووبەری سەوزی پشوودان.",
+            "النصب التذكاري والمتحف الوطني لتوثيق تاريخ وصمود حلبجة، محاط بحدائق خضراء واسعة للزوار.",
+            "The iconic memorial monument and museum commemorating Halabja's history and resilience, surrounded by peaceful parklands."
+        ),
+        badge: localize("مێژوو و ناسنامە 🏛️", "تاريخ وهوية 🏛️", "History & Heritage 🏛️"),
+        image: "images/activity.jpg",
+        tempTip: localize("ناوەندی شاری هەڵەبجە", "مركز مدينة حلبجة", "Central Halabja"),
+        category: localize("مۆنۆمێنت و مۆزەخانە", "متحف ونصب", "Museum & Monument")
+    },
+    {
+        id: "sazan",
+        townId: "khurmal",
+        name: localize("سەیرانگای سازان و باخەکانی هەنار", "وادي وبساتين سازان", "Sazan Valley & Pomegranate Groves"),
+        tagline: localize("کەناری ڕووبار و باخە بەناوبانگەکانی هەنار", "ضفاف النهر وبساتين الرمان الشهيرة", "River Valley & Renowned Pomegranates"),
+        description: localize(
+            "دۆڵێکی سەوزی کەنار ڕووبار بە هەنارە بەناوبانگەکانی هەڵەبجە، گونجاو بۆ کەمپینگ و ماسی برژاندن و پشوودانی هێمن لە دەست ژاوەژاو.",
+            "وادي نهري بديع يشتهر بأشجار الرمان الحلبجي الفاخر، ومواقع هادئة للتخييم وشواء الأسماك والاسترخاء.",
+            "Serene river valley famed for Halabja's world-class pomegranate orchards, idyllic wild camping, and tranquil picnic retreats."
+        ),
+        badge: localize("دۆڵی سەوز 🌿", "وادي أخضر 🌿", "Scenic Valley 🌿"),
+        image: "images/landscape.jpg",
+        tempTip: localize("تەواو هێمن و دوور لە قەرەباڵغی", "هادئ جداً ومثالي للتخييم", "Ultra quiet & ideal for camping"),
+        category: localize("دۆڵ و کەمپینگ", "وادي وتخييم", "Valley & Camping")
+    }
+];
+
+/* 
+    ===================================================================
+    ٦. پلانی پێشنیارکراوی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان (Itinerary)
+    ===================================================================
+*/
+const oneDayItinerary = [
+    {
+        time: localize("٠٩:٠٠ بەیانی", "٠٩:٠٠ صباحاً", "09:00 AM"),
+        title: localize("نەوڕۆڵی و مۆنۆمێنتی هەڵەبجە", "نورولي ونصب حلبجة", "Nawroli & Halabja Monument"),
+        desc: localize(
+            "دەستپێکردنی گەشتەکە بە نانی بەیانی لە نەوڕۆڵی، بەلەمسواری لە کەناری سیروان و سەردانێکی پڕواتا بۆ مۆنۆمێنتی مێژوویی هەڵەبجە.",
+            "انطلاق الجولة بفطور صباحي شهي في نورولي، جولة قارب في نهر سيروان وزيارة نصب شهداء حلبجة.",
+            "Morning start with riverside breakfast in Nawroli, boat cruising along the Sirwan, followed by visiting Halabja Monument."
+        ),
+        icon: "🌅",
+        location: localize("نەوڕۆڵی و هەڵەبجە", "نورولي وحلبجة", "Nawroli & Halabja")
+    },
+    {
+        time: localize("٠١:٠٠ نیوەڕۆ", "٠١:٠٠ ظهراً", "01:00 PM"),
+        title: localize("ئەحمەدئاوا و تامی کەبابی زەڵم", "أحمد آوا وتذوق كباب زلم", "Ahmad Awa & Zalm Kebab"),
+        desc: localize(
+            "گەیشتن بە تاڤگەی سەرکەشی زەڵم، تامی بەناوبانگترین کەبابی هەورامان لە کەپرەکانی سەر ئاو و چێژبینین لە تاڤگە سەوزەکە.",
+            "الوصول إلى شلالات زلم الخلابة، تناول كباب هورامان الشهير فوق المياه العذبة والاستجمام بالطبيعة.",
+            "Head to stunning Zalm Waterfall, savor legendary Hawrami kebabs right over rushing water cabanas."
+        ),
+        icon: "🍢",
+        location: localize("ئەحمەدئاوا و زەڵم", "أحمد آوا وزلم", "Ahmad Awa & Zalm")
+    },
+    {
+        time: localize("٠٤:٣٠ پاشنیوەڕۆ", "٠٤:٣٠ عصراً", "04:30 PM"),
+        title: localize("بازاڕی بیارە و گوندی سەرگەت", "سوق بيارة وقرية سركت", "Byara Bazaar & Sarget Village"),
+        desc: localize(
+            "گەشتی پیادە بەنێو باخە چڕەکانی بیارە، کڕینی سۆغاتی و هەنگوینی خۆماڵی، و سەردانی دیمەنە بەرزەکانی گوندی سەرگەت.",
+            "جولة بين بساتين بيارة، تسوق العسل والمنتجات التراثية، وزيارة إطلالات قرية سركت الشاهقة.",
+            "Stroll through Byara’s walnut orchards, buy local wild honey, and explore the panoramic terraced village of Sarget."
+        ),
+        icon: "🍯",
+        location: localize("بیارە و سەرگەت", "بيارة وسركت", "Byara & Sarget")
+    },
+    {
+        time: localize("٠٦:٣٠ ئێوارە", "٠٦:٣٠ مساءً", "06:30 PM"),
+        title: localize("هاوینەهەواری ئاوێسەر و تەوێڵە", "مصيف أويسار وبلدة طويلة", "Awessar Resort & Tawela"),
+        desc: localize(
+            "چای سەر خەڵوز و کەشوهەوای فێنکی ئاوێسەر، دیتنی کۆڵانە بەردینە کۆنەکان و کڕینی کڵاشی دەستکردی ڕەسەنی هەورامی.",
+            "شاي على الفحم بنسيم مصيف أويسار البارد، استكشاف أزقة طويلة الحجرية وشراء الكلاش الهورامي الأصيل.",
+            "Woodfire tea in cool Awessar breeze, wander stone stairways of Tawela, and get authentic handmade Klash shoes."
+        ),
+        icon: "🫖",
+        location: localize("ئاوێسەر و تەوێڵە", "أويسار وطويلة", "Awessar & Tawela")
+    }
+];
+
+/* 
+    ===================================================================
+    ٧. چێشتخانە و کەبابخانە خۆماڵییەکان (KuTrip Food & Dining Experience)
+    ===================================================================
+*/
+const localDining = [
+    {
+        id: "zalm-kebab",
+        name: localize("کەبابی زەڵم و ئەحمەدئاوا", "كباب زلم وأحمد آوا الشهير", "Famous Zalm & Ahmad Awa Kebab"),
+        desc: localize(
+            "گۆشتی فرێشی بەرخی ناوچەکە کە بە ڕێگای کۆنی خەڵوز لە کەناری تاڤگە ئامادە دەکرێت.",
+            "لحم بلدي طازج مشوي على الفحم في أحضان الشلال.",
+            "Fresh local lamb kebab grilled over hot charcoal along the waterfall."
+        ),
+        icon: "🍢",
+        tag: localize("بەناوبانگترین تام", "الأشهر في المنطقة", "Top Culinary Pick")
+    },
+    {
+        id: "nawroli-fish",
+        name: localize("ماسی برژاوی کەنار سیروان", "سمك مسكوف على ضفاف سيروان", "Sirwan Riverside Grilled Fish"),
+        desc: localize(
+            "ماسی زیندووی ناو ئاو، برژاو بە شێوازی تایبەت لەسەر کەپری نەوڕۆڵی.",
+            "سمك نهري طازج مشوي على الطريقة التراثية في أكواخ نورولي.",
+            "Fresh local river fish grilled to perfection directly on Nawroli waterfront."
+        ),
+        icon: "🐟",
+        tag: localize("تام و بۆنی ڕووبار", "طعم نهري أصيل", "Riverside Special")
+    },
+    {
+        id: "hawrami-bread",
+        name: localize("نانی تیری و کەلانەی هەورامی", "خبز الرقاق والكلانة الهورامية", "Traditional Hawrami Kalaneh"),
+        desc: localize(
+            "کەلانەی تازە بە ڕۆنی کەرەی خۆماڵی و گیا بەهارییەکان لە بیارە و تەوێڵە.",
+            "كلانة ساخنة بالدهن الحر والأعشاب الجبلية في بيارة وطويلة.",
+            "Hot mountain flatbread with spring herbs and local clarified butter in Byara."
+        ),
+        icon: "🫓",
+        tag: localize("کەلەپووری ڕەسەن", "تراث هورامي أصيل", "Hawrami Heritage")
+    },
+    {
+        id: "awessar-tea",
+        name: localize("چای سەر خەڵوزی ئاوێسەر", "شاي الفحم في أويسار", "Awessar Charcoal Mountain Tea"),
+        desc: localize(
+            "چای دارچینی بە ئاوی کانی سەهۆڵ لە کەشوهەوایەکی تەواو فێنک.",
+            "شاي معطر محضر بمياه الينابيع الباردة في أجواء مصيف أويسار العليلة.",
+            "Aromatic mountain tea brewed over embers with icy spring water."
+        ),
+        icon: "☕",
+        tag: localize("فێنک و ئارامبەخش", "أجواء عليلة ومنعشة", "Refreshing Atmosphere")
+    }
+];
+
+/* 
+    ===================================================================
+    ٨. ژمارە فریاگوزارییەکان و هێڵە خێراکان (Emergency & Helplines)
+    ===================================================================
+*/
+const emergencyContacts = [
+    {
+        name: localize("فریاکەوتنی تەندروستی (ئەمبوڵانس)", "الإسعاف الفوري (الصحة)", "Emergency Ambulance"),
+        number: "122",
+        tel: "tel:122",
+        icon: "🚑",
+        desc: localize("فریاگوزاری ٢٤ کاتژمێری بۆ حاڵەتە لەناکاوەکان", "خدمة طوارئ صحية على مدار ٢٤ ساعة", "24/7 Rapid Health Emergency")
+    },
+    {
+        name: localize("بەرگری شارستانی (ئاگرکوژێنەوە)", "الدفاع المدني (الإطفاء)", "Civil Defense"),
+        number: "115",
+        tel: "tel:115",
+        icon: "🚒",
+        desc: localize("ڕزگارکردن و ئاگرکوژێنەوە لە هەڵەبجە و هەورامان", "عمليات الإنقاذ والإطفاء في حلبجة وهورامان", "Rescue & Firefighting in Halabja & Hawraman")
+    },
+    {
+        name: localize("پۆلیسی فریاکەوتن", "شرطة النجدة والطوارئ", "Emergency Police"),
+        number: "104",
+        tel: "tel:104",
+        icon: "🚓",
+        desc: localize("ئارامی و هاوکاریی خێرا بۆ گەشتیاران", "حماية ومساعدة فورية للزوار والسياح", "Tourist Safety & Rapid Response")
+    },
+    {
+        name: localize("پەیوەندی ڕاستەوخۆ بە بەڕێوەبەر", "إدارة وتنسيق الحجوزات", "Platform Coordinator WhatsApp"),
+        number: "0751 048 5057",
+        tel: "tel:+9647510485057",
+        icon: "📞",
+        desc: localize("ڕێنمایی دەستبەجێ، حجزکردن و وەڵامدانەوە", "إرشاد فوري، مساعدة وتنسيق الحجوزات", "Direct Coordination & WhatsApp Support")
+    }
+];
+
 window.towns = towns;
 window.serviceCategories = serviceCategories;
 window.services = services;
 window.nearbyAttractions = nearbyAttractions;
+window.regionalHighlights = regionalHighlights;
+window.oneDayItinerary = oneDayItinerary;
+window.localDining = localDining;
+window.emergencyContacts = emergencyContacts;
 

@@ -48,7 +48,10 @@ const translations = {
         navMainAria: "ڕێنمایی سەرەکی",
         navAbout: "دەربارە",
         navDestinations: "دەڤەرەکان",
+        navHighlights: "سەیرانگاکان",
         navServices: "خانوو و مانەوە",
+        navItinerary: "پلانی گەشت",
+        navDining: "چێشتخانە",
         navWhyVisit: "بۆچی ئێمە",
         navGallery: "گەلەری",
         navHost: "تۆمارکردنی شوێن",
@@ -233,7 +236,22 @@ const translations = {
         viewsTodayText: "ئەمڕۆ",
         viewsTodaySuffix: "کەس سەیریان کردووە",
         viewsSuffix: "بینەر",
-        detailNearbyAttractions: "لە دەوروبەری ئەم شوێنە چی هەیە؟"
+        detailNearbyAttractions: "لە دەوروبەری ئەم شوێنە چی هەیە؟",
+        highlightsLabel: "سەیرانگا و هاوینەهەوارەکان",
+        highlightsTitle: "دیارترین شوێنە گەشتیارییەکانی دەڤەری هەڵەبجە و هەورامان",
+        highlightsText: "بەپێی نەخشەی گەشتیاری و ناسراوترین شوێنەکان بۆ پشوودان، سەردانی ئەم هاوینەهەوار و کانییە ناودارانە بکە:",
+        highlightsExploreStays: "بینینی شوێنەکانی مانەوە لەم دەڤەرە ←",
+        itineraryLabel: "ڕێبەری گەشتکردن",
+        itineraryTitle: "پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان",
+        itineraryText: "پلانێکی تەواو ئامادەکراو لە بەیانییەوە تا ئێوارە بۆ ئەوەی جوانترین کات لەگەڵ خێزانەکەت بەسەربەریت:",
+        itineraryStep: "قۆناغ",
+        diningLabel: "تامی خۆماڵی و چێشتخانەکان",
+        diningTitle: "بەناوبانگترین تامە خۆماڵییەکانی هەورامان و هەڵەبجە",
+        diningText: "لە تەنیشت مانەوە و گەشتکردن، چێژ لەم خواردن و تامە کەلەپوورییە تایبەتانەی دەڤەرەکە وەربگرە:",
+        emergencyBadge: "🚨 فریاگوزاری و هێڵە گەرمەکان",
+        emergencyTitle: "ژمارە پێویستەکانی کاتی تەنگژە و فریاکەوتن",
+        emergencySubtitle: "لە هەر حاڵەتێکی لەناکاو یان پێویستی بە هاوکاری لە سنووری هەڵەبجە و هەورامان، بە یەک کرتە پەیوەندی بکە:",
+        emergencyCallNow: "پەیوەندیکردن 📞"
     },
     ar: {
         metaDescriptionHome: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والنشاطات في حلبجة وهورامان.",
@@ -247,7 +265,10 @@ const translations = {
         navMainAria: "التنقل الرئيسي",
         navAbout: "حول حلبجة",
         navDestinations: "المناطق",
+        navHighlights: "المصايف والينابيع",
         navServices: "الإقامة والبيوت",
+        navItinerary: "خطة الجولة",
+        navDining: "المطاعم التراثية",
         navWhyVisit: "لماذا نحن",
         navGallery: "المعرض",
         navHost: "إضافة عقارك",
@@ -432,7 +453,22 @@ const translations = {
         viewsTodayText: "اليوم",
         viewsTodaySuffix: "شخص شاهدوا هذا المكان",
         viewsSuffix: "مشاهدة",
-        detailNearbyAttractions: "أبرز المعالم والخدمات القريبة من هذا المكان:"
+        detailNearbyAttractions: "أبرز المعالم والخدمات القريبة من هذا المكان:",
+        highlightsLabel: "المصايف والينابيع الشهيرة",
+        highlightsTitle: "أبرز المعالم والوجهات السياحية في حلبجة وهورامان",
+        highlightsText: "وفقاً للدليل السياحي وأشهر الأماكن للاستجمام، استكشف هذه المصايف والينابيع الخلابة:",
+        highlightsExploreStays: "عرض أماكن الإقامة في هذه المنطقة ←",
+        itineraryLabel: "دليل الجولة السياحية",
+        itineraryTitle: "خطة جولة يوم واحد في حلبجة وهورامان",
+        itineraryText: "برنامج متكامل من الصباح حتى المساء لقضاء أجمل الأوقات العائلية في أحضان الطبيعة:",
+        itineraryStep: "المحطة",
+        diningLabel: "الأطباق والمطاعم التراثية",
+        diningTitle: "أشهر المأكولات والمذاقات في هورامان وحلبجة",
+        diningText: "إلى جانب الإقامة والجولات، استمتع بأشهى المأكولات التراثية المشهورة في المنطقة:",
+        emergencyBadge: "🚨 أرقام الطوارئ والخطوط الساخنة",
+        emergencyTitle: "أرقام الطوارئ والمساعدة الفورية للزوار",
+        emergencySubtitle: "لأي حالة طارئة أو مساعدة أثناء تواجدك في حلبجة وهورامان، اتصل بنقرة واحدة:",
+        emergencyCallNow: "اتصال مباشر 📞"
     },
     en: {
         metaDescriptionHome: "Official tourism and booking platform for tourist houses, villas, huts and activities in Halabja and Hawraman.",
@@ -446,7 +482,10 @@ const translations = {
         navMainAria: "Main navigation",
         navAbout: "About",
         navDestinations: "Destinations",
+        navHighlights: "Resorts & Sights",
         navServices: "Stays & Houses",
+        navItinerary: "Tour Plan",
+        navDining: "Local Dining",
         navWhyVisit: "Why Us",
         navGallery: "Gallery",
         navHost: "List Your Place",
@@ -631,7 +670,22 @@ const translations = {
         viewsTodayText: "Today",
         viewsTodaySuffix: "people viewed this place",
         viewsSuffix: "views",
-        detailNearbyAttractions: "Nearby Attractions & Amenities:"
+        detailNearbyAttractions: "Nearby Attractions & Amenities:",
+        highlightsLabel: "Attractions & Mountain Resorts",
+        highlightsTitle: "Top Regional Sights in Halabja & Hawraman",
+        highlightsText: "Curated by popular travel maps, explore these famous mountain springs, villages and resorts:",
+        highlightsExploreStays: "Explore stays in this area ←",
+        itineraryLabel: "Travel Itinerary",
+        itineraryTitle: "1-Day Halabja & Hawraman Tour Plan",
+        itineraryText: "A curated morning-to-evening route crafted to experience the best scenery with your family:",
+        itineraryStep: "Stop",
+        diningLabel: "Local Flavors & Dining",
+        diningTitle: "Signature Culinary Flavors of Hawraman & Halabja",
+        diningText: "Beyond comfortable stays, savor iconic local culinary specialties along your journey:",
+        emergencyBadge: "🚨 Emergency & Helplines",
+        emergencyTitle: "Essential Contacts & Rapid Assistance",
+        emergencySubtitle: "For any emergency or roadside support in Halabja and Hawraman, call instantly with one click:",
+        emergencyCallNow: "Call Now 📞"
     }
 };
 
@@ -980,6 +1034,158 @@ function renderDestinationsCards() {
             }
         });
     });
+}
+
+/* ==========================================================================
+   ١.١. شوێنە گەشتیارییە دیارەکانی ناوچەکە بەپێی KuTrip (Regional Highlights)
+   ========================================================================== */
+function renderRegionalHighlights() {
+    const grid = document.getElementById("highlightsGrid");
+    if (!grid || !Array.isArray(window.regionalHighlights)) return;
+
+    grid.innerHTML = window.regionalHighlights
+        .map((item) => {
+            const name = t(item.name);
+            const tagline = t(item.tagline);
+            const desc = t(item.description);
+            const badge = t(item.badge);
+            const tempTip = t(item.tempTip);
+            const category = t(item.category);
+
+            return `
+                <article class="highlight-card reveal" data-town="${item.townId}">
+                    <div class="highlight-media">
+                        <img class="lazy-image" src="${IMAGE_PLACEHOLDER}" data-src="${item.image}" alt="${name}" loading="lazy">
+                        <span class="highlight-badge">${badge}</span>
+                        <span class="highlight-category">${category}</span>
+                    </div>
+                    <div class="highlight-content">
+                        <h3 class="highlight-title">${name}</h3>
+                        <p class="highlight-tagline">${tagline}</p>
+                        <p class="highlight-desc">${desc}</p>
+                        <div class="highlight-tip-box">
+                            <span class="tip-icon">🌡️</span>
+                            <span class="tip-text">${tempTip}</span>
+                        </div>
+                        <button type="button" class="highlight-explore-btn" data-explore-town="${item.townId}">
+                            ${ui("highlightsExploreStays")}
+                        </button>
+                    </div>
+                </article>
+            `;
+        })
+        .join("");
+
+    grid.querySelectorAll("[data-explore-town]").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const townId = btn.dataset.exploreTown;
+            if (townId && window.towns.some((t) => t.id === townId)) {
+                currentSelectedTown = townId;
+                updateTownPillActiveState();
+                updateSearchDropdownState();
+                renderServiceCards();
+                const servicesSection = document.getElementById("services");
+                if (servicesSection) {
+                    servicesSection.scrollIntoView({ behavior: "smooth", block: "start" });
+                }
+            }
+        });
+    });
+
+    setupLazyLoading();
+}
+
+/* ==========================================================================
+   ١.٢. پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان (One-Day Trip Itinerary)
+   ========================================================================== */
+function renderOneDayItinerary() {
+    const timeline = document.getElementById("itineraryTimeline");
+    if (!timeline || !Array.isArray(window.oneDayItinerary)) return;
+
+    timeline.innerHTML = window.oneDayItinerary
+        .map((step, idx) => {
+            const time = t(step.time);
+            const title = t(step.title);
+            const desc = t(step.desc);
+            const loc = t(step.location);
+
+            return `
+                <div class="itinerary-step reveal">
+                    <div class="itinerary-time-col">
+                        <span class="itinerary-badge">${ui("itineraryStep")} ${idx + 1}</span>
+                        <strong class="itinerary-time">${time}</strong>
+                    </div>
+                    <div class="itinerary-marker">
+                        <span class="itinerary-icon">${step.icon}</span>
+                    </div>
+                    <div class="itinerary-card">
+                        <span class="itinerary-location">📍 ${loc}</span>
+                        <h3 class="itinerary-step-title">${title}</h3>
+                        <p class="itinerary-desc">${desc}</p>
+                    </div>
+                </div>
+            `;
+        })
+        .join("");
+}
+
+/* ==========================================================================
+   ١.٣. چێشتخانە و تامە خۆماڵییەکان (KuTrip Food & Dining Experience)
+   ========================================================================== */
+function renderLocalDining() {
+    const grid = document.getElementById("diningGrid");
+    if (!grid || !Array.isArray(window.localDining)) return;
+
+    grid.innerHTML = window.localDining
+        .map((item) => {
+            const name = t(item.name);
+            const desc = t(item.desc);
+            const tag = t(item.tag);
+
+            return `
+                <article class="dining-card reveal">
+                    <div class="dining-icon-wrap">
+                        <span class="dining-icon">${item.icon}</span>
+                    </div>
+                    <div class="dining-body">
+                        <span class="dining-tag">${tag}</span>
+                        <h3 class="dining-title">${name}</h3>
+                        <p class="dining-desc">${desc}</p>
+                    </div>
+                </article>
+            `;
+        })
+        .join("");
+}
+
+/* ==========================================================================
+   ١.٤. فریاگوزاری و هێڵە خێراکان (Emergency & Helplines)
+   ========================================================================== */
+function renderEmergencyContacts() {
+    const grid = document.getElementById("emergencyGrid");
+    if (!grid || !Array.isArray(window.emergencyContacts)) return;
+
+    grid.innerHTML = window.emergencyContacts
+        .map((contact) => {
+            const name = t(contact.name);
+            const desc = t(contact.desc);
+
+            return `
+                <a href="${contact.tel}" class="emergency-card reveal" aria-label="${name}">
+                    <div class="emergency-icon-box">
+                        <span>${contact.icon}</span>
+                    </div>
+                    <div class="emergency-details">
+                        <span class="emergency-name">${name}</span>
+                        <strong class="emergency-number" dir="ltr">${contact.number}</strong>
+                        <p class="emergency-desc">${desc}</p>
+                    </div>
+                    <span class="emergency-call-hint">${ui("emergencyCallNow")}</span>
+                </a>
+            `;
+        })
+        .join("");
 }
 
 /* ==========================================================================
@@ -2188,6 +2394,10 @@ function switchLanguageEverywhere(newLang) {
     applyLanguageToDocument();
     applyTranslationsToMarkedElements();
     renderDestinationsCards();
+    renderRegionalHighlights();
+    renderOneDayItinerary();
+    renderLocalDining();
+    renderEmergencyContacts();
     renderTownPills();
     renderCategoryPills();
     renderServiceCards();
@@ -2309,6 +2519,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupSmartSearch();
     renderDestinationsCards();
+    renderRegionalHighlights();
+    renderOneDayItinerary();
+    renderLocalDining();
+    renderEmergencyContacts();
     renderTownPills();
     renderCategoryPills();
     setupServicesToolbar();

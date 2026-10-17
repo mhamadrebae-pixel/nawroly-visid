@@ -2347,3 +2347,423 @@ html[dir="ltr"] .service-card-actions {
     font-size: 1rem;
     margin-top: 0.4rem;
 }
+
+/* ==========================================================================
+   KuTrip Integration: Highlights, Itinerary, Dining & Emergency Styles
+   ========================================================================== */
+
+/* 1. Regional Highlights Grid */
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.highlight-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 123, 116, 0.14);
+    border-radius: var(--radius-md, 16px);
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(10, 56, 55, 0.06);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition, 0.3s ease), box-shadow var(--transition, 0.3s ease);
+}
+
+.highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 18px 36px rgba(10, 56, 55, 0.12);
+}
+
+.highlight-media {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+    background: #e2f0ed;
+}
+
+.highlight-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.highlight-card:hover .highlight-media img {
+    transform: scale(1.05);
+}
+
+.highlight-badge {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    background: rgba(15, 123, 116, 0.92);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.highlight-category {
+    position: absolute;
+    bottom: 0.85rem;
+    right: 0.85rem;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-primary-dark, #0a4f4a);
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.25rem 0.65rem;
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+}
+
+.highlight-content {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.highlight-title {
+    font-size: 1.22rem;
+    font-weight: 800;
+    color: var(--color-primary-dark, #0b4b45);
+    margin: 0 0 0.35rem;
+}
+
+.highlight-tagline {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-primary, #0f7b74);
+    margin: 0 0 0.65rem;
+}
+
+.highlight-desc {
+    font-size: 0.9rem;
+    color: var(--color-text-soft, #4a6360);
+    line-height: 1.6;
+    margin: 0 0 0.9rem;
+    flex: 1;
+}
+
+.highlight-tip-box {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0fdf9;
+    border: 1px solid rgba(15, 123, 116, 0.15);
+    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    color: #0d615b;
+}
+
+.highlight-tip-box .tip-icon {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.highlight-explore-btn {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: linear-gradient(135deg, var(--color-primary, #0f7b74), var(--color-primary-dark, #0a544f));
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.highlight-explore-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(15, 123, 116, 0.25);
+}
+
+/* 2. One-Day Itinerary Timeline */
+.itinerary-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+    margin-top: 2rem;
+}
+
+.itinerary-step {
+    display: grid;
+    grid-template-columns: 140px 50px 1fr;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.itinerary-time-col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.25rem;
+}
+
+.itinerary-badge {
+    background: rgba(15, 123, 116, 0.12);
+    color: var(--color-primary, #0f7b74);
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+}
+
+.itinerary-time {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--color-primary-dark, #0a4f4a);
+}
+
+.itinerary-marker {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #ffffff, #e6f6f3);
+    border: 2px solid var(--color-primary, #0f7b74);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 18px rgba(15, 123, 116, 0.16);
+    flex-shrink: 0;
+}
+
+.itinerary-marker .itinerary-icon {
+    font-size: 1.35rem;
+}
+
+.itinerary-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 123, 116, 0.14);
+    border-radius: var(--radius-md, 16px);
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 8px 24px rgba(10, 56, 55, 0.05);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.itinerary-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(10, 56, 55, 0.1);
+}
+
+.itinerary-location {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-primary, #0f7b74);
+    background: rgba(15, 123, 116, 0.08);
+    padding: 0.25rem 0.65rem;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 0.4rem;
+}
+
+.itinerary-step-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--color-text, #1b3835);
+    margin: 0 0 0.4rem;
+}
+
+.itinerary-desc {
+    font-size: 0.92rem;
+    color: var(--color-text-soft, #4a6360);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* 3. Local Dining Grid */
+.dining-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+
+.dining-card {
+    background: #ffffff;
+    border: 1px solid rgba(15, 123, 116, 0.14);
+    border-radius: var(--radius-md, 16px);
+    padding: 1.35rem;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 8px 24px rgba(10, 56, 55, 0.05);
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.dining-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(10, 56, 55, 0.1);
+}
+
+.dining-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f0fdf9, #ddf6f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(15, 123, 116, 0.1);
+}
+
+.dining-icon {
+    font-size: 1.65rem;
+}
+
+.dining-body {
+    flex: 1;
+}
+
+.dining-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #b45309;
+    background: #fef3c7;
+    padding: 0.2rem 0.55rem;
+    border-radius: 6px;
+    display: inline-block;
+    margin-bottom: 0.35rem;
+}
+
+.dining-title {
+    font-size: 1.08rem;
+    font-weight: 800;
+    color: var(--color-text, #1b3835);
+    margin: 0 0 0.35rem;
+}
+
+.dining-desc {
+    font-size: 0.88rem;
+    color: var(--color-text-soft, #4a6360);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* 4. Emergency Contacts Wrapper */
+.emergency-wrapper {
+    margin-top: 2.5rem;
+    padding: 1.8rem;
+    background: linear-gradient(135deg, #fff7f7, #fef2f2);
+    border: 1.5px solid #fecaca;
+    border-radius: var(--radius-lg, 20px);
+    box-shadow: 0 10px 30px rgba(220, 38, 38, 0.06);
+}
+
+.emergency-header {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 1.5rem;
+}
+
+.emergency-badge {
+    display: inline-block;
+    background: #dc2626;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 800;
+    padding: 0.3rem 0.8rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+}
+
+.emergency-header h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #991b1b;
+    margin: 0 0 0.4rem;
+}
+
+.emergency-header p {
+    font-size: 0.9rem;
+    color: #7f1d1d;
+    margin: 0;
+}
+
+.emergency-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.emergency-card {
+    background: #ffffff;
+    border: 1px solid #fca5a5;
+    border-radius: var(--radius-sm, 12px);
+    padding: 1.1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.07);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+}
+
+.emergency-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(220, 38, 38, 0.15);
+    border-color: #ef4444;
+}
+
+.emergency-icon-box {
+    width: 48px;
+    height: 48px;
+    background: #fee2e2;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.emergency-details {
+    flex: 1;
+}
+
+.emergency-name {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #7f1d1d;
+    margin-bottom: 0.15rem;
+}
+
+.emergency-number {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #dc2626;
+    letter-spacing: 0.5px;
+}
+
+.emergency-desc {
+    font-size: 0.78rem;
+    color: #991b1b;
+    margin: 0.15rem 0 0;
+    line-height: 1.4;
+}
+
+.emergency-call-hint {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: #dc2626;
+    padding: 0.35rem 0.65rem;
+    border-radius: 8px;
+    white-space: nowrap;
+    align-self: flex-start;
+}

@@ -72,10 +72,11 @@
                 <nav class="main-nav" aria-label="ڕێنمایی سەرەکی" data-i18n-aria-label="navMainAria">
                     <a href="#about" data-scroll-target data-i18n="navAbout">دەربارە</a>
                     <a href="#destinations" data-scroll-target data-i18n="navDestinations">دەڤەرەکان</a>
+                    <a href="#highlights" data-scroll-target data-i18n="navHighlights">سەیرانگاکان</a>
                     <a href="#services" data-scroll-target data-i18n="navServices">خانوو و مانەوە</a>
-                    <a href="#why-visit" data-scroll-target data-i18n="navWhyVisit">بۆچی ئێمە</a>
-                    <a href="#gallery" data-scroll-target data-i18n="navGallery">گەلەری</a>
-                    <a href="#host-cta" data-scroll-target data-i18n="navHost">تۆمارکردنی شوێن</a>
+                    <a href="#itinerary" data-scroll-target data-i18n="navItinerary">پلانی گەشت</a>
+                    <a href="#dining" data-scroll-target data-i18n="navDining">چێشتخانە</a>
+                    <a href="#safety" data-scroll-target data-i18n="navSafety">سەلامەتی و فریاگوزاری</a>
                     <a href="#contact" data-scroll-target data-i18n="navContact">پەیوەندی</a>
                     <a href="settings.html" data-i18n="navSettings">⚙️ ڕێکخستن</a>
                 </nav>
@@ -189,6 +190,23 @@
         </section>
 
         <!--
+            Regional Highlights Section: شوێنە گەشتیارییە دیارەکان بەپێی KuTrip (ئاوێسەر، سەرگەت، هانەژاڵە، زەڵم، مۆنۆمێنت، سازان)
+        -->
+        <section class="section section-highlights" id="highlights" aria-labelledby="highlights-title">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label" data-i18n="highlightsLabel">سەیرانگا و هاوینەهەوارەکان</span>
+                    <h2 id="highlights-title" data-i18n="highlightsTitle">دیارترین شوێنە گەشتیارییەکانی دەڤەری هەڵەبجە و هەورامان</h2>
+                    <p data-i18n="highlightsText">
+                        بەپێی نەخشەی گەشتیاری و ناسراوترین شوێنەکان بۆ پشوودان، سەردانی ئەم هاوینەهەوار و کانییە ناودارانە بکە:
+                    </p>
+                </div>
+
+                <div class="highlights-grid" id="highlightsGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!--
             Services & Listings Section: خانووەکانی گەشتیاری و چالاکییەکان
         -->
         <section class="section section-accent" id="services" aria-labelledby="services-title">
@@ -244,6 +262,23 @@
         </section>
 
         <!--
+            Trip Itinerary Section: پلانی پێشنیارکراوی گەشتی ١ ڕۆژە
+        -->
+        <section class="section section-accent section-itinerary" id="itinerary" aria-labelledby="itinerary-title">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label" data-i18n="itineraryLabel">ڕێبەری گەشتکردن</span>
+                    <h2 id="itinerary-title" data-i18n="itineraryTitle">پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان</h2>
+                    <p data-i18n="itineraryText">
+                        پلانێکی تەواو ئامادەکراو لە بەیانییەوە تا ئێوارە بۆ ئەوەی جوانترین کات لەگەڵ خێزانەکەت بەسەربەریت:
+                    </p>
+                </div>
+
+                <div class="itinerary-timeline" id="itineraryTimeline" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <!--
             Why Visit Us Section: هۆکارەکانی حجزکردن لەگەڵ ئێمە
         -->
         <section class="section" id="why-visit" aria-labelledby="why-title">
@@ -278,6 +313,23 @@
                         <p data-i18n="whySupportText">لە سەرەتای دەرچوونتەوە تا گەیشتن و گەڕانەوە، تیمەکەمان لەگەڵت دەبن بۆ هەر هاوکاری و ڕێنماییەک.</p>
                     </article>
                 </div>
+            </div>
+        </section>
+
+        <!--
+            Local Dining Section: چێشتخانە و کەبابخانە خۆماڵییەکان
+        -->
+        <section class="section section-dining" id="dining" aria-labelledby="dining-title">
+            <div class="container">
+                <div class="section-heading reveal">
+                    <span class="section-label" data-i18n="diningLabel">تامی خۆماڵی و چێشتخانەکان</span>
+                    <h2 id="dining-title" data-i18n="diningTitle">بەناوبانگترین تامە خۆماڵییەکانی هەورامان و هەڵەبجە</h2>
+                    <p data-i18n="diningText">
+                        لە تەنیشت مانەوە و گەشتکردن، چێژ لەم خواردن و تامە کەلەپوورییە تایبەتانەی دەڤەرەکە وەربگرە:
+                    </p>
+                </div>
+
+                <div class="dining-grid" id="diningGrid" aria-live="polite"></div>
             </div>
         </section>
 
@@ -375,6 +427,16 @@
                         <h3 data-i18n="safetyCardCleanlinessTitle">پاراستنی ژینگە و پاکوخاوێنی</h3>
                         <p data-i18n="safetyCardCleanlinessText">ئاوی ڕووبار و سروشتی هەڵەبجە سەرمایەیەکی گشتییە، تکایە پاشماوە و پلاستیک فڕێ مەدەنە ناو ئاو و سەتڵی زبڵ بەکاربهێنن.</p>
                     </article>
+                </div>
+
+                <!-- فریاگوزاری و هێڵە خێراکان بەپێی KuTrip -->
+                <div class="emergency-wrapper reveal" id="emergency">
+                    <div class="emergency-header">
+                        <span class="emergency-badge" data-i18n="emergencyBadge">🚨 فریاگوزاری و هێڵە گەرمەکان</span>
+                        <h3 data-i18n="emergencyTitle">ژمارە پێویستەکانی کاتی تەنگژە و فریاکەوتن</h3>
+                        <p data-i18n="emergencySubtitle">لە هەر حاڵەتێکی لەناکاو یان پێویستی بە هاوکاری لە سنووری هەڵەبجە و هەورامان، بە یەک کرتە پەیوەندی بکە:</p>
+                    </div>
+                    <div class="emergency-grid" id="emergencyGrid"></div>
                 </div>
             </div>
         </section>

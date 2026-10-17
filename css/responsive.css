@@ -461,3 +461,37 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
+
+@media (max-width: 768px) {
+    .itinerary-step {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+    }
+
+    .itinerary-marker {
+        display: none;
+    }
+
+    .itinerary-time-col {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+    }
+
+    .highlights-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dining-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .emergency-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .emergency-wrapper {
+        padding: 1.25rem 1rem;
+    }
+}
