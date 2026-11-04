@@ -122,6 +122,7 @@ const translations = {
         quickBookBtn: "حجزکردنی خێرا ⚡",
         serviceDetailsButton: "وردەکاری زیاتر",
         ratingReviewsText: "هەڵسەنگاندن",
+        ratingLabel: "هەڵسەنگاندنی میوانان",
         whyLabel: "بۆچی Visit Halabja؟",
         whyTitle: "بۆچی لە ڕێگەی پلاتفۆرمی ئێمەوە حجز بکەیت؟",
         whyVerifiedTitle: "شوێنی دڵنیاکراو و پاک",
@@ -339,6 +340,7 @@ const translations = {
         quickBookBtn: "حجز سريع ⚡",
         serviceDetailsButton: "عرض التفاصيل",
         ratingReviewsText: "تقييم",
+        ratingLabel: "تقييم النزلاء",
         whyLabel: "لماذا Visit Halabja؟",
         whyTitle: "لماذا تحجز عبر منصتنا؟",
         whyVerifiedTitle: "أماكن معتمدة ونظيفة",
@@ -556,6 +558,7 @@ const translations = {
         quickBookBtn: "Quick Book ⚡",
         serviceDetailsButton: "View Details",
         ratingReviewsText: "reviews",
+        ratingLabel: "Guest Rating",
         whyLabel: "Why Visit Halabja?",
         whyTitle: "Why Book Through Our Platform?",
         whyVerifiedTitle: "Verified Clean Stays",
@@ -2089,6 +2092,8 @@ function renderServiceDetailsPage() {
     const phoneLink = normalizePhoneForLink(service.phone || service.whatsapp || "");
     const viewsCount = service.viewsCount || 1420;
     const viewsToday = service.viewsToday || 24;
+    const rating = service.rating || 4.9;
+    const reviewsCount = service.reviewsCount || 35;
 
     document.title = `${serviceTitle} – Visit Halabja`;
 
@@ -2139,10 +2144,12 @@ function renderServiceDetailsPage() {
                         <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap; margin-bottom:0.5rem;">
                             <span class="detail-badge">${serviceCategory} • 📍 ${serviceTown}</span>
                             ${service.isFeatured ? `<span class="service-vip-badge" style="display:inline-block;">⭐ VIP</span>` : ""}
+                            <span class="detail-rating-pill">★ ${rating} (${reviewsCount} ${ui("ratingReviewsText")})</span>
                         </div>
                         <h1>${serviceTitle}</h1>
                         <p class="detail-lead">${serviceDescription}</p>
                         <div class="detail-social-proof-bar">
+                            <span style="color:#d97706; font-weight:700;">★ ${rating} (${reviewsCount} ${ui("ratingReviewsText")})</span>
                             <span>👁 ${viewsCount.toLocaleString()} ${ui("viewsSuffix")}</span>
                             <span>🔥 ${ui("viewsTodayText")} ${viewsToday} ${ui("viewsTodaySuffix")}</span>
                             <span>🛡️ ${ui("heroHighlightGuarantee")}</span>
@@ -2169,10 +2176,17 @@ function renderServiceDetailsPage() {
                             <div class="detail-summary-card">
                                 <h3>${ui("detailMainInfo")}</h3>
                                 <div class="detail-price-box">
-                                    <span>${ui("servicePriceLabel")}</span>
-                                    <strong>${servicePrice}</strong>
+                                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+                                        <span>${ui("servicePriceLabel")}</span>
+                                        <div class="services-currency-pill" role="group" aria-label="گۆڕینی دراو">
+                                            <button type="button" class="currency-mini-btn ${currentCurrency === 'IQD' ? 'active' : ''}" data-currency="IQD">دینار</button>
+                                            <button type="button" class="currency-mini-btn ${currentCurrency === 'USD' ? 'active' : ''}" data-currency="USD">$ دۆلار</button>
+                                        </div>
+                                    </div>
+                                    <strong id="detailPriceAmount">${servicePrice}</strong>
                                 </div>
                                 <ul class="detail-meta-list">
+                                    <li><strong>⭐ ${ui("ratingLabel")}:</strong> <span class="rating-value" style="color:#d97706; font-weight:700;">★ ${rating}</span> (${reviewsCount} ${ui("ratingReviewsText")})</li>
                                     <li><strong>📍 ${ui("detailLocationLabel")}:</strong> ${serviceLocation}</li>
                                     <li><strong>📞 ${ui("detailPhoneLabel")}:</strong> <a href="tel:${phoneLink}">${service.phone}</a></li>
                                     <li><strong>👤 ${ui("detailOwnerNameLabel")}:</strong> ${serviceOwnerName} (${serviceOwnerRole})</li>
@@ -2337,17 +2351,7 @@ function setupIosTabBar() {
 }
 
 function updateCurrencyUI(currency) {
-    // ١. نوێکردنەوەی دوگمەکانی سیتینگ (Settings Segmented Control)
-    document.querySelectorAll("#currencySegmented .ios-segment").forEach((btn) => {
-        if (btn.dataset.currency === currency) {
-            btn.classList.add("active");
-        } else {
-            btn.classList.remove("active");
-        }
-    });
-
-    // ٢. نوێکردنەوەی دوگمەکانی شریتی سەرەوەی شوێنەکان (Toolbar Quick Currency Pill)
-    document.querySelectorAll("#toolbarCurrencyPill .currency-mini-btn").forEach((btn) => {
+    document.querySelectorAll("[data-currency]").forEach((btn) => {
         if (btn.dataset.currency === currency) {
             btn.classList.add("active");
         } else {
@@ -2406,8 +2410,46 @@ function switchLanguageEverywhere(newLang) {
     updateSearchDropdownState();
 }
 
+function setupWebThemeToggle() {
+    const webThemeToggle = document.getElementById("webThemeToggle");
+    const themeIcon = document.getElementById("themeToggleIcon");
+    const isDarkSaved = localStorage.getItem("siteDarkMode") === "true";
+
+    function updateThemeUI(isDark) {
+        document.documentElement.classList.toggle("dark-mode", isDark);
+        if (document.body) {
+            document.body.classList.toggle("dark-mode", isDark);
+        }
+        if (themeIcon) {
+            themeIcon.textContent = isDark ? "☀️" : "🌙";
+        }
+        if (webThemeToggle) {
+            webThemeToggle.setAttribute("title", isDark ? "دۆخی ڕۆژ" : "دۆخی شەو");
+            webThemeToggle.setAttribute("aria-label", isDark ? "دۆخی ڕۆژ" : "دۆخی شەو");
+        }
+        const metaTheme = document.querySelector('meta[name="theme-color"]');
+        if (metaTheme) {
+            metaTheme.setAttribute("content", isDark ? "#0d1514" : "#0f7b74");
+        }
+    }
+
+    if (isDarkSaved) {
+        updateThemeUI(true);
+    }
+
+    if (webThemeToggle && !webThemeToggle.dataset.bound) {
+        webThemeToggle.dataset.bound = "true";
+        webThemeToggle.addEventListener("click", () => {
+            const isCurrentlyDark = document.documentElement.classList.contains("dark-mode") || (document.body && document.body.classList.contains("dark-mode"));
+            const newDark = !isCurrentlyDark;
+            localStorage.setItem("siteDarkMode", newDark ? "true" : "false");
+            updateThemeUI(newDark);
+        });
+    }
+}
+
 function setupIosSettings() {
-    // ١. سیستەمی دۆخی تاریکی ئایفۆن (Apple iOS Native Dark Mode)
+    // ١. دۆخی تاریک (Dark Mode)
     const darkModeToggle = document.getElementById("darkModeToggle");
     const isDarkSaved = localStorage.getItem("siteDarkMode") === "true";
 
@@ -2419,7 +2461,7 @@ function setupIosSettings() {
         localStorage.setItem("siteDarkMode", isDark ? "true" : "false");
         const metaTheme = document.querySelector('meta[name="theme-color"]');
         if (metaTheme) {
-            metaTheme.setAttribute("content", isDark ? "#000000" : "#0f7b74");
+            metaTheme.setAttribute("content", isDark ? "#0d1514" : "#0f7b74");
         }
         if (darkModeToggle) {
             darkModeToggle.checked = isDark;
@@ -2437,30 +2479,17 @@ function setupIosSettings() {
         });
     }
 
-    // ٢. دراوی نمایشکراو بە شێوازی Apple Segmented Control (IQD / USD)
+    // ٢. دراوی وێبسایت (Currency Selector: IQD / USD)
     updateCurrencyUI(currentCurrency);
-
-    // گوێگر لە دوگمەی سیتینگ
-    const currencySegments = document.querySelectorAll("#currencySegmented .ios-segment");
-    currencySegments.forEach((btn) => {
-        if (!btn.dataset.bound) {
-            btn.dataset.bound = "true";
-            btn.addEventListener("click", () => {
+    if (!document.body.dataset.currencyBound) {
+        document.body.dataset.currencyBound = "true";
+        document.addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-currency]");
+            if (btn && btn.dataset.currency) {
                 setAppCurrency(btn.dataset.currency);
-            });
-        }
-    });
-
-    // گوێگر لە دوگمەی شریتی شوێنەکان (Toolbar)
-    const toolbarCurrencyBtns = document.querySelectorAll("#toolbarCurrencyPill .currency-mini-btn");
-    toolbarCurrencyBtns.forEach((btn) => {
-        if (!btn.dataset.bound) {
-            btn.dataset.bound = "true";
-            btn.addEventListener("click", () => {
-                setAppCurrency(btn.dataset.currency);
-            });
-        }
-    });
+            }
+        });
+    }
 
     // ٣. زمانی بەرنامە بە شێوازی Apple Segmented Control (کوردی • عربي • English)
     updateLanguageUI(currentLanguage);
@@ -2541,6 +2570,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateCurrentYear();
     initWeatherWidget();
     registerServiceWorker();
+    setupWebThemeToggle();
     setupIosTabBar();
     setupIosSettings();
 });

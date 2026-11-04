@@ -2767,3 +2767,269 @@ html[dir="ltr"] .service-card-actions {
     white-space: nowrap;
     align-self: flex-start;
 }
+
+/* ==========================================================================
+   Web Dark Mode & Header Theme Toggle Button
+   ========================================================================== */
+.header-actions {
+    grid-area: lang;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-self: end;
+}
+
+.theme-toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: 50%;
+    border: 1px solid rgba(15, 123, 116, 0.16);
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--color-primary-dark);
+    font-size: 1.15rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(10, 56, 55, 0.06);
+    transition: transform var(--transition), background-color var(--transition), border-color var(--transition);
+}
+
+.theme-toggle-btn:hover {
+    transform: scale(1.08);
+    background: #ffffff;
+    border-color: var(--color-primary);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.94);
+}
+
+/* Currency Selector Pill (Header & Details Page) */
+.services-currency-pill {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(15, 123, 116, 0.08);
+    padding: 3px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 123, 116, 0.16);
+    gap: 2px;
+}
+
+.services-currency-pill .currency-mini-btn {
+    padding: 0.35rem 0.65rem;
+    border: 0;
+    background: transparent;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-text-soft);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all var(--transition);
+}
+
+.services-currency-pill .currency-mini-btn:hover {
+    color: var(--color-primary-dark);
+}
+
+.services-currency-pill .currency-mini-btn.active {
+    background: #ffffff;
+    color: var(--color-primary-dark);
+    box-shadow: 0 2px 8px rgba(10, 56, 55, 0.12);
+}
+
+/* Rating Pill on Details Page */
+.detail-rating-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #fef3c7;
+    color: #b45309;
+    border: 1px solid #fde68a;
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Dark Mode Styles for Website */
+html.dark-mode,
+body.dark-mode {
+    --color-background: #0d1514;
+    --color-surface: rgba(20, 34, 32, 0.88);
+    --color-surface-strong: #172725;
+    --color-border: rgba(92, 182, 196, 0.18);
+    --color-text: #f1f8f7;
+    --color-text-soft: #a1c2bc;
+    --color-primary: #2dd4bf;
+    --color-primary-dark: #14b8a6;
+    --color-secondary: #38bdf8;
+    --color-accent: rgba(45, 212, 191, 0.14);
+    --color-shadow: rgba(0, 0, 0, 0.55);
+    background-color: #0d1514 !important;
+    background: radial-gradient(circle at top right, rgba(15, 123, 116, 0.22), transparent 26rem),
+                radial-gradient(circle at top left, rgba(56, 189, 248, 0.12), transparent 24rem),
+                #0d1514 !important;
+    color: #f1f8f7 !important;
+}
+
+body.dark-mode .site-header {
+    background: rgba(13, 21, 20, 0.90) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(20px) !important;
+}
+
+body.dark-mode .theme-toggle-btn {
+    background: #1c2e2b;
+    border-color: rgba(92, 182, 196, 0.25);
+    color: #ffd166;
+}
+
+body.dark-mode .language-switch {
+    background: #1c2e2b !important;
+    border-color: rgba(92, 182, 196, 0.2) !important;
+}
+
+body.dark-mode .language-button {
+    color: #a1c2bc !important;
+}
+
+body.dark-mode .language-button.active {
+    background: var(--color-primary-dark) !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .main-nav a {
+    color: #a1c2bc;
+}
+
+body.dark-mode .main-nav a:hover,
+body.dark-mode .main-nav a:focus-visible {
+    background: rgba(45, 212, 191, 0.14);
+    color: #ffffff;
+}
+
+body.dark-mode .service-card,
+body.dark-mode .destination-card,
+body.dark-mode .highlight-card,
+body.dark-mode .itinerary-card,
+body.dark-mode .dining-card,
+body.dark-mode .about-card,
+body.dark-mode .why-visit-item,
+body.dark-mode .gallery-item,
+body.dark-mode .host-cta-box,
+body.dark-mode .contact-card,
+body.dark-mode .detail-card,
+body.dark-mode .detail-sidebar,
+body.dark-mode .detail-owner-card,
+body.dark-mode .price-box,
+body.dark-mode .smart-search-bar {
+    background: #172725 !important;
+    border: 1px solid rgba(92, 182, 196, 0.18) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+    color: #f1f8f7 !important;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .highlight-title,
+body.dark-mode .dining-title,
+body.dark-mode .itinerary-step-title,
+body.dark-mode .service-title {
+    color: #ffffff !important;
+}
+
+body.dark-mode p,
+body.dark-mode small,
+body.dark-mode .service-description,
+body.dark-mode .highlight-desc,
+body.dark-mode .dining-desc,
+body.dark-mode .itinerary-desc {
+    color: #a1c2bc !important;
+}
+
+body.dark-mode .service-price,
+body.dark-mode .card-price,
+body.dark-mode .price-amount,
+body.dark-mode .service-meta strong,
+body.dark-mode .service-meta span,
+body.dark-mode .service-meta a {
+    color: #2dd4bf !important;
+}
+
+body.dark-mode .service-meta li {
+    background: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .amenity-tag {
+    background: rgba(45, 212, 191, 0.14) !important;
+    color: #5eead4 !important;
+    border: 1px solid rgba(45, 212, 191, 0.25) !important;
+}
+
+body.dark-mode .town-pill,
+body.dark-mode .filter-chip,
+body.dark-mode .view-mode-btn,
+body.dark-mode .fav-filter-btn {
+    background: #1c2e2b !important;
+    color: #a1c2bc !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+body.dark-mode .town-pill.active,
+body.dark-mode .filter-chip.active,
+body.dark-mode .view-mode-btn.is-active,
+body.dark-mode .fav-filter-btn.is-active {
+    background: var(--color-primary-dark) !important;
+    color: #ffffff !important;
+    border-color: transparent !important;
+}
+
+body.dark-mode .smart-search-bar input,
+body.dark-mode .smart-search-bar select,
+body.dark-mode .modal-card input,
+body.dark-mode .modal-card select,
+body.dark-mode .modal-card textarea,
+body.dark-mode .booking-form input,
+body.dark-mode .booking-form select,
+body.dark-mode .booking-form textarea {
+    background: #121e1d !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+body.dark-mode .modal-card {
+    background: #172725 !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+}
+
+body.dark-mode .services-currency-pill {
+    background: #1c2e2b !important;
+    border-color: rgba(92, 182, 196, 0.22) !important;
+}
+
+body.dark-mode .services-currency-pill .currency-mini-btn {
+    color: #a1c2bc !important;
+}
+
+body.dark-mode .services-currency-pill .currency-mini-btn.active {
+    background: var(--color-primary-dark) !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+}
+
+body.dark-mode .detail-rating-pill {
+    background: rgba(245, 158, 11, 0.18) !important;
+    color: #fbbf24 !important;
+    border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+body.dark-mode .site-footer {
+    background: #090f0e !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+

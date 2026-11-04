@@ -13,7 +13,6 @@ fs.mkdirSync(outDir, { recursive: true });
 const files = [
   'index.html',
   'service-details.html',
-  'settings.html',
   'manifest.webmanifest',
   'sw.js'
 ];
