@@ -1,7 +1,7 @@
 {
-  "name": "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
-  "short_name": "Visit Halabja",
-  "description": "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە هەڵەبجە و هەورامان",
+  "name": "گەشتی هەڵەبجە و نەوڕۆڵی – Visit Halabja & Nawroli",
+  "short_name": "Visit Halabja & Nawroli",
+  "description": "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە هەڵەبجە و نەوڕۆڵی",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

@@ -1,5 +1,5 @@
 /*
-    Visit Halabja - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و هەورامان
+    Visit Halabja - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و نەوڕۆڵی
     App.js - بەڕێوەبردنی منطقی سەرەکی پلاتفۆرم، فلتەرکردنی دەڤەرەکان، حجزکردن و گەڕانی زیرەک
 */
 
@@ -137,7 +137,7 @@ const translations = {
         galleryTitle: "دیمەنە دڵڕفێنەکانی دەڤەری هەڵەبجە و نەوڕۆڵی",
         galleryText: "کرتە لەسەر هەر وێنەیەک بکە بۆ بینینی بە قەبارەی گەورەتر.",
         galleryHeroTitle: "دیمەنی ڕووبار و خانووەکانی نەوڕۆڵی",
-        galleryLandscapeTitle: "باخ و چیاکانی بیارە و هەورامان",
+        galleryLandscapeTitle: "باخ و چیاکانی بیارە و نەوڕۆڵی",
         galleryNatureTitle: "تاڤگە و سروشتی دەوڵەمەندی هەڵەبجە",
         galleryActivityTitle: "چالاکی و کەیفوسەفا لە ناوچەکە",
         hostLabel: "هاوبەشی لەگەڵمان",
@@ -379,10 +379,10 @@ const translations = {
         whySupportTitle: "دعم مستمر",
         whySupportText: "فريقنا معك من لحظة انطلاقك حتى وصولك وعودتك لأي مساعدة وإرشاد.",
         galleryLabel: "معرض الصور",
-        galleryTitle: "مشاهد ساحرة من حلبجة وهورامان",
+        galleryTitle: "مشاهد ساحرة من حلبجة ونورولي",
         galleryText: "اضغط على أي صورة لتكبيرها.",
         galleryHeroTitle: "إطلالة نهر وبيوت نورولي",
-        galleryLandscapeTitle: "بساتين وجبال بيارة وهورامان",
+        galleryLandscapeTitle: "بساتين وجبال بيارة ونورولي",
         galleryNatureTitle: "شلالات وطبيعة حلبجة الخلابة",
         galleryActivityTitle: "نشاطات ومغامرات المنطقة",
         hostLabel: "انضم إلينا",
@@ -1181,7 +1181,7 @@ function renderRegionalHighlights() {
 }
 
 /* ==========================================================================
-   ١.٢. پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان (One-Day Trip Itinerary)
+   ١.٢. پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و نەوڕۆڵی (One-Day Trip Itinerary)
    ========================================================================== */
 function renderOneDayItinerary() {
     const timeline = document.getElementById("itineraryTimeline");
