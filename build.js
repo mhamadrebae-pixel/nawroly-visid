@@ -14,7 +14,9 @@ const files = [
   'index.html',
   'service-details.html',
   'manifest.webmanifest',
-  'sw.js'
+  'sw.js',
+  'robots.txt',
+  'sitemap.xml'
 ];
 
 files.forEach(file => {

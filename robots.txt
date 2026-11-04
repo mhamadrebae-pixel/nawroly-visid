@@ -1,0 +1,8 @@
+# Robots.txt for Visit Halabja
+# https://visithalabja.com
+
+User-agent: *
+Allow: /
+Disallow: /settings.html
+
+Sitemap: https://visithalabja.com/sitemap.xml

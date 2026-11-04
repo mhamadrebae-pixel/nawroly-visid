@@ -37,9 +37,9 @@ function formatServicePrice(service) {
 
 const translations = {
     ku: {
-        metaDescriptionHome: "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە هەڵەبجە و هەورامان.",
+        metaDescriptionHome: "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا لە هەڵەبجە و نەوڕۆڵی.",
         metaDescriptionDetails: "وردەکاریی خزمەتگوزاری و شوێنەکانی مانەوە لە هەڵەبجە بۆ گەشتیاران و خێزانەکان.",
-        pageTitleHome: "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
+        pageTitleHome: "گەشتی هەڵەبجە و نەوڕۆڵی – Visit Halabja & Nawroli",
         pageTitleDetails: "وردەکاری شوێن – Visit Halabja",
         pageTitleNotFound: "شوێن نەدۆزرایەوە – Visit Halabja",
         brandTitle: "گەشتی هەڵەبجە",
@@ -67,7 +67,7 @@ const translations = {
         tabSettings: "سیتینگ",
         settingsTitle: "⚙️ ڕێکخستنەکانی ئەپڵیکەیشن",
         settingsSubtitle: "شێوازی پیشاندان، زمان، دراو و تایبەتمەندییەکان بە دڵی خۆت بگۆڕە",
-        settingsAppName: "گەشتی هەڵەبجە و هەورامان",
+        settingsAppName: "گەشتی هەڵەبجە و نەوڕۆڵی",
         settingsAppTagline: "پلاتفۆرمی فەرمی بۆ خانووی گەشتیاری و مانەوە",
         settingsGroupPreferences: "ڕێکخستنی شاشە و گشتی",
         settingsDarkModeTitle: "دۆخی شەو (Dark Mode)",
@@ -88,8 +88,8 @@ const translations = {
         settingsClearSubtitle: "نوێکردنەوەی داتای شوێنەکان و ڕێکخستنەکان",
         settingsBackHome: "گەڕانەوە",
         settingsPageHeader: "⚙️ ڕێکخستنەکان",
-        heroKicker: "هەڵەبجە و دەڤەری هەورامان • هەرێمی کوردستان • عێراق",
-        heroTitle: "گەشتی هەڵەبجە و هەورامان – Visit Halabja",
+        heroKicker: "هەڵەبجە و دەڤەری نەوڕۆڵی • هەرێمی کوردستان • عێراق",
+        heroTitle: "گەشتی هەڵەبجە و نەوڕۆڵی – Visit Halabja & Nawroli",
         heroSubtitle: "پلاتفۆرمی فەرمی بۆ دۆزینەوە و حجزکردنی خانووی گەشتیاری، ڤێلا، کەپر و کەیفوسەفا",
         heroDescription: "باشترین شوێنەکانی مانەوە و پشوودانی خێزانی لە نەوڕۆڵی، تەوێڵە، بیارە، ئەحمەدئاوا و خورماڵ بە گرەنتی و نرخی گونجاو.",
         heroHighlightsAria: "خاڵە گرنگەکان",
@@ -107,7 +107,7 @@ const translations = {
         statsActivities: "چالاکی",
         aboutLabel: "دەربارەی دەڤەری هەڵەبجە",
         aboutTitle: "شوێنێک بۆ هەناسەدان، پیکنیک و ئارامبوونەوەی دەروون",
-        aboutText: "دەڤەری هەڵەبجە و هەورامان بە شاخە سەرکەشەکان، کانی و تاڤگە سازگارەکان، باخە سەوزەکانی گوێز و هەنار، و ڕووبارە بەخوڕەکانی ناسراوە کە ساڵانە هەزاران گەشتیار لە سەرتاسەری کوردستان و عێراق ڕادەکێشێت.",
+        aboutText: "دەڤەری هەڵەبجە و نەوڕۆڵی بە شاخە سەرکەشەکان، کانی و تاڤگە سازگارەکان، باخە سەوزەکانی گوێز و هەنار، و ڕووبارە بەخوڕەکانی ناسراوە کە ساڵانە هەزاران گەشتیار لە سەرتاسەری کوردستان و عێراق ڕادەکێشێت.",
         aboutCardNatureTitle: "سروشت و کەشوهەوای فێنک",
         aboutCardNatureText: "لە نەوڕۆڵی، بیارە، تەوێڵە، ئەحمەدئاوا و خورماڵ، ئاووهەوایەکی لەبار و فێنک لە چاو شارەکان هەیە. خانووەکانی گەشتیاری لە نێو باخ و لەسەر ئاو پشوودانێکی بیرنەکراوە پێشکەش دەکەن.",
         aboutCardTrustTitle: "حجزکردنی بێ کێشە لەگەڵ ئێمە",
@@ -134,7 +134,7 @@ const translations = {
         whySupportTitle: "پشتیوانی بەردەوام",
         whySupportText: "لە سەرەتای دەرچوونتەوە تا گەیشتن و گەڕانەوە، تیمەکەمان لەگەڵت دەبن بۆ هەر هاوکاری و ڕێنماییەک.",
         galleryLabel: "گەلەری وێنەکان",
-        galleryTitle: "دیمەنە دڵڕفێنەکانی دەڤەری هەڵەبجە و هەورامان",
+        galleryTitle: "دیمەنە دڵڕفێنەکانی دەڤەری هەڵەبجە و نەوڕۆڵی",
         galleryText: "کرتە لەسەر هەر وێنەیەک بکە بۆ بینینی بە قەبارەی گەورەتر.",
         galleryHeroTitle: "دیمەنی ڕووبار و خانووەکانی نەوڕۆڵی",
         galleryLandscapeTitle: "باخ و چیاکانی بیارە و هەورامان",
@@ -158,6 +158,33 @@ const translations = {
         mapLabel: "نەخشە",
         mapTitle: "شوێنی دەڤەری هەڵەبجە لەسەر نەخشە",
         mapText: "بۆ ڕێنمایی و دۆزینەوەی ئاسانی ڕێگاکان بۆ ناوچە گەشتیارییەکان.",
+        detailMapTitle: "نەخشە و شوێنی دەقاودەق",
+        detailMapSubtitle: "بۆ بینینی شوێن لەسەر نەخشەی گووگڵ و بەدەستهێنانی ئاراستەی ڕێگا",
+        openInGoogleMaps: "کردنەوە لە Google Maps 🗺️",
+        getDirections: "ئاراستەی ڕێگا 🚗",
+        reviewsSectionTitle: "هەڵسەنگاندن و ئەزموونی میوانەکان",
+        ratingOutOf: "لە کۆی ٥ ئەستێرە",
+        ratingCleanliness: "پاکوخاوێنی",
+        ratingLocation: "شوێن و دەوروبەر",
+        ratingHospitality: "پێشوازی و میواندۆستی",
+        ratingValue: "نرخ و شایستەیی",
+        verifiedGuest: "میوانی ڕاستەقینە",
+        writeReviewBtn: "تۆمارکردنی هەڵسەنگاندن ✍️",
+        reviewModalTitle: "تۆمارکردنی هەڵسەنگاندنی نوێ",
+        reviewModalSubtitle: "ڕای تۆ یارمەتی گەشتیارانی تر دەدات لە هەڵبژاردنی باشترین شوێن",
+        reviewRatingLabel: "پلەی هەڵسەنگاندن:",
+        reviewNameLabel: "ناوی بەڕێزتان",
+        reviewNamePlaceholder: "ناوی تەواو یان نازناو بنووسە...",
+        reviewCommentLabel: "بۆچوون و ئەزموونی خۆت",
+        reviewCommentPlaceholder: "سەبارەت بە خاوێنی، مامەڵەی خاوەن شوێن و هەستت بنووسە...",
+        reviewSubmitBtn: "ناردن و تۆمارکردن ⭐",
+        reviewSuccessNotice: "سوپاس! هەڵسەنگاندنەکەت بە سەرکەوتوویی تۆمارکرا.",
+        mapTownAll: "هەموو ناوچەکە",
+        mapTownNawroli: "نەوڕۆڵی",
+        mapTownTawela: "تەوێڵە",
+        mapTownByara: "بیارە",
+        mapTownAhmadAwa: "ئەحمەدئاوا",
+        mapTownKhurmal: "خورماڵ",
         weatherDefaultStatus: "کەشوهەوای دەڤەری هەڵەبجە",
         contactLabel: "پەیوەندی",
         contactTitle: "ئامادەین بۆ وەڵامدانەوە و حجزکردنی شوێنەکەت",
@@ -239,25 +266,25 @@ const translations = {
         viewsSuffix: "بینەر",
         detailNearbyAttractions: "لە دەوروبەری ئەم شوێنە چی هەیە؟",
         highlightsLabel: "سەیرانگا و هاوینەهەوارەکان",
-        highlightsTitle: "دیارترین شوێنە گەشتیارییەکانی دەڤەری هەڵەبجە و هەورامان",
+        highlightsTitle: "دیارترین شوێنە گەشتیارییەکانی دەڤەری هەڵەبجە و نەوڕۆڵی",
         highlightsText: "بەپێی نەخشەی گەشتیاری و ناسراوترین شوێنەکان بۆ پشوودان، سەردانی ئەم هاوینەهەوار و کانییە ناودارانە بکە:",
         highlightsExploreStays: "بینینی شوێنەکانی مانەوە لەم دەڤەرە ←",
         itineraryLabel: "ڕێبەری گەشتکردن",
-        itineraryTitle: "پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان",
+        itineraryTitle: "پلانی گەشتی ١ ڕۆژە لە هەڵەبجە و نەوڕۆڵی",
         itineraryText: "پلانێکی تەواو ئامادەکراو لە بەیانییەوە تا ئێوارە بۆ ئەوەی جوانترین کات لەگەڵ خێزانەکەت بەسەربەریت:",
         itineraryStep: "قۆناغ",
         diningLabel: "تامی خۆماڵی و چێشتخانەکان",
-        diningTitle: "بەناوبانگترین تامە خۆماڵییەکانی هەورامان و هەڵەبجە",
+        diningTitle: "بەناوبانگترین تامە خۆماڵییەکانی نەوڕۆڵی و هەڵەبجە",
         diningText: "لە تەنیشت مانەوە و گەشتکردن، چێژ لەم خواردن و تامە کەلەپوورییە تایبەتانەی دەڤەرەکە وەربگرە:",
         emergencyBadge: "🚨 فریاگوزاری و هێڵە گەرمەکان",
         emergencyTitle: "ژمارە پێویستەکانی کاتی تەنگژە و فریاکەوتن",
-        emergencySubtitle: "لە هەر حاڵەتێکی لەناکاو یان پێویستی بە هاوکاری لە سنووری هەڵەبجە و هەورامان، بە یەک کرتە پەیوەندی بکە:",
+        emergencySubtitle: "لە هەر حاڵەتێکی لەناکاو یان پێویستی بە هاوکاری لە سنووری هەڵەبجە و نەوڕۆڵی، بە یەک کرتە پەیوەندی بکە:",
         emergencyCallNow: "پەیوەندیکردن 📞"
     },
     ar: {
-        metaDescriptionHome: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والنشاطات في حلبجة وهورامان.",
+        metaDescriptionHome: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والنشاطات في حلبجة ونورولي.",
         metaDescriptionDetails: "تفاصيل أماكن الإقامة والخدمات في حلبجة للعائلات والزوار.",
-        pageTitleHome: "سياحة حلبجة وهورامان – Visit Halabja",
+        pageTitleHome: "سياحة حلبجة ونورولي – Visit Halabja & Nawroli",
         pageTitleDetails: "تفاصيل المكان – Visit Halabja",
         pageTitleNotFound: "المكان غير موجود – Visit Halabja",
         brandTitle: "سياحة حلبجة",
@@ -285,7 +312,7 @@ const translations = {
         tabSettings: "الإعدادات",
         settingsTitle: "⚙️ إعدادات التطبيق",
         settingsSubtitle: "تخصيص المظهر، اللغة، العملة والتفضيلات بسهولة",
-        settingsAppName: "سياحة حلبجة وهورامان",
+        settingsAppName: "سياحة حلبجة ونورولي",
         settingsAppTagline: "المنصة الرسمية للإقامة والبيوت السياحية",
         settingsGroupPreferences: "التفضيلات والمظهر",
         settingsDarkModeTitle: "الوضع الليلي (Dark Mode)",
@@ -306,8 +333,8 @@ const translations = {
         settingsClearSubtitle: "تحديث البيانات وإعادة ضبط التفضيلات",
         settingsBackHome: "رجوع",
         settingsPageHeader: "⚙️ الإعدادات",
-        heroKicker: "حلبجة ومنطقة هورامان • إقليم كردستان • العراق",
-        heroTitle: "سياحة حلبجة وهورامان – Visit Halabja",
+        heroKicker: "حلبجة ومنطقة نورولي • إقليم كردستان • العراق",
+        heroTitle: "سياحة حلبجة ونورولي – Visit Halabja & Nawroli",
         heroSubtitle: "المنصة الرسمية لاكتشاف وحجز البيوت السياحية، الفلل، الأكواخ والمغامرات",
         heroDescription: "أفضل أماكن الإقامة والاستجمام العائلي في نورولي، طويلة، بيارة، أحمد آوا وخورمال بأفضل الأسعار وضمان الحجز.",
         heroHighlightsAria: "أبرز المزايا",
@@ -325,7 +352,7 @@ const translations = {
         statsActivities: "نشاطات",
         aboutLabel: "حول منطقة حلبجة",
         aboutTitle: "وجهة مثالية للاسترخاء والتنفس في قلب الطبيعة",
-        aboutText: "تتميز حلبجة وهورامان بجبالها الشاهقة، ينابيعها العذبة، بساتين الجوز والرمان، وتدفق أنهارها التي تستقطب آلاف الزوار سنوياً من كافة أنحاء العراق.",
+        aboutText: "تتميز حلبجة ونورولي بجبالها الشاهقة، ينابيعها العذبة، بساتين الجوز والرمان، وتدفق أنهارها التي تستقطب آلاف الزوار سنوياً من كافة أنحاء العراق.",
         aboutCardNatureTitle: "طبيعة خلابة وأجواء عليلة",
         aboutCardNatureText: "في نورولي، بيارة، طويلة، أحمد آوا وخورمال، طقس معتدل ومنعش. توفر البيوت السياحية بين البساتين وفوق الماء تجربة استثنائية.",
         aboutCardTrustTitle: "حجز مريح وموثوق معنا",
@@ -376,6 +403,33 @@ const translations = {
         mapLabel: "الخريطة",
         mapTitle: "موقع حلبجة على الخريطة",
         mapText: "لإرشادك وتسهيل الوصول للأماكن السياحية.",
+        detailMapTitle: "الموقع الدقيق على الخريطة",
+        detailMapSubtitle: "لعرض الموقع على خرائط جوجل والحصول على مسار القيادة",
+        openInGoogleMaps: "فتح في خرائط Google Maps 🗺️",
+        getDirections: "الاتجاهات ومسار القيادة 🚗",
+        reviewsSectionTitle: "تقييمات وتجارب النزلاء",
+        ratingOutOf: "من ٥ نجوم",
+        ratingCleanliness: "النظافة والترتيب",
+        ratingLocation: "الموقع والمحيط",
+        ratingHospitality: "الاستقبال والضيافة",
+        ratingValue: "القيمة مقابل السعر",
+        verifiedGuest: "نزيل موثق",
+        writeReviewBtn: "أضف تقييمك ✍️",
+        reviewModalTitle: "إضافة تقييم جديد",
+        reviewModalSubtitle: "رأيك يساعد المسافرين الآخرين في اختيار أفضل مكان",
+        reviewRatingLabel: "درجة التقييم:",
+        reviewNameLabel: "اسمك الكريم",
+        reviewNamePlaceholder: "اكتب اسمك الكامل أو اللقب...",
+        reviewCommentLabel: "رأيك وتجربتك",
+        reviewCommentPlaceholder: "اكتب عن النظافة، تعامل صاحب المكان وانطباعك...",
+        reviewSubmitBtn: "إرسال وتسجيل التقييم ⭐",
+        reviewSuccessNotice: "شكراً لك! تم تسجيل تقييمك بنجاح.",
+        mapTownAll: "كل المنطقة",
+        mapTownNawroli: "نورولي",
+        mapTownTawela: "طويلة",
+        mapTownByara: "بيارة",
+        mapTownAhmadAwa: "أحمد آوا",
+        mapTownKhurmal: "خورمال",
         weatherDefaultStatus: "طقس منطقة حلبجة",
         contactLabel: "اتصال",
         contactTitle: "جاهزون للإجابة وحجز مكانك",
@@ -457,29 +511,29 @@ const translations = {
         viewsSuffix: "مشاهدة",
         detailNearbyAttractions: "أبرز المعالم والخدمات القريبة من هذا المكان:",
         highlightsLabel: "المصايف والينابيع الشهيرة",
-        highlightsTitle: "أبرز المعالم والوجهات السياحية في حلبجة وهورامان",
+        highlightsTitle: "أبرز المعالم والوجهات السياحية في حلبجة ونورولي",
         highlightsText: "وفقاً للدليل السياحي وأشهر الأماكن للاستجمام، استكشف هذه المصايف والينابيع الخلابة:",
         highlightsExploreStays: "عرض أماكن الإقامة في هذه المنطقة ←",
         itineraryLabel: "دليل الجولة السياحية",
-        itineraryTitle: "خطة جولة يوم واحد في حلبجة وهورامان",
+        itineraryTitle: "خطة جولة يوم واحد في حلبجة ونورولي",
         itineraryText: "برنامج متكامل من الصباح حتى المساء لقضاء أجمل الأوقات العائلية في أحضان الطبيعة:",
         itineraryStep: "المحطة",
         diningLabel: "الأطباق والمطاعم التراثية",
-        diningTitle: "أشهر المأكولات والمذاقات في هورامان وحلبجة",
+        diningTitle: "أشهر المأكولات والمذاقات في نورولي وحلبجة",
         diningText: "إلى جانب الإقامة والجولات، استمتع بأشهى المأكولات التراثية المشهورة في المنطقة:",
         emergencyBadge: "🚨 أرقام الطوارئ والخطوط الساخنة",
         emergencyTitle: "أرقام الطوارئ والمساعدة الفورية للزوار",
-        emergencySubtitle: "لأي حالة طارئة أو مساعدة أثناء تواجدك في حلبجة وهورامان، اتصل بنقرة واحدة:",
+        emergencySubtitle: "لأي حالة طارئة أو مساعدة أثناء تواجدك في حلبجة ونورولي، اتصل بنقرة واحدة:",
         emergencyCallNow: "اتصال مباشر 📞"
     },
     en: {
-        metaDescriptionHome: "Official tourism and booking platform for tourist houses, villas, huts and activities in Halabja and Hawraman.",
+        metaDescriptionHome: "Official tourism and booking platform for tourist houses, villas, huts and activities in Halabja and Nawroli.",
         metaDescriptionDetails: "Details of accommodations and attractions in Halabja for travelers and families.",
-        pageTitleHome: "Visit Halabja & Hawraman",
+        pageTitleHome: "Visit Halabja & Nawroli",
         pageTitleDetails: "Listing Details – Visit Halabja",
         pageTitleNotFound: "Listing Not Found – Visit Halabja",
         brandTitle: "Visit Halabja",
-        brandSubtitle: "Halabja & Hawraman",
+        brandSubtitle: "Halabja & Nawroli",
         languageSwitchAria: "Choose language",
         navMainAria: "Main navigation",
         navAbout: "About",
@@ -503,7 +557,7 @@ const translations = {
         tabSettings: "Settings",
         settingsTitle: "⚙️ App Settings",
         settingsSubtitle: "Customize appearance, language, currency and preferences",
-        settingsAppName: "Visit Halabja & Hawraman",
+        settingsAppName: "Visit Halabja & Nawroli",
         settingsAppTagline: "Official Platform for Tourist Stays & Cabins",
         settingsGroupPreferences: "Display & Preferences",
         settingsDarkModeTitle: "Dark Mode",
@@ -524,8 +578,8 @@ const translations = {
         settingsClearSubtitle: "Reset local data and preferences",
         settingsBackHome: "Back",
         settingsPageHeader: "⚙️ Settings",
-        heroKicker: "Halabja & Hawraman Region • Kurdistan • Iraq",
-        heroTitle: "Visit Halabja & Hawraman",
+        heroKicker: "Halabja & Nawroli Region • Kurdistan • Iraq",
+        heroTitle: "Visit Halabja & Nawroli",
         heroSubtitle: "Official booking directory for tourist houses, villas, huts and mountain adventures",
         heroDescription: "Best family stays and outdoor fun in Nawroli, Tawela, Byara, Ahmad Awa and Khurmal with verified bookings and fair prices.",
         heroHighlightsAria: "Key highlights",
@@ -543,7 +597,7 @@ const translations = {
         statsActivities: "Activities",
         aboutLabel: "About Halabja Region",
         aboutTitle: "A peaceful destination to breathe and unwind in nature",
-        aboutText: "Halabja and Hawraman are renowned for dramatic mountain landscapes, cold rushing springs, walnut orchards and rivers attracting thousands of visitors every season.",
+        aboutText: "Halabja and Nawroli are renowned for dramatic mountain landscapes, cold rushing springs, walnut orchards and rivers attracting thousands of visitors every season.",
         aboutCardNatureTitle: "Pristine Nature & Fresh Air",
         aboutCardNatureText: "Enjoy refreshing mountain breezes in Nawroli, Byara, Tawela, Ahmad Awa and Khurmal. Riverside stays offer an unforgettable getaway.",
         aboutCardTrustTitle: "Seamless Bookings with Us",
@@ -570,7 +624,7 @@ const translations = {
         whySupportTitle: "Continuous Support",
         whySupportText: "Our local team is always available to assist with directions and requirements.",
         galleryLabel: "Gallery",
-        galleryTitle: "Captivating Views of Halabja & Hawraman",
+        galleryTitle: "Captivating Views of Halabja & Nawroli",
         galleryText: "Click on any image to view in full size.",
         galleryHeroTitle: "Nawroli river and water houses",
         galleryLandscapeTitle: "Byara orchards and mountains",
@@ -594,6 +648,33 @@ const translations = {
         mapLabel: "Map",
         mapTitle: "Halabja Region Map",
         mapText: "Easily navigate routes to all tourist attractions.",
+        detailMapTitle: "Exact Location & Google Map",
+        detailMapSubtitle: "View location on Google Maps and get driving directions",
+        openInGoogleMaps: "Open in Google Maps 🗺️",
+        getDirections: "Driving Directions 🚗",
+        reviewsSectionTitle: "Guest Ratings & Reviews",
+        ratingOutOf: "out of 5 stars",
+        ratingCleanliness: "Cleanliness",
+        ratingLocation: "Location",
+        ratingHospitality: "Hospitality",
+        ratingValue: "Value for Money",
+        verifiedGuest: "Verified Guest",
+        writeReviewBtn: "Write a Review ✍️",
+        reviewModalTitle: "Write a New Review",
+        reviewModalSubtitle: "Your feedback helps other travelers choose the best stay",
+        reviewRatingLabel: "Rating Score:",
+        reviewNameLabel: "Your Name",
+        reviewNamePlaceholder: "Enter your full name or nickname...",
+        reviewCommentLabel: "Your Experience",
+        reviewCommentPlaceholder: "Share thoughts on cleanliness, host hospitality, and vibe...",
+        reviewSubmitBtn: "Submit Review ⭐",
+        reviewSuccessNotice: "Thank you! Your review has been submitted successfully.",
+        mapTownAll: "All Region",
+        mapTownNawroli: "Nawroli",
+        mapTownTawela: "Tawela",
+        mapTownByara: "Byara",
+        mapTownAhmadAwa: "Ahmad Awa",
+        mapTownKhurmal: "Khurmal",
         weatherDefaultStatus: "Halabja Region Weather",
         contactLabel: "Contact",
         contactTitle: "We are ready to assist you",
@@ -675,19 +756,19 @@ const translations = {
         viewsSuffix: "views",
         detailNearbyAttractions: "Nearby Attractions & Amenities:",
         highlightsLabel: "Attractions & Mountain Resorts",
-        highlightsTitle: "Top Regional Sights in Halabja & Hawraman",
+        highlightsTitle: "Top Regional Sights in Halabja & Nawroli",
         highlightsText: "Curated by popular travel maps, explore these famous mountain springs, villages and resorts:",
         highlightsExploreStays: "Explore stays in this area ←",
         itineraryLabel: "Travel Itinerary",
-        itineraryTitle: "1-Day Halabja & Hawraman Tour Plan",
+        itineraryTitle: "1-Day Halabja & Nawroli Tour Plan",
         itineraryText: "A curated morning-to-evening route crafted to experience the best scenery with your family:",
         itineraryStep: "Stop",
         diningLabel: "Local Flavors & Dining",
-        diningTitle: "Signature Culinary Flavors of Hawraman & Halabja",
+        diningTitle: "Signature Culinary Flavors of Nawroli & Halabja",
         diningText: "Beyond comfortable stays, savor iconic local culinary specialties along your journey:",
         emergencyBadge: "🚨 Emergency & Helplines",
         emergencyTitle: "Essential Contacts & Rapid Assistance",
-        emergencySubtitle: "For any emergency or roadside support in Halabja and Hawraman, call instantly with one click:",
+        emergencySubtitle: "For any emergency or roadside support in Halabja and Nawroli, call instantly with one click:",
         emergencyCallNow: "Call Now 📞"
     }
 };
@@ -2136,6 +2217,140 @@ function renderServiceDetailsPage() {
         `
         : "";
 
+    // 1. Map & Directions Block
+    const mapUrls = typeof getServiceMapUrls === "function"
+        ? getServiceMapUrls(service)
+        : {
+            embedUrl: `https://maps.google.com/maps?q=${service.lat || 35.18},${service.lng || 45.98}&hl=ckb&z=15&output=embed`,
+            directUrl: `https://www.google.com/maps/search/?api=1&query=${service.lat || 35.18},${service.lng || 45.98}`,
+            directionsUrl: `https://www.google.com/maps/dir/?api=1&destination=${service.lat || 35.18},${service.lng || 45.98}`
+        };
+
+    const mapBlockHtml = `
+        <div class="detail-block">
+            <div class="detail-block-header">
+                <div>
+                    <h3>📍 ${ui("detailMapTitle")}</h3>
+                    <p class="detail-block-sub">${ui("detailMapSubtitle")}</p>
+                </div>
+            </div>
+            <div class="detail-map-card reveal">
+                <div class="detail-map-embed">
+                    <iframe
+                        title="${serviceTitle}"
+                        src="${mapUrls.embedUrl}"
+                        loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen>
+                    </iframe>
+                </div>
+                <div class="detail-map-bar">
+                    <span class="detail-map-coords">📍 ${serviceLocation}</span>
+                    <div class="detail-map-btns">
+                        <a href="${mapUrls.directUrl}" target="_blank" rel="noopener noreferrer" class="button button-outline detail-map-btn">
+                            ${ui("openInGoogleMaps")}
+                        </a>
+                        <a href="${mapUrls.directionsUrl}" target="_blank" rel="noopener noreferrer" class="button button-primary detail-map-btn">
+                            ${ui("getDirections")}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    // 2. Ratings & Reviews Block
+    const breakdown = typeof getServiceRatingBreakdown === "function"
+        ? getServiceRatingBreakdown(service)
+        : { cleanliness: "5.0", location: "4.9", hospitality: "5.0", value: "4.8" };
+
+    const serviceReviews = typeof getServiceReviews === "function"
+        ? getServiceReviews(service)
+        : [];
+
+    const reviewsListHtml = serviceReviews.length > 0
+        ? serviceReviews.map((rev) => {
+            const initial = (rev.author || "م")[0];
+            const commentText = typeof rev.comment === "object" ? t(rev.comment) : rev.comment;
+            const stars = "★".repeat(rev.rating || 5);
+            return `
+                <div class="review-card reveal">
+                    <div class="review-card-top">
+                        <div class="review-user-info">
+                            <div class="review-avatar">${initial}</div>
+                            <div>
+                                <strong>${rev.author}</strong>
+                                <div class="review-date-badge">${rev.date} • <span class="verified-guest-tag">✓ ${ui("verifiedGuest")}</span></div>
+                            </div>
+                        </div>
+                        <div class="review-stars-pill">${stars} ${rev.rating || 5}.0</div>
+                    </div>
+                    <p class="review-text">${commentText}</p>
+                </div>
+            `;
+        }).join("")
+        : `<p style="color:var(--color-text-soft);">هیچ هەڵسەنگاندنێک تۆمار نەکراوە، تۆ یەکەم کەس بە!</p>`;
+
+    const reviewsBlockHtml = `
+        <div class="detail-block">
+            <div class="reviews-header-flex">
+                <div>
+                    <h3>⭐ ${ui("reviewsSectionTitle")}</h3>
+                    <div class="reviews-score-summary">
+                        <span class="big-score">★ ${rating}</span>
+                        <span class="score-meta">${ui("ratingOutOf")} (${reviewsCount} ${ui("ratingReviewsText")})</span>
+                    </div>
+                </div>
+                <button type="button" class="button button-secondary write-review-trigger-btn" id="openReviewModalBtn" data-service-id="${service.id}">
+                    ${ui("writeReviewBtn")}
+                </button>
+            </div>
+
+            <!-- Breakdown Progress Bars -->
+            <div class="rating-breakdown-grid">
+                <div class="rating-bar-item">
+                    <div class="bar-label-row">
+                        <span>✨ ${ui("ratingCleanliness")}</span>
+                        <strong>${breakdown.cleanliness}</strong>
+                    </div>
+                    <div class="rating-bar-track">
+                        <div class="rating-bar-fill" style="width: ${(Number(breakdown.cleanliness) / 5) * 100}%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar-item">
+                    <div class="bar-label-row">
+                        <span>📍 ${ui("ratingLocation")}</span>
+                        <strong>${breakdown.location}</strong>
+                    </div>
+                    <div class="rating-bar-track">
+                        <div class="rating-bar-fill" style="width: ${(Number(breakdown.location) / 5) * 100}%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar-item">
+                    <div class="bar-label-row">
+                        <span>🤝 ${ui("ratingHospitality")}</span>
+                        <strong>${breakdown.hospitality}</strong>
+                    </div>
+                    <div class="rating-bar-track">
+                        <div class="rating-bar-fill" style="width: ${(Number(breakdown.hospitality) / 5) * 100}%;"></div>
+                    </div>
+                </div>
+                <div class="rating-bar-item">
+                    <div class="bar-label-row">
+                        <span>💰 ${ui("ratingValue")}</span>
+                        <strong>${breakdown.value}</strong>
+                    </div>
+                    <div class="rating-bar-track">
+                        <div class="rating-bar-fill" style="width: ${(Number(breakdown.value) / 5) * 100}%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Stream Cards -->
+            <div class="reviews-stream-cards" id="reviewsStreamList">
+                ${reviewsListHtml}
+            </div>
+        </div>
+    `;
+
     detailsRoot.innerHTML = `
         <section class="section">
             <div class="container">
@@ -2170,6 +2385,8 @@ function renderServiceDetailsPage() {
                             ${featuresHtml}
                             ${nearbyHtml}
                             ${galleryHtml}
+                            ${mapBlockHtml}
+                            ${reviewsBlockHtml}
                         </div>
 
                         <aside class="detail-sidebar-col">
@@ -2215,6 +2432,190 @@ function renderServiceDetailsPage() {
     setupRevealAnimations();
     setupGalleryLightbox();
     updateFavoritesUI();
+    setupReviewModal(service);
+
+    // Update canonical link
+    const canonicalLink = document.getElementById("canonicalLink");
+    if (canonicalLink) {
+        canonicalLink.href = `https://visithalabja.com/service-details.html?id=${service.id}`;
+    }
+
+    // Dynamic SEO Schema.org JSON-LD
+    let seoScript = document.getElementById("serviceDetailsJsonLd");
+    if (!seoScript) {
+        seoScript = document.createElement("script");
+        seoScript.id = "serviceDetailsJsonLd";
+        seoScript.type = "application/ld+json";
+        document.head.appendChild(seoScript);
+    }
+    const coords = typeof getServiceCoordinates === "function" ? getServiceCoordinates(service) : { lat: 35.18, lng: 45.98 };
+    const schemaData = {
+        "@context": "https://schema.org",
+        "@type": service.categoryType === "house" ? "LodgingBusiness" : "TouristAttraction",
+        "name": serviceTitle,
+        "description": serviceDescription,
+        "image": `${window.location.origin}/${service.image}`,
+        "telephone": "+9647510485057",
+        "priceRange": servicePrice,
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": serviceTown,
+            "addressRegion": "Halabja",
+            "addressCountry": "IQ"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": coords.lat,
+            "longitude": coords.lng
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": String(rating),
+            "reviewCount": String(reviewsCount),
+            "bestRating": "5",
+            "worstRating": "1"
+        }
+    };
+    seoScript.textContent = JSON.stringify(schemaData, null, 2);
+}
+
+function setupHomePageMap() {
+    const switcher = document.getElementById("mapTownSwitcher");
+    const iframe = document.getElementById("mainGoogleMapIframe");
+    const openBtn = document.getElementById("mapOpenGoogleBtn");
+    const targetLabel = document.getElementById("mapTargetLabel");
+
+    if (!switcher || !iframe) return;
+
+    switcher.querySelectorAll(".map-town-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const townId = btn.dataset.mapTown;
+            switcher.querySelectorAll(".map-town-btn").forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const townObj = (window.towns || []).find((t) => t.id === townId);
+            if (townObj) {
+                if (iframe) iframe.src = townObj.embedUrl || `https://maps.google.com/maps?q=${townObj.lat},${townObj.lng}&hl=ckb&z=15&output=embed`;
+                if (openBtn) openBtn.href = townObj.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${townObj.lat},${townObj.lng}`;
+                if (targetLabel) targetLabel.textContent = `📍 ${t(townObj.name)}`;
+            }
+        });
+    });
+}
+
+function setupReviewModal(currentService) {
+    const modal = document.getElementById("reviewModal");
+    const closeBtn = document.getElementById("reviewModalClose");
+    const form = document.getElementById("reviewModalForm");
+    const starPicker = document.getElementById("starRatingPicker");
+    const ratingInput = document.getElementById("reviewRatingInput");
+    const nameInput = document.getElementById("reviewAuthorInput");
+    const commentInput = document.getElementById("reviewCommentInput");
+    const serviceNameEl = document.getElementById("reviewModalServiceName");
+
+    if (!modal) return;
+
+    if (!modal.dataset.bound) {
+        modal.dataset.bound = "true";
+
+        document.addEventListener("click", (e) => {
+            const trigger = e.target.closest("#openReviewModalBtn, .write-review-trigger-btn");
+            if (trigger) {
+                const sid = trigger.dataset.serviceId;
+                const targetService = currentService || (typeof getServiceById === "function" ? getServiceById(sid) : null);
+                if (targetService && serviceNameEl) {
+                    serviceNameEl.textContent = t(targetService.name);
+                }
+                modal.classList.add("is-open");
+                modal.setAttribute("aria-hidden", "false");
+                document.body.classList.add("modal-open");
+            }
+        });
+
+        const closeModal = () => {
+            modal.classList.remove("is-open");
+            modal.setAttribute("aria-hidden", "true");
+            document.body.classList.remove("modal-open");
+        };
+
+        if (closeBtn) {
+            closeBtn.addEventListener("click", closeModal);
+        }
+
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        if (starPicker && ratingInput) {
+            starPicker.querySelectorAll(".star-pick-btn").forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    const stars = parseInt(btn.dataset.stars, 10) || 5;
+                    ratingInput.value = stars;
+                    starPicker.querySelectorAll(".star-pick-btn").forEach((b) => {
+                        const bStars = parseInt(b.dataset.stars, 10);
+                        if (bStars <= stars) {
+                            b.classList.add("active");
+                        } else {
+                            b.classList.remove("active");
+                        }
+                    });
+                });
+            });
+        }
+
+        if (form) {
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const sid = new URLSearchParams(window.location.search).get("id") || (currentService ? currentService.id : "");
+                const author = nameInput ? nameInput.value.trim() : "";
+                const comment = commentInput ? commentInput.value.trim() : "";
+                const rating = parseInt(ratingInput ? ratingInput.value : "5", 10) || 5;
+
+                if (!author || !comment) return;
+
+                const now = new Date();
+                const dateStr = `${now.getFullYear()}/${String(now.getMonth() + 1).padStart(2, "0")}/${String(now.getDate()).padStart(2, "0")}`;
+
+                const reviewData = {
+                    author,
+                    date: dateStr,
+                    rating,
+                    comment
+                };
+
+                if (typeof addUserServiceReview === "function") {
+                    addUserServiceReview(sid, reviewData);
+                }
+
+                alert(ui("reviewSuccessNotice"));
+                form.reset();
+                if (ratingInput) ratingInput.value = "5";
+                closeModal();
+
+                const listEl = document.getElementById("reviewsStreamList");
+                if (listEl) {
+                    const initial = author[0] || "م";
+                    const starsStr = "★".repeat(rating);
+                    const newCardHtml = `
+                        <div class="review-card reveal is-revealed" style="border: 2px solid var(--color-primary-light);">
+                            <div class="review-card-top">
+                                <div class="review-user-info">
+                                    <div class="review-avatar">${initial}</div>
+                                    <div>
+                                        <strong>${author}</strong>
+                                        <div class="review-date-badge">${dateStr} • <span class="verified-guest-tag">✓ ${ui("verifiedGuest")}</span></div>
+                                    </div>
+                                </div>
+                                <div class="review-stars-pill">${starsStr} ${rating}.0</div>
+                            </div>
+                            <p class="review-text">${comment}</p>
+                        </div>
+                    `;
+                    listEl.insertAdjacentHTML("afterbegin", newCardHtml);
+                }
+            });
+        }
+    }
 }
 
 function setupServiceBookingForm() {
@@ -2569,6 +2970,8 @@ document.addEventListener("DOMContentLoaded", () => {
     setupGalleryLightbox();
     updateCurrentYear();
     initWeatherWidget();
+    setupHomePageMap();
+    setupReviewModal();
     registerServiceWorker();
     setupWebThemeToggle();
     setupIosTabBar();

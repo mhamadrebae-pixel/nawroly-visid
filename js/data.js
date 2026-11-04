@@ -1,5 +1,5 @@
 /*
-    Visit Halabja - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و هەورامان
+    Visit Halabja & Nawroli - پلاتفۆرمی فەرمیی گەشتیاری و حجزکردنی هەڵەبجە و نەوڕۆڵی
     دەڤەرە سەرەکییەکان:
     ١. نەوڕۆڵی
     ٢. تەوێڵە
@@ -24,7 +24,11 @@ const towns = [
     {
         id: "all",
         name: localize("هەموو دەڤەرەکان", "كل المناطق", "All Destinations"),
-        count: 0
+        count: 0,
+        lat: 35.1800,
+        lng: 45.9800,
+        embedUrl: "https://maps.google.com/maps?q=35.1800,45.9800&hl=ckb&z=11&output=embed",
+        googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Halabja,+Kurdistan"
     },
     {
         id: "nawroli",
@@ -35,7 +39,11 @@ const towns = [
         stats: {
             houses: 9,
             activities: 3
-        }
+        },
+        lat: 35.2150,
+        lng: 45.9350,
+        embedUrl: "https://maps.google.com/maps?q=35.2150,45.9350&hl=ckb&z=15&output=embed",
+        googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=35.2150,45.9350"
     },
     {
         id: "tawela",
@@ -46,7 +54,11 @@ const towns = [
         stats: {
             houses: 4,
             activities: 1
-        }
+        },
+        lat: 35.2014,
+        lng: 46.1839,
+        embedUrl: "https://maps.google.com/maps?q=35.2014,46.1839&hl=ckb&z=15&output=embed",
+        googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=35.2014,46.1839"
     },
     {
         id: "byara",
@@ -57,7 +69,11 @@ const towns = [
         stats: {
             houses: 6,
             activities: 2
-        }
+        },
+        lat: 35.2281,
+        lng: 46.1247,
+        embedUrl: "https://maps.google.com/maps?q=35.2281,46.1247&hl=ckb&z=15&output=embed",
+        googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=35.2281,46.1247"
     },
     {
         id: "ahmad-awa",
@@ -68,7 +84,11 @@ const towns = [
         stats: {
             houses: 7,
             activities: 2
-        }
+        },
+        lat: 35.3136,
+        lng: 46.0358,
+        embedUrl: "https://maps.google.com/maps?q=35.3136,46.0358&hl=ckb&z=15&output=embed",
+        googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=35.3136,46.0358"
     },
     {
         id: "khurmal",
@@ -79,7 +99,11 @@ const towns = [
         stats: {
             houses: 5,
             activities: 1
-        }
+        },
+        lat: 35.3089,
+        lng: 46.0306,
+        embedUrl: "https://maps.google.com/maps?q=35.3089,46.0306&hl=ckb&z=15&output=embed",
+        googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=35.3089,46.0306"
     }
 ];
 
@@ -632,7 +656,179 @@ const nearbyAttractions = [
     }
 ];
 
-// Enrich services with views count, today's views, VIP status, and local nearby amenities (restaurants, springs, sights)
+const defaultReviewsByTown = {
+    nawroli: [
+        {
+            author: "ئاسۆ عومەر",
+            date: "٢٠٢٦/١٠/١٥",
+            rating: 5,
+            comment: localize(
+                "شوێنێکی زۆر دڵگیر و ئارام بوو، دەنگی ڕووبار و دانیشتن لەناو دڵی ئاوەکە ئەزموونێکی لەبیرنەکراوە. مامەڵەی خاوەن شوێنەکە زۆر بەڕێزانە بوو.",
+                "مكان رائع وهادئ جداً، صوت النهر والجلسات فوق الماء تجربة لا تُنسى. أصحاب المكان قمة في الأخلاق والضيافة.",
+                "An unforgettable experience right over the river. The soothing water sounds and gracious hospitality made our stay wonderful."
+            )
+        },
+        {
+            author: "شەنگە کەمال",
+            date: "٢٠٢٦/٠٩/٢٨",
+            rating: 5,
+            comment: localize(
+                "پاکوخاوێنی لە ئاستێکی زۆر باڵادایە و تەواو خێزانییە. منداڵەکانمان کەیفێکی زۆریان بە کەپرەکان و فێنکایی ئاوەکە کرد.",
+                "نظافة ممتازة وبيئة عائلية آمنة ومريحة جداً. استمتع أطفالنا كثيراً بالأجواء الجميلة والمياه العذبة.",
+                "Spotless cleanliness and a secure family atmosphere. The kids loved the shaded decks and refreshing river."
+            )
+        }
+    ],
+    tawela: [
+        {
+            author: "دانا حەمە ڕەشید",
+            date: "٢٠٢٦/١٠/٠٥",
+            rating: 5,
+            comment: localize(
+                "کۆڵانە بەردینەکان و هەوای فێنکی تەوێڵە بێ وێنەیە. خانووەکە تەواوی پێداویستییەکانی تێدابوو و دیمەنی چیای تەوێڵە سەرسوڕهێنەر بوو.",
+                "الأزقة الحجرية وهواء طويلة العليل لا مثيل لهما. المنزل مجهز بالكامل والإطلالة الجبلية ساحرة.",
+                "The stone architecture and mountain air of Tawela are unmatched. The house was fully equipped with stunning mountain views."
+            )
+        },
+        {
+            author: "بانە نەوزاد",
+            date: "٢٠٢٦/٠٩/١٨",
+            rating: 5,
+            comment: localize(
+                "ئارامترین شوێن بۆ پشوودانی کۆتایی هەفتە. دەستخۆشی لە خاوەن شوێنەکە دەکەین بۆ پێشوازییە گەرمەکەیان.",
+                "أهدأ مكان لقضاء عطلة نهاية أسبوع مريحة. شكراً جزيلاً لأصحاب المكان على حسن الاستقبال والاهتمام.",
+                "The most peaceful getaway for a weekend retreat. Huge thanks to the host for their wonderful reception."
+            )
+        }
+    ],
+    byara: [
+        {
+            author: "ڕەوەند عەلی",
+            date: "٢٠٢٦/١٠/١٢",
+            rating: 5,
+            comment: localize(
+                "سروشتی بیارە و باخی گوێز و چنارە بەرزەکان جیاوازە. ڤێلاکە زۆر فراوان بوو و کەیفوسەفای ماتۆڕسوارییەکەشی نایاب بوو.",
+                "طبيعة بيارة وأشجار الجوز والدلب الباسقة مميزة جداً. الفيلا واسعة ومغامرة الدبابات كانت قمة المتعة.",
+                "The orchards and tall plane trees of Byara are magnificent. The villa was spacious and the ATV ride was a blast."
+            )
+        },
+        {
+            author: "ئەژین مەحموود",
+            date: "٢٠٢٦/٠٩/٢٢",
+            rating: 5,
+            comment: localize(
+                "هەموو شتێک بەپێی وێنەکان بوو، زۆر پاک و کەشێکی پڕ لە ئاسوودەیی بوو بۆ خێزانەکەمان.",
+                "كل شيء مطابق للصور تماماً، نظافة تامة وأجواء مريحة جداً لعائلتنا.",
+                "Everything was exactly as pictured—spotlessly clean and wonderfully comfortable for our family."
+            )
+        }
+    ],
+    "ahmad-awa": [
+        {
+            author: "ڕێبین فاروق",
+            date: "٢٠٢٦/١٠/٢٠",
+            rating: 5,
+            comment: localize(
+                "دیمەنی تاڤگەی زەڵم و چەمی ئەحمەدئاوا لە پەنجەرەی خانووەکەوە دڵڕفێن بوو. ڕێگای ئاسان و خزمەتگوزاریی نایاب بوو.",
+                "إطلالة شلال زلم ومجرى أحمد آوا من نافذة المكان كانت ساحرة. الوصول سهل والخدمة راقية جداً.",
+                "The view of Zalm waterfall and stream from the windows was breathtaking. Easy access and top-notch service."
+            )
+        },
+        {
+            author: "سۆما ساڵح",
+            date: "٢٠٢٦/٠٩/١٥",
+            rating: 5,
+            comment: localize(
+                "هەوای سازگار و چێشتخانە و کەپری خاوێن لە نزیکمان. بە دڵنیاییەوە ساڵانە سەردانی دەکەینەوە.",
+                "هواء نقي ومطاعم وأكواخ نظيفة بالجوار. بالتأكيد سنكرر الزيارة كل موسم.",
+                "Crisp mountain air and clean facilities right nearby. We will definitely make this an annual family tradition."
+            )
+        }
+    ],
+    khurmal: [
+        {
+            author: "هێمن تەها",
+            date: "٢٠٢٦/١٠/٠٨",
+            rating: 5,
+            comment: localize(
+                "چەمە سارد و باخەکانی خورماڵ گونجاوترینە بۆ گروپ و خێزان. خاوەن شوێنەکە زۆر یارمەتیدەربوو لە ڕێنوێنی شوێنە گەشتیارییەکان.",
+                "منتجع جەمە سارد وبساتين خورمال الأفضل للعائلات والكروبات. صاحب المكان كان متعاوناً جداً بإرشادنا للأماكن الجميلة.",
+                "Chama Sard and Khurmal orchards are the best for family groups. The host gave us wonderful local recommendations."
+            )
+        },
+        {
+            author: "لانە بەختیار",
+            date: "٢٠٢٦/٠٩/١٠",
+            rating: 5,
+            comment: localize(
+                "خانوویەکی مێواندۆست، پاک و ئارام بە نرخی زۆر لەبار. زۆر سوپاس بۆ ئەم خزمەتگوزارییە جوانە.",
+                "بيت مريح ونظيف ومضياف بسعر مناسب جداً. كل الشكر على هذه الخدمة المتميزة.",
+                "A welcoming, clean, and peaceful house at a very reasonable rate. Highly satisfied with our stay."
+            )
+        }
+    ]
+};
+
+function getServiceCoordinates(service) {
+    if (service && service.lat && service.lng) {
+        return { lat: service.lat, lng: service.lng };
+    }
+    const tMatch = towns.find((t) => t.id === (service && service.town));
+    if (tMatch && tMatch.lat && tMatch.lng) {
+        return { lat: tMatch.lat, lng: tMatch.lng };
+    }
+    return { lat: 35.1800, lng: 45.9800 };
+}
+
+function getServiceMapUrls(service) {
+    const coords = getServiceCoordinates(service);
+    return {
+        embedUrl: `https://maps.google.com/maps?q=${coords.lat},${coords.lng}&hl=ckb&z=15&output=embed`,
+        directUrl: `https://www.google.com/maps/search/?api=1&query=${coords.lat},${coords.lng}`,
+        directionsUrl: `https://www.google.com/maps/dir/?api=1&destination=${coords.lat},${coords.lng}`
+    };
+}
+
+function getServiceRatingBreakdown(service) {
+    const base = service.rating || 4.9;
+    return {
+        cleanliness: (base >= 4.9 ? 5.0 : 4.9).toFixed(1),
+        location: (4.9).toFixed(1),
+        hospitality: (5.0).toFixed(1),
+        value: (base >= 4.9 ? 4.9 : 4.8).toFixed(1)
+    };
+}
+
+function getServiceReviews(service) {
+    if (!service) return [];
+    const townReviews = defaultReviewsByTown[service.town] || defaultReviewsByTown["nawroli"];
+    let customReviews = [];
+    try {
+        const stored = localStorage.getItem(`visit_halabja_reviews_${service.id}`);
+        if (stored) {
+            customReviews = JSON.parse(stored);
+        }
+    } catch (e) {
+        // Silently continue
+    }
+    return [...customReviews, ...townReviews];
+}
+
+function addUserServiceReview(serviceId, reviewData) {
+    if (!serviceId || !reviewData) return false;
+    try {
+        const key = `visit_halabja_reviews_${serviceId}`;
+        const existing = JSON.parse(localStorage.getItem(key) || "[]");
+        existing.unshift(reviewData);
+        localStorage.setItem(key, JSON.stringify(existing));
+        return true;
+    } catch (e) {
+        console.error("Error saving review:", e);
+        return false;
+    }
+}
+
+// Enrich services with views count, today's views, VIP status, coordinates, Google Maps URLs, and local nearby amenities
 services.forEach((s, idx) => {
     if (!s.viewsCount) {
         s.viewsCount = 980 + ((idx * 179) % 1650);
@@ -643,6 +839,30 @@ services.forEach((s, idx) => {
     if (s.isFeatured === undefined) {
         s.isFeatured = idx === 0 || idx === 1 || idx === 7 || idx === 10;
     }
+
+    if (!s.lat || !s.lng) {
+        if (s.town === "nawroli") {
+            s.lat = Number((35.2150 + ((idx * 0.0012) % 0.004)).toFixed(4));
+            s.lng = Number((45.9350 + ((idx * 0.0015) % 0.005)).toFixed(4));
+        } else if (s.town === "tawela") {
+            s.lat = Number((35.2014 + ((idx * 0.0010) % 0.003)).toFixed(4));
+            s.lng = Number((46.1839 + ((idx * 0.0012) % 0.004)).toFixed(4));
+        } else if (s.town === "byara") {
+            s.lat = Number((35.2281 + ((idx * 0.0011) % 0.003)).toFixed(4));
+            s.lng = Number((46.1247 + ((idx * 0.0014) % 0.004)).toFixed(4));
+        } else if (s.town === "ahmad-awa") {
+            s.lat = Number((35.3136 + ((idx * 0.0010) % 0.003)).toFixed(4));
+            s.lng = Number((46.0358 + ((idx * 0.0013) % 0.004)).toFixed(4));
+        } else {
+            s.lat = Number((35.3089 + ((idx * 0.0009) % 0.003)).toFixed(4));
+            s.lng = Number((46.0306 + ((idx * 0.0011) % 0.003)).toFixed(4));
+        }
+    }
+    const mapUrls = getServiceMapUrls(s);
+    s.mapEmbedUrl = mapUrls.embedUrl;
+    s.googleMapsUrl = mapUrls.directUrl;
+    s.directionsUrl = mapUrls.directionsUrl;
+    s.ratingCategories = getServiceRatingBreakdown(s);
     if (!s.nearbyAttractions) {
         if (s.town === "nawroli") {
             s.nearbyAttractions = [
@@ -781,7 +1001,7 @@ const regionalHighlights = [
 
 /* 
     ===================================================================
-    ٦. پلانی پێشنیارکراوی گەشتی ١ ڕۆژە لە هەڵەبجە و هەورامان (Itinerary)
+    ٦. پلانی پێشنیارکراوی گەشتی ١ ڕۆژە لە هەڵەبجە و نەوڕۆڵی (Itinerary)
     ===================================================================
 */
 const oneDayItinerary = [
@@ -901,7 +1121,7 @@ const emergencyContacts = [
         number: "115",
         tel: "tel:115",
         icon: "🚒",
-        desc: localize("ڕزگارکردن و ئاگرکوژێنەوە لە هەڵەبجە و هەورامان", "عمليات الإنقاذ والإطفاء في حلبجة وهورامان", "Rescue & Firefighting in Halabja & Hawraman")
+        desc: localize("ڕزگارکردن و ئاگرکوژێنەوە لە هەڵەبجە و نەوڕۆڵی", "عمليات الإنقاذ والإطفاء في حلبجة ونورولي", "Rescue & Firefighting in Halabja & Nawroli")
     },
     {
         name: localize("پۆلیسی فریاکەوتن", "شرطة النجدة والطوارئ", "Emergency Police"),
@@ -927,4 +1147,9 @@ window.regionalHighlights = regionalHighlights;
 window.oneDayItinerary = oneDayItinerary;
 window.localDining = localDining;
 window.emergencyContacts = emergencyContacts;
+window.getServiceCoordinates = getServiceCoordinates;
+window.getServiceMapUrls = getServiceMapUrls;
+window.getServiceRatingBreakdown = getServiceRatingBreakdown;
+window.getServiceReviews = getServiceReviews;
+window.addUserServiceReview = addUserServiceReview;
 

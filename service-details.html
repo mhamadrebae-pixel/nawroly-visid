@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
-    <meta name="description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و هەورامان بۆ گەشتیاران و خێزانەکان.">
+    <meta name="description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.">
     <meta name="author" content="Mhamad Rebar">
     <meta name="theme-color" content="#0f7b74">
     <title>وردەکاری شوێن – Visit Halabja</title>
@@ -16,14 +16,17 @@
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="وردەکاری شوێن – Visit Halabja">
-    <meta property="og:description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و هەورامان بۆ گەشتیاران و خێزانەکان.">
+    <meta property="og:description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.">
     <meta property="og:image" content="images/hero.jpg">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="وردەکاری شوێن – Visit Halabja">
-    <meta property="twitter:description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و هەورامان بۆ گەشتیاران و خێزانەکان.">
+    <meta property="twitter:description" content="وردەکاریی شوێن و خزمەتگوزارییەکانی هەڵەبجە و نەوڕۆڵی بۆ گەشتیاران و خێزانەکان.">
     <meta name="twitter:image" content="images/hero.jpg">
+
+    <!-- Canonical Link -->
+    <link rel="canonical" id="canonicalLink" href="https://visithalabja.com/service-details.html">
 
     <!-- PWA -->
     <script>
@@ -177,6 +180,47 @@
         </div>
     </div>
 
+    <!-- Review Modal: پەنجەرەی تۆمارکردنی هەڵسەنگاندن -->
+    <div class="booking-modal-overlay" id="reviewModal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="reviewModalTitle">
+        <div class="booking-modal-card">
+            <button class="booking-modal-close" id="reviewModalClose" type="button" aria-label="داخستن">×</button>
+            <div class="booking-modal-header">
+                <span class="booking-modal-badge" id="reviewModalBadge">⭐ هەڵسەنگاندن</span>
+                <h3 id="reviewModalTitle" data-i18n="reviewModalTitle">تۆمارکردنی هەڵسەنگاندنی نوێ</h3>
+                <p class="booking-modal-service-name" id="reviewModalServiceName"></p>
+                <small style="color: var(--color-text-soft);" data-i18n="reviewModalSubtitle">ڕای تۆ یارمەتی گەشتیارانی تر دەدات لە هەڵبژاردنی باشترین شوێن</small>
+            </div>
+
+            <form class="booking-modal-form" id="reviewModalForm">
+                <div class="form-group">
+                    <label id="reviewScoreLabel" data-i18n="reviewRatingLabel">پلەی هەڵسەنگاندن:</label>
+                    <div class="star-rating-picker" id="starRatingPicker" role="radiogroup" aria-labelledby="reviewScoreLabel">
+                        <button type="button" class="star-pick-btn active" data-stars="5" title="5 ئەستێرە">⭐ 5</button>
+                        <button type="button" class="star-pick-btn" data-stars="4" title="4 ئەستێرە">⭐ 4</button>
+                        <button type="button" class="star-pick-btn" data-stars="3" title="3 ئەستێرە">⭐ 3</button>
+                        <button type="button" class="star-pick-btn" data-stars="2" title="2 ئەستێرە">⭐ 2</button>
+                        <button type="button" class="star-pick-btn" data-stars="1" title="1 ئەستێرە">⭐ 1</button>
+                    </div>
+                    <input type="hidden" id="reviewRatingInput" value="5">
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewAuthorInput" data-i18n="reviewNameLabel">ناوی بەڕێزتان</label>
+                    <input type="text" id="reviewAuthorInput" required placeholder="ناوی تەواو یان نازناو بنووسە..." data-i18n-attr="placeholder:reviewNamePlaceholder">
+                </div>
+
+                <div class="form-group">
+                    <label for="reviewCommentInput" data-i18n="reviewCommentLabel">بۆچوون و ئەزموونی خۆت</label>
+                    <textarea id="reviewCommentInput" rows="3" required placeholder="سەبارەت بە خاوێنی، مامەڵەی خاوەن شوێن و هەستت بنووسە..." data-i18n-attr="placeholder:reviewCommentPlaceholder"></textarea>
+                </div>
+
+                <button class="button button-primary full-width" type="submit" id="reviewSubmitBtn" data-i18n="reviewSubmitBtn">
+                    ناردن و تۆمارکردن ⭐
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
         <button class="lightbox-close" id="lightboxClose" type="button" aria-label="داخستنی وێنە" data-i18n-aria-label="lightboxCloseLabel">×</button>
@@ -190,7 +234,7 @@
     <footer class="site-footer">
         <div class="container footer-inner">
             <div class="footer-meta">
-                <p>Visit Halabja © <span id="currentYear"></span> • گەشتی هەڵەبجە و هەورامان</p>
+                <p>Visit Halabja & Nawroli © <span id="currentYear"></span> • گەشتی هەڵەبجە و نەوڕۆڵی</p>
                 <div class="footer-credit" aria-label="زانیاریی دروستکەری وێبسایت">
                     <strong class="credit-title">
                         <span>دروستکراوە لەلایەن</span>
