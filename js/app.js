@@ -1752,7 +1752,7 @@ function setupBookingModal() {
             });
 
             // ژمارەی WhatsApp بۆ پلاتفۆرم/بەڕێوەبەر یان خزمەتگوزاری
-            const adminPhone = activeBookingService.whatsapp || "9647510485057";
+            const adminPhone = (window.PLATFORM_CONFIG && window.PLATFORM_CONFIG.adminWhatsApp) || "9647510485057";
             const cleanPhone = adminPhone.replace(/\D/g, "");
 
             const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(messageText)}`;

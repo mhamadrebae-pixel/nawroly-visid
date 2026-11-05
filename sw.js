@@ -3,7 +3,7 @@
     Provides lightweight offline support and caching for visitors.
 */
 
-const CACHE_NAME = "halabja-cache-v8";
+const CACHE_NAME = "halabja-cache-v12";
 const STATIC_ASSETS = [
     "./",
     "./index.html",
